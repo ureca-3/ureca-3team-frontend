@@ -1,25 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MBTInyMain from './views/MBITny';
+import MyPage from './views/Mypage';
+import Histogram from './views/Histogram';
+import Assessment from './views/Assessment';
+import SignIn from './views/SignIn';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+return (
+  <div className='mobile-container'>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MBTInyMain />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/histogram" element={<Histogram />} />
+        <Route path="/mbti" element={<Assessment />}> </Route>
+        <Route path='/sign' element={<SignIn />}></Route>
+      </Routes>
+    </BrowserRouter>
+  </div>
+);
 }
+
 
 export default App;

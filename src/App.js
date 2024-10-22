@@ -9,7 +9,6 @@ import SignIn from './views/SignIn';
 
 function App() {
 return (
-  <div className='mobile-container'>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MBTInyMain />} />
@@ -19,7 +18,6 @@ return (
         <Route path='/sign' element={<SignIn />}></Route>
       </Routes>
     </BrowserRouter>
-  </div>
 );
 }
 

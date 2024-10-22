@@ -20,7 +20,7 @@ body {
 .main-container {
     text-align: center;
     background-color: #ffe9ec; /* Light pink background */
-    height: 100vh; /* Full viewport height */
+    min-height: 100vh; /* Full viewport height */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +37,7 @@ body {
 .mbtiny-title {
     color: #ff6b6b; 
     font-size: 48px;
-    margin-bottom: 400px;
+    margin-bottom: 10px;
 }
 
 /* Subtitle text below the title */
@@ -48,4 +48,10 @@ body {
 
 .kakao-button img {
     width: 200px; 
+}
+
+.book-imag img {
+    width: 200px;
+    /* margin: 20px auto; 위쪽 여백과 아래쪽 여백을 20px로 설정하고 가운데 정렬 */
+    /* display: block; block 요소로 설정하여 가운데 정렬 */
 }

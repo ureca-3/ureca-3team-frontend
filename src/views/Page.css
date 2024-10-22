@@ -1,21 +1,51 @@
-.main-container {
-    position: relative;
-    padding-top: 70px; 
-    padding-bottom: 60px; 
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #f8f9fa;
-    height: 100vh;
-    overflow: hidden;
+/* 글꼴 */
+/*
+@font-face {
+    font-family: 'UhbeeFont';
+    src: url('../../public/fonts/UhBee Se_hyun.ttf') format('truetype');
+}
+*/
+@font-face {
+    font-family: 'UhBeeSe_hyun';
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.eot');
+    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
+    font-style: normal;
+}
+ 
+body {
+    font-family: 'UhBeeSe_hyun', sans-serif;
 }
 
-.content-container {
+/* 기본 배경 */
+.main-container {
     text-align: center;
+    background-color: #ffe9ec; /* Light pink background */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the image */
+.book-image {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+/* Title "MBTIny" styling */
+.mbtiny-title {
+    color: #ff6b6b; 
+    font-size: 48px;
+    margin-bottom: 400px;
+}
+
+/* Subtitle text below the title */
+.mbtiny-subtitle {
     font-size: 18px;
-    color: #333;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-    box-sizing: border-box;
-    word-wrap: break-word;
+    margin-bottom: 40px;
+}
+
+.kakao-button img {
+    width: 200px; 
 }

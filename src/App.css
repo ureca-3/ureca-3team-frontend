@@ -7,12 +7,11 @@ html, body {
   overflow-y: hidden; 
 }
 
-.mobile-container {
-  width: 500px; 
+.container {
+  width: 100%; 
   max-width: 100%;
-  height: 100vh; 
+  height: 100%; 
   margin: 0 auto;
-  border: 1px solid #ddd; 
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;

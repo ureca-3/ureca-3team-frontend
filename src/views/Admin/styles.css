@@ -1,0 +1,128 @@
+.book-detail-container {
+  display: flex;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid #FF6060;
+}
+
+.book-image img {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.book-info {
+  flex-grow: 1;
+  margin-left: 30px;
+}
+
+.book-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.book-author {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.book-description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.mbti {
+  display: block;
+  font-size: 30px;
+  font-weight: bold;
+  color: #E26E6E;
+  margin-bottom: 20px;
+}
+
+.book-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-button, .delete-button, .save-button {
+  background-color: #F0E4F6;
+  color: #555;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-button:hover, .delete-button:hover, .save-button:hover{
+  background-color: #E1C4F2;
+}
+
+.delete-button {
+  background-color: #FFB0B0;
+}
+
+.delete-button:hover {
+  background-color: #FF8E8E;
+}
+
+.save-button {
+  background-color: #FFB0B0;
+}
+
+.upload-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 100px;
+}
+
+.upload-image img{
+  width: 300px;
+  height: 300px;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.input-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+  padding-left: 50px;
+  margin-top: 10px;
+}
+
+.input-fields input {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-fields textarea {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 100px;
+}
+
+.input-title {
+  margin-bottom: -15px;
+  text-align: left;
+}

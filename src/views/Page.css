@@ -19,8 +19,8 @@ body {
 /* 기본 배경 */
 .main-container {
     text-align: center;
-    background-color: #ffe9ec; /* Light pink background */
-    min-height: 100vh; /* Full viewport height */
+    background-color: #ffe9ec; 
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,6 +31,7 @@ body {
 .book-image {
     width: 200px;
     margin-bottom: 20px;
+    align-content: space-evenly;
 }
 
 /* Title "MBTIny" styling */

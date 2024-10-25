@@ -3,8 +3,10 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MBTInyMain from './views/MBITny';
 import MyPage from './views/Mypage';
-import Histogram from './views/Histogram';
-import Assessment from './views/Assessment';
+import History from './views/History/history';
+import Assessment from './views/Assessment/mbtiStart';
+import MbtiQuestion from './views/Assessment/mbtiQuestion';
+import MbtiResult from './views/Assessment/mbtiResult';
 import SignIn from './views/SignIn';
 
 function App() {
@@ -13,8 +15,10 @@ return (
       <Routes>
         <Route path="/" element={<MBTInyMain />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/histogram" element={<Histogram />} />
-        <Route path="/mbti" element={<Assessment />}> </Route>
+        <Route path="/history" element={<History />} />
+        <Route path="/mbtiStart" element={<Assessment />} /> 
+        <Route path="/mbtiQuestion" element={<MbtiQuestion />} />
+        <Route path="/mbtiResult" element={<MbtiResult />} />
         <Route path='/sign' element={<SignIn />}></Route>
       </Routes>
     </BrowserRouter>

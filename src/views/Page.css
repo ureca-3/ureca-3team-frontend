@@ -11,20 +11,31 @@
     src:url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
     font-style: normal;
 }
- 
+
 body {
+    height: 100%;
     font-family: 'UhBeeSe_hyun', sans-serif;
+    
 }
 
 /* 기본 배경 */
 .main-container {
     text-align: center;
-    background-color: #ffe9ec; /* Light pink background */
+    background-color: #FFE7EB; /* Light pink background */
     min-height: 100vh; /* Full viewport height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+}
+
+.content-container {
+    flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+}
+
+.NavBar {
+    margin-top: auto; /* 가장 밑으로 내리기 */
 }
 
 /* Styling for the image */

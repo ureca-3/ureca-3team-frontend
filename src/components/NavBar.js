@@ -13,7 +13,6 @@ export default function NavBar() {
                 </nav>
                 <div className="footer-info">
                     <p>&copy; {new Date().getFullYear()} MBTIny. All rights reserved.</p>
-                    <p>주소: 서울 강남구 선릉로 428, 403호 </p>
                 </div>
             </footer>
     );

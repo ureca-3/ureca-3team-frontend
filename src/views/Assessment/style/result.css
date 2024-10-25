@@ -1,0 +1,84 @@
+.result-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* 중앙 정렬 */
+    justify-content: center;
+    /* 가로 방향 중앙 정렬 */
+    text-align: left;
+    background-color: white;
+    width: 80%;
+    /* 전체 화면의 80% 너비로 설정 */
+    height: 100%;
+    /* 자동으로 높이 조정 */
+    padding: 50px;
+    /* padding을 줄여서 더 넓어 보이도록 설정 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 800px;
+    /* 최소 높이를 지정 */
+    margin: 0 auto;
+    /* 가로 중앙에 배치 */
+}
+
+.mbti-image {
+    max-width: 500px;
+    margin-right: 20px;
+    /* 이미지와 텍스트 사이 여백을 줌 */
+    border-radius: 10px;
+}
+
+.mbti-info {
+    h1, h2, h3, p{
+        text-align: left;
+    }
+}
+
+h3 {
+    color : #000000;
+    opacity: 60%;
+}
+
+.mbti-chart {
+    margin-top: 30px;
+}
+
+.chart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.chart-bar-container {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    position: relative;
+}
+
+.chart-bar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+.fill-left {
+    background-color: #f77e8c;
+    height: 100%;
+    float: left; /* 왼쪽부터 채워짐 */
+    border-radius: 10px 0 0 10px;
+}
+
+.fill-right {
+    background-color: #f77e8c;
+    height: 100%;
+    float: right; /* 오른쪽부터 채워짐 */
+    border-radius: 0 10px 10px 0;
+}

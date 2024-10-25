@@ -20,9 +20,9 @@ return (
         <Route path="/mbti" element={<Assessment />}> </Route>
         <Route path='/sign' element={<SignIn />}></Route>
         <Route path='/admin' element={<AdminMain/>}></Route>
-        <Route path='/adminContents' element={<AdminContents />}></Route>
+        <Route path='/adminContents/:content' element={<AdminContents />}></Route>
         <Route path='/adminUpload' element={<AdminUpload />}></Route>
-        <Route path='/adminEdit' element={<AdminEdit />}></Route>
+        <Route path='/adminEdit/:content' element={<AdminEdit />}></Route>
       </Routes>
     </BrowserRouter>
 );

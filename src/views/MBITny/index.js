@@ -4,7 +4,7 @@ import '../Page.css';
 import { setRefreshToken } from "../../Auth/FetchUserData";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import {API_DOMAIN} from '../../api/domain';
 
 export default function MBTInyMain() {
     const [userName, setUserName] = useState("");
@@ -12,7 +12,7 @@ export default function MBTInyMain() {
     // 카카오 로그인 성공 후 백엔드로 토큰을 보내서 JWT를 받아오는 함수
     const handleKakaoLogin = async (kakaoToken) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/v1/auth/kakao", { token: kakaoToken });
+            const response = await axios.post(`${API_DOMAIN}/auth/kakao`, { token: kakaoToken });
             const { jwtToken, username } = response.data;
 
             // Refresh Token을 쿠키에 저장

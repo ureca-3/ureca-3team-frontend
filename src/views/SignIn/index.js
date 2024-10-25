@@ -1,11 +1,12 @@
 import NavBar from "../../components/NavBar";
 import '../Page.css';
+import {API_DOMAIN} from '../../api/domain';
 
 export default function SignIn() {
 
     const SignInButton = (event) => {
         event.preventDefault();
-        window.location.href = "http://localhost:8080/api/v1/auth/kakao";
+        window.location.href = `${API_DOMAIN}/auth/kakao`;
     }
 
     return (

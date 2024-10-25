@@ -2,12 +2,15 @@ import React, { useRef, useState } from 'react';
 import './styles.css';
 import Header from '../../components/Header';
 import { FaUpload } from 'react-icons/fa';
-
+import axios from 'axios';
+import { API_DOMAIN } from '../../api/domain';
+import noImage from './no-image.png';
 
 const AdminUpload = () => {
+    const [accessToken, setAccessToken] = useState('');
 
     const [fileName, setFileName] = useState('');
-    const [poster, setPoster] = useState('../img/no-image.png'); // 기본 포스터
+    const [poster, setPoster] = useState(noImage); // 기본 포스터
     const fileInputRef = useRef(null);
 
     const [title, setTitle] = useState('');
@@ -16,10 +19,39 @@ const AdminUpload = () => {
     const [publisher, setPublisher] = useState('');
     const [publicationYear, setPublicationYear] = useState('');
 
+    // 로딩 상태 추가
+    const [isLoading, setIsLoading] = useState(false);
 
-    const saveContent = () => {
-        console.log("저장버튼");
-    }
+    const saveContent = async () => {
+        setIsLoading(true); // 로딩 시작
+        try {
+            const response = await axios.post(
+                `${API_DOMAIN}/contents/save`,
+                JSON.stringify({
+                    title: title,
+                    posterUrl: poster,
+                    description: description,
+                    author: author,
+                    publisher: publisher,
+                    publicationYear: publicationYear
+                }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": 'application/json'
+                    },
+                }
+            );
+
+            console.log(response.data.result);
+            const contentId = response.data.result;
+            window.location.href = `http://localhost:3000/adminContents/${contentId}`;
+        } catch (error) {
+            console.error('Error saving content:', error);
+        } finally {
+            setIsLoading(false); // 로딩 종료
+        }
+    };
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -39,7 +71,14 @@ const AdminUpload = () => {
             <Header />
             <div className='main-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 
-
+                {isLoading && (
+                    <div className="loading-overlay">
+                        <div className="loading-popup">
+                            <div className="loading-spinner"></div>
+                            <p>저장 중입니다... 잠시만 기다려주세요.</p>
+                        </div>
+                    </div>
+                )}
                 <div style={{ display: 'flex' }}>
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>

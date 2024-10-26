@@ -1,6 +1,6 @@
 import Header from "../../components/Header";
 
-export default function  AdminMain() {
+export default function AdminMain() {
 
     return (
         <div>

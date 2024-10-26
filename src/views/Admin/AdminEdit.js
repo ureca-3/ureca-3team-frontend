@@ -7,7 +7,7 @@ import { API_DOMAIN } from '../../api/domain';
 import { useParams } from 'react-router-dom';
 
 const AdminEdit = () => {
-    const [accessToken, setAccessToekn] = useState('');
+    const [accessToken, setAccessToken] = useState('');
     const { content } = useParams();
     const [fileName, setFileName] = useState('');
     const [poster, setPoster] = useState(''); // 기본 포스터

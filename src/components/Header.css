@@ -5,6 +5,7 @@
     padding: 10px 20px;
     background-color: #FFE7EB;
     border-bottom: 3px solid #ddd;
+    position: relative;
 }
 
 .menu-button {
@@ -27,33 +28,91 @@
     z-index: 1000;
 }
 
+.dropdown-user-menu {
+    margin-right: 15px;
+    margin-top: 10px;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    z-index: 1000;
+}
+
+.dropdown-user-menu li {
+    padding: 5px;
+    cursor: pointer;
+    border-right: 1px solid #ddd;
+    /* 오른쪽에 경계선 추가 */
+}
+
+.dropdown-user-menu li:last-child {
+    border-right: none;
+    /* 마지막 항목의 오른쪽 경계선 제거 */
+}
+
+.dropdown-user-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    border: 5px;
+}
+
 .dropdown-menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.dropdown-menu li {
+.dropdown-menu li,
+.dropdown-user-menu li {
     padding: 10px;
     cursor: pointer;
 }
 
-.dropdown-menu li:hover {
+.dropdown-menu li:hover,
+.dropdown-user-menu li:hover {
     background-color: #f0f0f0;
 }
 
 .search-bar {
-    flex-grow: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+}
+
+.search-form {
     display: flex;
-    justify-content: center;
-    padding: 0 20px;
+    align-items: center;
+    width: 100%;
 }
 
 .search-bar input {
-    width: 100%;
-    padding: 8px 12px;
+    flex: 1;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 20px;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar .search-button {
+    background: #FFE7EB;
+    border: 1px solid #ccc;
+    border-left: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 0 4px 4px 0;
+}
+
+.search-bar .search-button:hover {
+    background-color: #f0f0f0;
 }
 
 .user-info {

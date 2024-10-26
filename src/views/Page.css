@@ -8,19 +8,24 @@
 @font-face {
     font-family: 'UhBeeSe_hyun';
     src: url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.eot');
-    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
     font-style: normal;
 }
- 
+
 body {
     font-family: 'UhBeeSe_hyun', sans-serif;
 }
 
-/* 기본 배경 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .main-container {
     text-align: center;
-    background-color: #ffe9ec; 
-    min-height: 100vh; 
+    background-color: #ffe9ec;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,7 +41,7 @@ body {
 
 /* Title "MBTIny" styling */
 .mbtiny-title {
-    color: #ff6b6b; 
+    color: #ff6b6b;
     font-size: 48px;
     margin-bottom: 10px;
 }
@@ -48,7 +53,7 @@ body {
 }
 
 .kakao-button img {
-    width: 200px; 
+    width: 200px;
 }
 
 .book-imag img {

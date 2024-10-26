@@ -1,6 +1,6 @@
 import { Cookies } from 'react-cookie';
 
-const cookies = new Cookies(); 
+const cookies = new Cookies();
 
 // Refresh Token을 cookie에 저장
 export const setRefreshToken = (refreshToken) => {
@@ -8,9 +8,9 @@ export const setRefreshToken = (refreshToken) => {
     const expireDate = today.setDate(today.getDate + 7);
 
     return cookies.set('refereshToken', refreshToken, {
-        sameSite : 'strict',
-        path : "/",
-        expires : new Date(expireDate)
+        sameSite: 'strict',
+        path: "/",
+        expires: new Date(expireDate)
     });
 };
 
@@ -22,7 +22,7 @@ export const getCookieToken = () => {
 // cookie 삭제 
 export const removeCookieToken = () => {
     return cookies.remove('refreshToken', {
-        sameSite : 'strict',
-        path : "/"
+        sameSite: 'strict',
+        path: "/"
     })
 }

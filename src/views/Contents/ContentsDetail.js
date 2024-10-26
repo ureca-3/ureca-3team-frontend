@@ -4,9 +4,8 @@ import Header from '../../components/Header';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { API_DOMAIN } from '../../api/domain';
-
-const AdminContents = () => {
-
+import { FaRegFrown, FaRegLaughSquint } from "react-icons/fa";
+const ContentsDetail = () => {
   const [bookData, setBookData] = useState('');
   const { content } = useParams();
   const [accessToken, setAccessToken] = useState('');
@@ -17,54 +16,14 @@ const AdminContents = () => {
   const [publicationYear, setPublicationYear] = useState('');
   const [poster, setPoster] = useState(''); // 기본 포스터
   const [showModal, setShowModal] = useState(false);
+  const [activeIcon, setActiveIcon] = useState(null);
 
-  const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
-    return (
-      <div className="modal-overlay">
-        <div className="modal-content">
-          <h2 className="modal-title">주의</h2>
-          <p>{message}</p>
-          <div className="modal-actions">
-            <button className="confirm-button" onClick={onConfirm}>Yes</button>
-            <button className="cancel-button" onClick={onCancel}>No</button>
-          </div>
-        </div>
-      </div>
-    );
+  const toggleLaughColor = () => {
+    setActiveIcon(activeIcon === 'laugh' ? null : 'laugh');
   };
 
-  const editContent = () => {
-    console.log("수정 버튼");
-    window.location.href = `http://localhost:3000/adminEdit/${content}`;
-  }
-
-  const deleteContent = async () => {
-    try {
-      const response = await axios.patch(`${API_DOMAIN}/contents/delete/${content}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      );
-      window.location.href = `http://localhost:3000`;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const handleDeleteClick = () => {
-    setShowModal(true);
-  };
-
-  const handleConfirmDelete = () => {
-    setShowModal(false);
-    deleteContent();
-  };
-
-  const handleCancelDelete = () => {
-    setShowModal(false);
+  const toggleFrownColor = () => {
+    setActiveIcon(activeIcon === 'frown' ? null : 'frown');
   };
 
   const getData = async () => {
@@ -90,6 +49,7 @@ const AdminContents = () => {
     if (content) getData();
   }, [content]);
 
+
   return (
     <div>
       <Header></Header>
@@ -97,6 +57,23 @@ const AdminContents = () => {
         <div className="book-detail-container">
           <div className="book-image">
             <img src={poster} alt="책 이미지" />
+            <div style={{ marginTop: '15px' }}>
+              <FaRegLaughSquint
+                style={{
+                  marginRight: '50px',
+                  fontSize: '24px',
+                  color: activeIcon === 'laugh' ? 'red' : 'black',
+                }}
+                onClick={toggleLaughColor}
+              />
+              <FaRegFrown
+                style={{
+                  fontSize: '24px',
+                  color: activeIcon === 'frown' ? 'red' : 'black',
+                }}
+                onClick={toggleFrownColor}
+              />
+            </div>
           </div>
 
           <div className="book-info">
@@ -108,24 +85,11 @@ const AdminContents = () => {
             </p>
 
             <span className="mbti">{bookData.contentsMbtiResult}</span>
-
-            <div className="book-actions">
-              <button className="edit-button" onClick={editContent}>수정</button>
-              <button className="delete-button" onClick={handleDeleteClick}>삭제</button>
-            </div>
           </div>
         </div>
       </div>
-
-      {showModal && (
-        <ConfirmationModal
-          message="정말 삭제하시겠습니까?"
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
-        />
-      )}
     </div>
   );
 };
 
-export default AdminContents;
+export default ContentsDetail;

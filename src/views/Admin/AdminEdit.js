@@ -21,7 +21,7 @@ const AdminEdit = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        console.log(token);
+        // console.log(token);
         if (token) {
             setAccessToken(token);
         }
@@ -43,17 +43,8 @@ const AdminEdit = () => {
             const formattedDate = new Date(response.data.result.publicationYear).toISOString().split('T')[0];
             setPublicationYear(formattedDate);
         }
-        console.log(bookData);
+        // console.log(bookData);
     }
-
-    useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
-        console.log(token);
-        if (token) {
-            setAccessToken(token);
-        }
-    }, []);
-
     useEffect(() => {
         if (content && accessToken) getData(accessToken);
     }, [content, accessToken]);

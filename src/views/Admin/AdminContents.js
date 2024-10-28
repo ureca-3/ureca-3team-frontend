@@ -20,7 +20,7 @@ const AdminContents = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
-    console.log(token);
+    // console.log(token);
     if (token) {
       setAccessToken(token);
     }
@@ -43,7 +43,7 @@ const AdminContents = () => {
   };
 
   const editContent = () => {
-    console.log("수정 버튼");
+    // console.log("수정 버튼");
     window.location.href = `http://localhost:3000/adminEdit/${content}`;
   }
 
@@ -57,7 +57,7 @@ const AdminContents = () => {
           }
         }
       );
-      window.location.href = `http://localhost:3000`;
+      window.location.href = `http://localhost:3000/adminUpload`;
     } catch (error) {
       console.error(error);
     }
@@ -92,7 +92,7 @@ const AdminContents = () => {
       const formattedDate = new Date(bookData.publicationYear).toISOString().split('T')[0];
       setPublicationYear(formattedDate);
     }
-    console.log(bookData);
+    // console.log(bookData);
   }
 
 

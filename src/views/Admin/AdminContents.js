@@ -9,7 +9,6 @@ const AdminContents = () => {
 
   const [bookData, setBookData] = useState('');
   const { content } = useParams();
-  const [accessToken, setAccessToken] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState('');
@@ -17,6 +16,16 @@ const AdminContents = () => {
   const [publicationYear, setPublicationYear] = useState('');
   const [poster, setPoster] = useState(''); // 기본 포스터
   const [showModal, setShowModal] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    console.log(token);
+    if (token) {
+      setAccessToken(token);
+    }
+  }, []);
+
 
   const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
     return (
@@ -67,7 +76,7 @@ const AdminContents = () => {
     setShowModal(false);
   };
 
-  const getData = async () => {
+  const getData = async (accessToken) => {
     const response = await axios.get(`${API_DOMAIN}/contents/read/${content}`,
       {
         headers:
@@ -86,9 +95,10 @@ const AdminContents = () => {
     console.log(bookData);
   }
 
+
   useEffect(() => {
-    if (content) getData();
-  }, [content]);
+    if (content && accessToken) getData(accessToken);
+  }, [content, accessToken]);
 
   return (
     <div>

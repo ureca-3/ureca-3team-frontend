@@ -1,12 +1,70 @@
 import './Header.css';
 import { TiThMenu, TiBell } from "react-icons/ti";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";
+import { API_DOMAIN } from '../api/domain';
+import axios from 'axios';
 
-const Header = ({ profileImage, userName }) => {
+export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [userMenu, setUserMenu] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [userProfile, setUserProfile] = useState('');
+    const [accessToken, setAccessToken] = useState('');
+    const [userId, setUserId] = useState('');
+    const [userRole, setUserRole] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        // console.log(token);
+        if (token) {
+            setAccessToken(token);
+            getData(token);
+        }
+    }, [accessToken]);
+
+    const goToMyPage = async () => {
+        window.location.href = `http://localhost:3000/mypage/${userId}`;
+    }
+
+    const logout = async () => {
+        console.log("로그아웃");
+        try {
+            await axios.post(`${API_DOMAIN}/auth/logout`,
+                {},
+                {
+                    headers:
+                    {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+            localStorage.removeItem("jwtToken");
+            setAccessToken("");
+            window.location.href = "http://localhost:3000/sign";
+        } catch (error) {
+            console.error("로그아웃 오류")
+        }
+    }
+
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        });
+
+        // console.log(kakaoUser.data.result.id);
+        setUserRole(kakaoUser.data.result.role);
+        setUserId(kakaoUser.data.result.id);
+        setUserName(kakaoUser.data.result.oauthInfo.nickname);
+        setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
+        return kakaoUser.data.result.oauthInfo;
+    }
 
     const handleNotice = () => {
         console.log("공지사항");
@@ -40,7 +98,7 @@ const Header = ({ profileImage, userName }) => {
                 <TiThMenu onClick={toggleMenu} className="menu-icon" />
                 {/* 메뉴 토글 */}
                 {/* 사용자 */}
-                {/* {menuOpen && (
+                {menuOpen && userRole === 'USER' && (
                     <div className="dropdown-menu">
                         <ul>
                             <li>Home</li>
@@ -48,9 +106,11 @@ const Header = ({ profileImage, userName }) => {
                             <li>HISTORY</li>
                         </ul>
                     </div>
-                )} */}
+                )}
+
+
                 {/* 관리자 */}
-                {menuOpen && (
+                {menuOpen && userRole === 'ADMIN' && (
                     <div className="dropdown-menu">
                         <ul>
                             <li>Home</li>
@@ -78,20 +138,19 @@ const Header = ({ profileImage, userName }) => {
 
             {/* 오른쪽 프로필, 닉네임, 공지 아이콘 */}
             <div className="user-info">
-                <img src="/img/avatar.png" alt="Profile" className="profile-image" onClick={toggleUserMenu} />
+                <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
                 {userMenu && (
                     <div className="dropdown-user-menu">
                         <ul>
-                            <li>마이페이지</li>
-                            <li>로그아웃</li>
+                            <li onClick={goToMyPage}>마이페이지</li>
+                            <li onClick={logout}>로그아웃</li>
                         </ul>
                     </div>
                 )}
-                <span className="user-name">홍길동님</span>
+                <span className="user-name">{userName}님</span>
                 <TiBell className="bell-icon" onClick={handleNotice} />
             </div>
         </header>
     );
 };
 
-export default Header;

@@ -18,6 +18,14 @@ const ContentsDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      setAccessToken(token);
+      console.log(accessToken)
+    }
+  }, []);
+
   const toggleLaughColor = () => {
     setActiveIcon(activeIcon === 'laugh' ? null : 'laugh');
   };
@@ -26,28 +34,32 @@ const ContentsDetail = () => {
     setActiveIcon(activeIcon === 'frown' ? null : 'frown');
   };
 
-  const getData = async () => {
-    const response = await axios.get(`${API_DOMAIN}/contents/read/${content}`,
-      {
-        headers:
+  const getData = async (token) => {
+    try {
+      const response = await axios.get(`${API_DOMAIN}/contents/read/${content}`,
         {
-          Authorization: `Bearer ${accessToken}`
+          headers:
+          {
+            Authorization: `Bearer ${accessToken}`
+          }
         }
+      );
+      setBookData(response.data.result); setPoster(response.data.result.posterUrl);
+      setTitle(response.data.result.title); setDescription(response.data.result.description);
+      setAuthor(response.data.result.author); setPublisher(response.data.result.publisher);
+      if (bookData.publicationYear) {
+        const formattedDate = new Date(bookData.publicationYear).toISOString().split('T')[0];
+        setPublicationYear(formattedDate);
       }
-    );
-    setBookData(response.data.result); setPoster(response.data.result.posterUrl);
-    setTitle(response.data.result.title); setDescription(response.data.result.description);
-    setAuthor(response.data.result.author); setPublisher(response.data.result.publisher);
-    if (bookData.publicationYear) {
-      const formattedDate = new Date(bookData.publicationYear).toISOString().split('T')[0];
-      setPublicationYear(formattedDate);
+      console.log(bookData);
+    } catch (error) {
+      console.log(error);
     }
-    console.log(bookData);
   }
 
   useEffect(() => {
-    if (content) getData();
-  }, [content]);
+    if (content && accessToken) getData(accessToken);
+  }, [content, accessToken]);
 
 
   return (

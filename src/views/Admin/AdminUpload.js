@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './styles.css';
 import Header from '../../components/Header';
 import { FaUpload } from 'react-icons/fa';
@@ -8,7 +8,6 @@ import noImage from './no-image.png';
 
 const AdminUpload = () => {
     const [accessToken, setAccessToken] = useState('');
-
     const [fileName, setFileName] = useState('');
     const [poster, setPoster] = useState(noImage); // 기본 포스터
     const fileInputRef = useRef(null);
@@ -21,6 +20,14 @@ const AdminUpload = () => {
 
     // 로딩 상태 추가
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        // console.log(token);
+        if (token) {
+            setAccessToken(token);
+        }
+    }, []);
 
     const saveContent = async () => {
         setIsLoading(true); // 로딩 시작
@@ -43,7 +50,6 @@ const AdminUpload = () => {
                 }
             );
 
-            console.log(response.data.result);
             const contentId = response.data.result;
             window.location.href = `http://localhost:3000/adminContents/${contentId}`;
         } catch (error) {

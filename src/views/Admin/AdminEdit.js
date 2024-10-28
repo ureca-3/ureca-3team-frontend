@@ -19,7 +19,15 @@ const AdminEdit = () => {
     const [publisher, setPublisher] = useState('');
     const [publicationYear, setPublicationYear] = useState('');
 
-    const getData = async () => {
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        console.log(token);
+        if (token) {
+            setAccessToken(token);
+        }
+    }, []);
+
+    const getData = async (accessToken) => {
         const response = await axios.get(`${API_DOMAIN}/contents/read/${content}`,
             {
                 headers:
@@ -38,10 +46,17 @@ const AdminEdit = () => {
         console.log(bookData);
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        console.log(token);
+        if (token) {
+            setAccessToken(token);
+        }
+    }, []);
 
     useEffect(() => {
-        if (content) getData();
-    }, [content]);
+        if (content && accessToken) getData(accessToken);
+    }, [content, accessToken]);
 
 
     const handleImageUpload = (event) => {

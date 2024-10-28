@@ -10,6 +10,14 @@ const ChildDetails = () => {
     const [accessToken, setAccessToken] = useState('');
     const { child } = useParams();
 
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        console.log(token);
+        if (token) {
+            setAccessToken(token);
+        }
+    }, []);
+
     return (
         <div>
             <Header />

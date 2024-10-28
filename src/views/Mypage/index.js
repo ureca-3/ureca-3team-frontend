@@ -1,8 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import Header from '../../components/Header';
-
+import { API_DOMAIN } from '../../api/domain';
+import axios from 'axios';
 const MyPage = () => {
+    const [userName, setUserName] = useState('');
+    const [userProfile, setUserProfile] = useState('');
+    const [accessToken, setAccessToken] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        // console.log(token);
+        if (token) {
+            setAccessToken(token);
+            getData(token);
+        }
+    }, [accessToken]);
+
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        })
+        setUserName(kakaoUser.data.result.oauthInfo.nickname);
+        setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
+        return kakaoUser.data.result.oauthInfo;
+    }
+
     return (
         <div>
             <Header />
@@ -11,9 +39,9 @@ const MyPage = () => {
                 {/* 프로필 영역 */}
                 <div className="profile-container">
                     <div className="profile-icon">
-                        <img src="../img/avatar.png" alt="프로필 이미지" />
+                        <img src={userProfile} alt="프로필 이미지" />
                     </div>
-                    <div className="username">홍길동님</div>
+                    <div className="username">{userName}</div>
                 </div>
 
                 {/* 자녀 리스트 */}

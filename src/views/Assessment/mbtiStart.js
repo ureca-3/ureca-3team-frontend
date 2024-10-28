@@ -1,15 +1,21 @@
 import React from 'react';
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../Page.css';
 import './style/start.css';
 
 export default function Assessment() {
+    const location = useLocation();
+    const { child_id } = location.state;
     const navigate = useNavigate(); 
 
     const goQuestion = () => {
-        navigate('/mbtiQuestion'); 
+        navigate('/mbtiQuestion',{
+            state: {
+                child_id: child_id
+            }
+        }); 
     };
 
     return (

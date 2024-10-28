@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import '../Page.css';
@@ -8,11 +8,13 @@ import questions from './data/questions';
 import axios from 'axios';
 
 export default function MbtiQuestion() {
+    const location = useLocation();
     const navigate = useNavigate();
     // 상태 관리: 현재 질문 인덱스와 각 성향의 점수 저장
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedOption, setSelectedOption] = useState(null);
     const [loading, setLoading] = useState(false); // 로딩 상태 추가
+    const { child_id } = location.state;
 
     // 성향별 점수 저장 (EI/SN/TF/JP)
     const [scores, setScores] = useState({
@@ -74,7 +76,7 @@ export default function MbtiQuestion() {
     // 결과를 백엔드로 전송하는 함수 (예: POST 요청)
     const sendResultsToBackend = (averages) => {
         // const token = localStorage.getItem('token');
-        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDM2ODM1NiwiaWF0IjoxNzI5ODQ5OTU2LCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.8JwTgYHo8xTeNrqmPHchkzpZcbNxTj14MoCpXpkeB6kkZZcBlZRwCXTwVXEiQW_S3w_Kvsz4SUOBumI5n25l0g';
+        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
     
          // 토큰이 null인지 확인하여 오류 방지
         if (!token) {
@@ -83,7 +85,7 @@ export default function MbtiQuestion() {
         }
 
         // axios를 사용한 POST 요청
-        axios.post('http://localhost:8080/api/v1/assessment/1', averages, {
+        axios.post(`http://localhost:8080/api/v1/assessment/${child_id}`, averages, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,

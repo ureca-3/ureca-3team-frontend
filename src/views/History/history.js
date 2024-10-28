@@ -33,7 +33,7 @@ export default function History() {
     // 데이터 요청 함수 (백엔드에서 데이터 받아오기)
     const fetchData = (type) => {
         setLoading(true);
-        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDM2ODM1NiwiaWF0IjoxNzI5ODQ5OTU2LCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.8JwTgYHo8xTeNrqmPHchkzpZcbNxTj14MoCpXpkeB6kkZZcBlZRwCXTwVXEiQW_S3w_Kvsz4SUOBumI5n25l0g';
+        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
 
         if (!token) {
             console.error('No token found');

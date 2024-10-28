@@ -9,15 +9,6 @@ export default function MBTInyMain() {
     const SignInButton = (event) => {
         event.preventDefault();
         window.location.href = "http://localhost:8080/api/v1/auth/kakao";
-
-        // axios.get("http://localhost:8080/api/v1/auth/kakao")
-        //     .then(response => {
-        //         // 카카오 로그인 리디렉션 또는 다른 처리
-        //         console.log(response.data);
-        //     })
-        //     .catch(error => {
-        //         console.error('Error during Kakao login:', error);
-        //     });
     }
 
     return (

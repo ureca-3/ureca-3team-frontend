@@ -3,17 +3,21 @@ import './styles.css';
 import Header from '../../components/Header';
 import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
+import { BsPencilSquare } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
 const MyPage = () => {
     const [userName, setUserName] = useState('');
     const [userProfile, setUserProfile] = useState('');
     const [accessToken, setAccessToken] = useState('');
-
+    const [childData, setChildData] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
         // console.log(token);
         if (token) {
             setAccessToken(token);
             getData(token);
+            getChildData(token);
         }
     }, [accessToken]);
 
@@ -31,6 +35,17 @@ const MyPage = () => {
         return kakaoUser.data.result.oauthInfo;
     }
 
+    const getChildData = async(accessToken) => {
+        const response = await axios.get(`${API_DOMAIN}/child`, {
+            headers :
+            {
+                Authorization : `Bearer ${accessToken}`
+            }
+        })
+        setChildData(response.data.result);
+        console.log(response.data.result.length);
+    }
+
     return (
         <div>
             <Header />
@@ -46,22 +61,18 @@ const MyPage = () => {
 
                 {/* 자녀 리스트 */}
                 <div className="children-container">
-                    <h2>자녀</h2>
+                    <h2>자녀 선택</h2>
+
                     <ul className="children-list">
-                        <li className="child-item">
-                            <img src="../img/avatar.png" alt="Child 1" className="child-image" />
-                            <span className="child-name">홍주혜</span>
-                        </li>
-                        <li className="child-item">
-                            <img src="../img/avatar.png" alt="Child 2" className="child-image" />
-                            <span className="child-name">홍재훈</span>
-                        </li>
-                        <li className="child-item">
-                            <img src="../img/avatar.png" alt="Child 3" className="child-image" />
-                            <span className="child-name">홍지원</span>
-                        </li>
+                        {childData.map((child, index) => (
+                            <li key={index} className="child-item">
+                                <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
+                                <span className="child-name">{child.name} <BsPencilSquare /> </span>
+                            </li>
+                        ))}
                     </ul>
-                    <button className="add-child-btn">자녀 추가</button>
+
+                    <button className="add-child-btn" onClick={() => navigate("/register")} >자녀 추가</button>
                 </div>
             </div>
         </div>

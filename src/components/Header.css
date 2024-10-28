@@ -4,7 +4,7 @@
     align-items: center;
     padding: 10px 20px;
     background-color: #FFE7EB;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 1.5px solid #ddd;
     position: relative;
 }
 
@@ -113,6 +113,10 @@
 
 .search-bar .search-button:hover {
     background-color: #f0f0f0;
+}
+
+.header-container.row-reverse {
+    flex-direction: row-reverse;
 }
 
 .user-info {

@@ -94,8 +94,7 @@ const Header = ({ showLoginInfoOnly }) => {
     };
 
     return (
-        <header className="header-container">
-            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
+        <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
             {showLoginInfoOnly ? (
                 <div className="user-info">
                 <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
@@ -122,7 +121,7 @@ const Header = ({ showLoginInfoOnly }) => {
                         <ul>
                             <li>Home</li>
                             <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
-                            <li onClick={() => navigate('/history')}>HISTORY</li>
+                            <li onClick={() => navigate('/mbtiHistory')}>HISTORY</li>
                         </ul>
                     </div>
                 )}

@@ -1,6 +1,5 @@
 import './Header.css';
 import { TiThMenu, TiBell  } from "react-icons/ti";
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";

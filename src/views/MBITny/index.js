@@ -1,7 +1,6 @@
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import '../Page.css';
-import { setRefreshToken } from "../../Auth/FetchUserData";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { API_DOMAIN } from '../../api/domain';

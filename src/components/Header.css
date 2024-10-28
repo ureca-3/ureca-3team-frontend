@@ -84,7 +84,12 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%;
+    width: 50%; /* 검색바 너비를 50%로 줄임 */
+    max-width: 500px; /* 최대 너비를 설정하여 너무 길지 않도록 제한 */
+    min-width: 300px; /* 최소 너비 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 전체 검색바에 그림자 적용 */
+    border-radius: 8px; /* 전체 검색바에 둥근 모서리 */
+    overflow: hidden; /* 둥근 모서리 안에 요소가 맞도록 설정 */
 }
 
 .search-form {
@@ -95,25 +100,27 @@
 
 .search-bar input {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    font-size: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px 12px; /* 패딩 조정 */
+    border: none; /* 경계선 제거 */
+    font-size: 14px; /* 폰트 크기를 줄임 */
+    font-family: 'UhBeeSe_hyun';
+    outline: none; /* 클릭 시 파란 테두리 제거 */
 }
 
 .search-bar .search-button {
     background: #FFE7EB;
-    border: 1px solid #ccc;
-    border-left: none;
+    border: none; /* 경계선 제거 */
     cursor: pointer;
-    padding: 10px;
-    border-radius: 0 4px 4px 0;
+    padding: 8px 12px; /* 패딩 조정 */
+    font-size: 16px; /* 버튼 아이콘 크기 */
+    color: #555; /* 버튼 색상 변경 */
+    transition: background-color 0.3s;
 }
 
 .search-bar .search-button:hover {
-    background-color: #f0f0f0;
+    background-color: #f4c4c7; /* 버튼 호버 색상 변경 */
 }
+
 
 .header-container.row-reverse {
     flex-direction: row-reverse;

@@ -1,8 +1,9 @@
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import '../Page.css';
+import './style/main.css';
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { API_DOMAIN } from '../../api/domain';
 import { useLocation } from "react-router-dom";
 
@@ -10,34 +11,85 @@ import { useLocation } from "react-router-dom";
 export default function MBTInyMain() {
     const [accessToken, setAccessToken] = useState('');
     const [userName, setUserName] = useState('');
+    const [friendRecommd, setFriendRecommdData] = useState([]); // 추천 도서 목록을 위한 상태 배열로 초기화
     const location = useLocation();
+    const { childId } = location.state || {}; // location.state가 null일 수 있으므로 기본값 설정
+
+    const scrollRef = useRef(null);
+
+    // Scroll handler
+    const scrollLeft = () => {
+        scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    };
+
+    const scrollRight = () => {
+        scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    };
 
     useEffect(() => {
-        const qureyParams = new URLSearchParams(location.search);
-        const token = qureyParams.get("token");
+        const queryParams = new URLSearchParams(location.search);
+        const token = queryParams.get("token");
 
         if (token) {
             setAccessToken(token);
             localStorage.setItem("jwtToken", token);
             getData(token);
         }
-    }, [location, accessToken]);
+        if (childId) {
+            localStorage.setItem("childId", childId);
+            fetchAllRecommendApi(childId);
+        }
+    }, [location, accessToken, childId]);
 
+    // 사용자 데이터 조회
     const getData = async (accessToken) => {
-        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
-            headers:
-            {
-                Authorization: `Bearer ${accessToken}`
+        try {
+            const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            setUserName(kakaoUser.data.result.oauthInfo.nickname);
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
 
-            }
-        })
-        setUserName(kakaoUser.data.result.oauthInfo.nickname);
-        return kakaoUser.data.result.oauthInfo;
-    }
+    // 여러 API 호출 함수
+    const fetchAllRecommendApi = async (childId) => {
+        const token = accessToken || localStorage.getItem("jwtToken");
+
+        try {
+            // 첫 번째 API - 비슷한 성향의 친구들이 추천한 도서 목록
+            const friendRecommdDataResponse = await axios.get(`${API_DOMAIN}/child/${childId}/embedding`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setFriendRecommdData(friendRecommdDataResponse.data.result || []);
+        } catch (error) {
+            console.error("Error fetching child data:", error);
+        }
+    };
 
     return (
-        <div className="main-container">
-            <h1>Welcome, {userName ? userName : "Guest"}!</h1>
+        <div>
+            <Header />
+            <div className="recommd-main-container">
+                <div className="recommd-content-container">
+                    <div className="recommended-books">
+                        <h3>우리 아이와 비슷한 성향의 친구들이 추천한 도서</h3>
+                        <p>- 자녀의 연령, 성별, MBTI 정보를 바탕으로 맞춤형 도서를 추천합니다.</p>
+                        <div className="book-scroll-container">
+                            {friendRecommd.map((book, index) => (
+                                <div className="book-item" key={index}>
+                                    <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
+                                    <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <NavBar />
         </div>
     );
 }

@@ -60,9 +60,6 @@
 
 .gender-label {
     flex-direction: row;
-
-
-    /* margin-right: auto; Pushes "성별" label to the far left */
 }
 
 .gender-options {

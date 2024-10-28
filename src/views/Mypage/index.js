@@ -21,6 +21,9 @@ const MyPage = () => {
         }
     }, [accessToken]);
 
+    const changeChildProfile = (childId) => {
+        navigate('/', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
+    };
 
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
@@ -43,7 +46,7 @@ const MyPage = () => {
             }
         })
         setChildData(response.data.result);
-        console.log(response.data.result.length);
+        console.log(response.data.result);
     }
 
     return (
@@ -65,7 +68,8 @@ const MyPage = () => {
 
                     <ul className="children-list">
                         {childData.map((child, index) => (
-                            <li key={index} className="child-item">
+                            <li key={index} className="child-item"
+                            onClick={() => changeChildProfile(child.childId)}>
                                 <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
                                 <span className="child-name">{child.name} <BsPencilSquare /> </span>
                             </li>

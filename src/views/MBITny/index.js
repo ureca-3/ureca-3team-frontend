@@ -1,27 +1,44 @@
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import '../Page.css';
-import SignIn from "../SignIn";
-import axios from 'axios';
+import { setRefreshToken } from "../../Auth/FetchUserData";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { API_DOMAIN } from '../../api/domain';
+import { useLocation } from "react-router-dom";
 
+/** 메인 페이지 로그인 시 토큰 받아오기 */
 export default function MBTInyMain() {
+    const [accessToken, setAccessToken] = useState('');
+    const [userName, setUserName] = useState('');
+    const location = useLocation();
 
-    const SignInButton = (event) => {
-        event.preventDefault();
-        window.location.href = "http://localhost:8080/api/v1/auth/kakao";
+    useEffect(() => {
+        const qureyParams = new URLSearchParams(location.search);
+        const token = qureyParams.get("token");
+
+        if (token) {
+            setAccessToken(token);
+            localStorage.setItem("jwtToken", token);
+            getData(token);
+        }
+    }, [location, accessToken]);
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        })
+        setUserName(kakaoUser.data.result.oauthInfo.nickname);
+        return kakaoUser.data.result.oauthInfo;
     }
 
     return (
         <div className="main-container">
-                <h1 className="mbtiny-title">MBTIny</h1>
-                <img src="/img/book.png" className="book-img" alt="mainBook" />
-                <p className="mbtiny-subtitle">
-                    우리 아이 성격에 딱 맞는 책,<br/> MBTI로 찾아드려요!
-                </p>
-                <a href="" className="kakao-button" onClick={SignInButton}> 
-                    <img src="/img/kakao_login_medium_narrow.png" alt="Login with Kakao" />
-                </a>
-            <NavBar />
+            <h1>Welcome, {userName ? userName : "Guest"}!</h1>
         </div>
     );
 }

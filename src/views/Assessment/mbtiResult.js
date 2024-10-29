@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import mbtiData from './data/mbtiData';
 import '../Page.css';
 import './style/result.css';
 
 export default function MbtiResult() {
     const location = useLocation();
+    const navigate = useNavigate(); 
 
     const queryParams = new URLSearchParams(location.search);
     const mbtiType = queryParams.get('mbti');
@@ -37,6 +38,12 @@ export default function MbtiResult() {
     const snType = mbtiType.includes('S') ? 'S' : 'N';
     const tfType = mbtiType.includes('T') ? 'T' : 'F';
     const jpType = mbtiType.includes('J') ? 'J' : 'P';
+
+
+    const goHome = () => {   
+        navigate('/');  
+    };
+
 
     return (
         <div>
@@ -118,7 +125,9 @@ export default function MbtiResult() {
                                     <span className="label">J ({averages.i}%)</span>
                                 </div>
                             </div>
-
+                            <div>
+                                <button className='goHome' onClick={goHome}>홈으로 가기</button>
+                            </div>
                         </div>
                     </div>
                 </div>

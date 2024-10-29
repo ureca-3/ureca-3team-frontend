@@ -107,7 +107,7 @@ export default function MbtiQuestion() {
 
     return (
         <div>
-            <Header showLoginInfoOnly={true} />
+            {/* <Header showLoginInfoOnly={true} /> */}
                 <div className="mbti-question-container">
    
                 {loading ? ( // 로딩 중일 때 로딩바 표시

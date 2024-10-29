@@ -16,20 +16,20 @@ const MyPage = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        const qureyParams = new URLSearchParams(location.search);
-        const token = qureyParams.get("token");
-
+        // const qureyParams = new URLSearchParams(location.search);
+        // const token = qureyParams.get("token");
+        const token = localStorage.getItem("jwtToken", accessToken);
         if (token) {
             setAccessToken(token);
-            localStorage.setItem("jwtToken", token);
+            // localStorage.setItem("jwtToken", token);
             getData(token); getChildData(token);
         }
     }, [accessToken]);
 
     const changeChildProfile = (childId) => {
-        navigate('/', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
+        localStorage.setItem("childId", childId);
+        navigate('/home', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
     };
-    }, [location, accessToken]);
 
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {

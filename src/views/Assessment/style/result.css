@@ -82,3 +82,31 @@ h3 {
     float: right; /* 오른쪽부터 채워짐 */
     border-radius: 0 10px 10px 0;
 }
+.goHome {
+    padding: 10px 20px;
+    background-color: #ff6b6b; /* 메인 색상 */
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 음영 추가 */
+    position: absolute; /* 버튼을 절대 위치로 설정 */
+    bottom: 30px; /* 하단에서 30px 간격 */
+    left: 50%; /* 좌측으로부터 50% */
+    transform: translateX(-50%); /* 중앙 정렬 */
+}
+
+.goHome:hover {
+    background-color: #ff4b4b; /* 호버 시 색상 변화 */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* 호버 시 음영 변화 */
+}
+
+.goHome:active {
+    background-color: #ff3030; /* 클릭 시 색상 변화 */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* 클릭 시 음영 변화 */
+    transform: translate(-50%, 1px); /* 살짝 눌리는 효과 */
+}
+

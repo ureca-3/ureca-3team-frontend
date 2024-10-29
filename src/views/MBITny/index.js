@@ -5,7 +5,8 @@ import './style/main.css';
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { API_DOMAIN } from '../../api/domain';
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 /** 메인 페이지 로그인 시 토큰 받아오기 */
 export default function MBTInyMain() {
@@ -13,7 +14,7 @@ export default function MBTInyMain() {
     const [userName, setUserName] = useState('');
     const [friendRecommd, setFriendRecommdData] = useState([]); // 추천 도서 목록을 위한 상태 배열로 초기화
     const location = useLocation();
-    const { childId } = location.state || {}; // location.state가 null일 수 있으므로 기본값 설정
+    const childId = location.state?.child_id || localStorage.getItem("childId");
 
     const scrollRef = useRef(null);
     useEffect(() => {
@@ -101,7 +102,6 @@ export default function MBTInyMain() {
                 </div>
             </div>
             <NavBar />
-        </div>
         </div>
     );
 }

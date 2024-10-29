@@ -28,7 +28,7 @@ const Header = ({ showLoginInfoOnly }) => {
     }, [accessToken]);
 
     const goToMyPage = async () => {
-        window.location.href = `http://localhost:3000/mypage/${userId}`;
+        window.location.href = `http://localhost:3000/mypage`;
     }
 
     const GoHistory = () => {
@@ -36,6 +36,15 @@ const Header = ({ showLoginInfoOnly }) => {
         navigate('/mbtiHistory', { state: { childId: childId } }); // childId를 state로 전달
     };
 
+    const MbtiData = () => {
+        const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+        navigate('/mbtiData', { state: { childId: childId } }); // childId를 state로 전달
+    };
+
+    const GoMbtiStart = () => {
+        const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+        navigate('/mbtiStart', { state: { childId: childId } }); // childId를 state로 전달
+    }
     const logout = async () => {
         console.log("로그아웃");
         try {
@@ -126,8 +135,9 @@ const Header = ({ showLoginInfoOnly }) => {
                     <div className="dropdown-menu">
                         <ul>
                             <li onClick={() => navigate('/')}>Home</li>
-                            <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
+                            <li onClick={GoMbtiStart}>MBTI</li>
                             <li onClick={GoHistory}>HISTORY</li>
+                            <li onClick={MbtiData}>Data</li>
                         </ul>
                     </div>
                 )}

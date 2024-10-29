@@ -1,5 +1,5 @@
 import './Header.css';
-import { TiThMenu, TiBell  } from "react-icons/ti";
+import { TiThMenu, TiBell } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";
@@ -19,16 +19,12 @@ const Header = ({ showLoginInfoOnly }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        // console.log(token);
-        if (token) {
-            setAccessToken(token);
-            getData(token);
-            
-        }
+        setAccessToken(token);
+        getData(token);
     }, [accessToken]);
 
     const goToMyPage = async () => {
-        window.location.href = `http://localhost:3000/mypage/${userId}`;
+        window.location.href = `http://localhost:3000/mypage`;
     }
 
     const GoHistory = () => {
@@ -82,7 +78,7 @@ const Header = ({ showLoginInfoOnly }) => {
     const toggleUserMenu = () => {
         setUserMenu(!userMenu);
     }
-    
+
     // 메뉴 버튼 클릭 시 토글 함수
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -103,78 +99,78 @@ const Header = ({ showLoginInfoOnly }) => {
         <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
             {showLoginInfoOnly ? (
                 <div className="user-info">
-                <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
-                {userMenu && (
-                    <div className="dropdown-user-menu">
-                        <ul>
-                            <li onClick={goToMyPage}>마이페이지</li>
-                            <li onClick={logout}>로그아웃</li>
-                        </ul>
-                    </div>
-                )}
-                <span className="user-name">{userName}님</span>
-                <TiBell className="bell-icon" onClick={handleNotice} />
-            </div>
+                    <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
+                    {userMenu && (
+                        <div className="dropdown-user-menu">
+                            <ul>
+                                <li onClick={goToMyPage}>마이페이지</li>
+                                <li onClick={logout}>로그아웃</li>
+                            </ul>
+                        </div>
+                    )}
+                    <span className="user-name">{userName}님</span>
+                    <TiBell className="bell-icon" onClick={handleNotice} />
+                </div>
             ) : (
                 <>
-            {/* 왼쪽 메뉴 버튼 */}
-            <div className="menu-button">
-                <TiThMenu onClick={toggleMenu} className="menu-icon" />
-                {/* 메뉴 토글 */}
-                {/* 사용자 */}
-                {menuOpen && userRole === 'USER' && (
-                    <div className="dropdown-menu">
-                        <ul>
-                            <li onClick={() => navigate('/')}>Home</li>
-                            <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
-                            <li onClick={GoHistory}>HISTORY</li>
-                        </ul>
+                    {/* 왼쪽 메뉴 버튼 */}
+                    <div className="menu-button">
+                        <TiThMenu onClick={toggleMenu} className="menu-icon" />
+                        {/* 메뉴 토글 */}
+                        {/* 사용자 */}
+                        {menuOpen && userRole === 'USER' && (
+                            <div className="dropdown-menu">
+                                <ul>
+                                    <li onClick={() => navigate('/')}>Home</li>
+                                    <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
+                                    <li onClick={GoHistory}>HISTORY</li>
+                                </ul>
+                            </div>
+                        )}
+
+
+                        {/* 관리자 */}
+                        {menuOpen && userRole === 'ADMIN' && (
+                            <div className="dropdown-menu">
+                                <ul>
+                                    <li>Home</li>
+                                    <li>CONTENTS 관리</li>
+                                    <li>USER 관리</li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                )}
 
-
-                {/* 관리자 */}
-                {menuOpen && userRole === 'ADMIN' && (
-                    <div className="dropdown-menu">
-                        <ul>
-                            <li>Home</li>
-                            <li>CONTENTS 관리</li>
-                            <li>USER 관리</li>
-                        </ul>
+                    {/* 가운데 검색창 */}
+                    <div className="search-bar">
+                        <form onSubmit={handleSearchSubmit} className="search-form">
+                            <input
+                                type="text"
+                                placeholder="콘텐츠를 입력하세요."
+                                value={searchQuery}
+                                onChange={handleSearch}
+                            />
+                            <button type="submit" className="search-button">
+                                <FcSearch />
+                            </button>
+                        </form>
                     </div>
-                )}
-            </div>
 
-            {/* 가운데 검색창 */}
-            <div className="search-bar">
-                <form onSubmit={handleSearchSubmit} className="search-form">
-                    <input
-                        type="text"
-                        placeholder="콘텐츠를 입력하세요."
-                        value={searchQuery}
-                        onChange={handleSearch}
-                    />
-                    <button type="submit" className="search-button">
-                        <FcSearch />
-                    </button>
-                </form>
-            </div>
-
-            {/* 오른쪽 프로필, 닉네임, 공지 아이콘 */}
-            <div className="user-info">
-                <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
-                {userMenu && (
-                    <div className="dropdown-user-menu">
-                        <ul>
-                            <li onClick={goToMyPage}>마이페이지</li>
-                            <li onClick={logout}>로그아웃</li>
-                        </ul>
+                    {/* 오른쪽 프로필, 닉네임, 공지 아이콘 */}
+                    <div className="user-info">
+                        <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
+                        {userMenu && (
+                            <div className="dropdown-user-menu">
+                                <ul>
+                                    <li onClick={goToMyPage}>마이페이지</li>
+                                    <li onClick={logout}>로그아웃</li>
+                                </ul>
+                            </div>
+                        )}
+                        <span className="user-name">{userName}님</span>
+                        <TiBell className="bell-icon" onClick={handleNotice} />
                     </div>
-                )}
-                <span className="user-name">{userName}님</span>
-                <TiBell className="bell-icon" onClick={handleNotice} />
-            </div>
-            </>
+                </>
             )}
         </header>
     );

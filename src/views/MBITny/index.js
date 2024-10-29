@@ -16,16 +16,27 @@ export default function MBTInyMain() {
     const { childId } = location.state || {}; // location.state가 null일 수 있으므로 기본값 설정
 
     const scrollRef = useRef(null);
-
-    // Scroll handler
-    const scrollLeft = () => {
-        scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
-    };
-
-    const scrollRight = () => {
-        scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
-    };
-
+    useEffect(() => {
+        const handleScroll = (event) => {
+            if (scrollRef.current) {
+                event.preventDefault();
+                scrollRef.current.scrollBy({ left: event.deltaY * 1.5, behavior: "smooth" });
+            }
+        };
+    
+        const refCurrent = scrollRef.current;
+        if (refCurrent) {
+            refCurrent.addEventListener("wheel", handleScroll);
+        }
+    
+        // Cleanup event listener on component unmount
+        return () => {
+            if (refCurrent) {
+                refCurrent.removeEventListener("wheel", handleScroll);
+            }
+        };
+    }, []);
+    
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");
@@ -78,7 +89,7 @@ export default function MBTInyMain() {
                     <div className="recommended-books">
                         <h3>우리 아이와 비슷한 성향의 친구들이 추천한 도서</h3>
                         <p>- 자녀의 연령, 성별, MBTI 정보를 바탕으로 맞춤형 도서를 추천합니다.</p>
-                        <div className="book-scroll-container">
+                        <div className="book-container" ref={scrollRef}>
                             {friendRecommd.map((book, index) => (
                                 <div className="book-item" key={index}>
                                     <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />

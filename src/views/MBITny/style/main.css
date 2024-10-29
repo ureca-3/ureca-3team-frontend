@@ -27,23 +27,21 @@
     color:rgb(242, 58, 128);
 }
 
-.book-scroll-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.book-scroll-container {
+.book-container {
     gap: 15px;
-    width: 80%; /* 가로 스크롤 영역이 전체 폭을 차지하도록 설정 */
     display: flex;
     flex-direction: row;
     overflow-x: auto;
     white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
     scroll-behavior: smooth;
     padding: 20px 20px 0;
-    width: calc(100% - 250px); /* Adjusted to leave space for the buttons */
+    width: 1550px;
+}
+
+.book-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .book-item {

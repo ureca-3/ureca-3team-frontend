@@ -5,27 +5,21 @@ import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
 import { BsPencilSquare } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
 
 const MyPage = () => {
     const [userName, setUserName] = useState('');
     const [userProfile, setUserProfile] = useState('');
     const [accessToken, setAccessToken] = useState('');
     const [childData, setChildData] = useState([]);
-    const location = useLocation();
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        // const qureyParams = new URLSearchParams(location.search);
-        // const token = qureyParams.get("token");
-        const token = localStorage.getItem("jwtToken", accessToken);
-        if (token) {
-            setAccessToken(token);
-            // localStorage.setItem("jwtToken", token);
-            getData(token); getChildData(token);
-        }
-    }, [accessToken]);
 
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        setAccessToken(token);
+        getData(token);
+        getChildData(token);
+    }, []);
+    
     const changeChildProfile = (childId) => {
         localStorage.setItem("childId", childId);
         navigate('/home', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
@@ -44,15 +38,15 @@ const MyPage = () => {
         return kakaoUser.data.result.oauthInfo;
     }
 
-    const getChildData = async(accessToken) => {
+    const getChildData = async (accessToken) => {
         const response = await axios.get(`${API_DOMAIN}/child`, {
-            headers :
+            headers:
             {
-                Authorization : `Bearer ${accessToken}`
+                Authorization: `Bearer ${accessToken}`
             }
         })
         setChildData(response.data.result);
-    }
+    };
 
     return (
         <div>
@@ -74,7 +68,7 @@ const MyPage = () => {
                     <ul className="children-list">
                         {childData.map((child, index) => (
                             <li key={index} className="child-item"
-                            onClick={() => changeChildProfile(child.childId)}>
+                                onClick={() => changeChildProfile(child.childId)}>
                                 <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
                                 <span className="child-name">{child.name} <BsPencilSquare /> </span>
                             </li>

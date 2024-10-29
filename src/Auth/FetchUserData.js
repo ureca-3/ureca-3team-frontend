@@ -1,28 +1,48 @@
-// import { Cookies } from 'react-cookie';
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { API_DOMAIN } from "../api/domain";
+import axios from "axios";
 
-// const cookies = new Cookies();
+const FetchUserData = () => {
+    const [accessToken, setAccessToken] = useState('');
+    const [childData, setChildData] = useState(null);
+    const location = useLocation();
 
-// // Refresh Token을 cookie에 저장
-// export const setRefreshToken = (refreshToken) => {
-//     const today = new Date();
-//     const expireDate = today.setDate(today.getDate + 7);
+    const getChildData = async (token) => {
+        try {
+            const response = await axios.get(`${API_DOMAIN}/child`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            // console.log(response.data);
+            setChildData(response.data);
+            console.log(childData.result)
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-//     return cookies.set('refereshToken', refreshToken, {
-//         sameSite: 'strict',
-//         path: "/",
-//         expires: new Date(expireDate)
-//     });
-// };
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const token = queryParams.get("token");
 
-// // cookie에 저장된 Refresh Token 값을 갖고 오기
-// export const getCookieToken = () => {
-//     return cookies.get('refreshToken');
-// }
+        if (token) {
+            setAccessToken(token);
+            localStorage.setItem("jwtToken", token);
+            getChildData(token);
+        }
 
-// // cookie 삭제 
-// export const removeCookieToken = () => {
-//     return cookies.remove('refreshToken', {
-//         sameSite: 'strict',
-//         path: "/"
-//     })
-// }
+    }, [location.search]);
+
+    useEffect(() => {
+        if (childData !== null) {
+            if (childData.result && childData.result.length > 0) window.location.href = "http://localhost:3000/mypage";
+            else window.location.href = "http://localhost:3000/register";
+        }
+    }, [childData]);
+
+    return null;
+};
+
+export default FetchUserData;

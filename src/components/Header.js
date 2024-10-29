@@ -1,5 +1,5 @@
 import './Header.css';
-import { TiThMenu, TiBell  } from "react-icons/ti";
+import { TiThMenu, TiBell } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";
@@ -19,12 +19,8 @@ const Header = ({ showLoginInfoOnly }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        // console.log(token);
-        if (token) {
-            setAccessToken(token);
-            getData(token);
-            
-        }
+        setAccessToken(token);
+        getData(token);
     }, [accessToken]);
 
     const goToMyPage = async () => {
@@ -91,7 +87,7 @@ const Header = ({ showLoginInfoOnly }) => {
     const toggleUserMenu = () => {
         setUserMenu(!userMenu);
     }
-    
+
     // 메뉴 버튼 클릭 시 토글 함수
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);

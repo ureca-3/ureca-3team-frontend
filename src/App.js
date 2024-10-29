@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import MBTInyMain from './views/MBITny';
+import MBTInyMain from './views/MBTIny';
 import MyPage from './views/Mypage';
 import History from './views/History/history';
 import Mdata from './views/MbtiData/mbtiData';
@@ -15,13 +15,18 @@ import AdminContents from './views/Admin/AdminContents';
 import AdminUpload from './views/Admin/AdminUpload';
 import AdminEdit from './views/Admin/AdminEdit';
 import ContentsDetail from './views/Contents/ContentsDetail';
+import FetchUserData from './Auth/FetchUserData';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         {/** 메인페이지 */}
         <Route path="/home" element={<MBTInyMain />} />
+
+        {/** 로그인 */}
+        <Route path="/" element={<FetchUserData />} />
         
         {/** 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />

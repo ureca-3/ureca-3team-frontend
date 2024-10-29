@@ -1,23 +1,138 @@
-/* Header.css */
-/* header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    max-width: 500px;
-    background-color: #ECC6C6;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    z-index: 1000; 
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FFE7EB;
+    border-bottom: 3px solid #ddd;
+    position: relative;
 }
 
-h2 {
-    margin: 0;
+.menu-button {
+    position: relative;
+}
+
+.menu-icon {
     font-size: 24px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-} */
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dropdown-user-menu {
+    margin-right: 15px;
+    margin-top: 10px;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    z-index: 1000;
+}
+
+.dropdown-user-menu li {
+    padding: 5px;
+    cursor: pointer;
+    border-right: 1px solid #ddd;
+    /* 오른쪽에 경계선 추가 */
+}
+
+.dropdown-user-menu li:last-child {
+    border-right: none;
+    /* 마지막 항목의 오른쪽 경계선 제거 */
+}
+
+.dropdown-user-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    border: 5px;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li,
+.dropdown-user-menu li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover,
+.dropdown-user-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+.search-bar {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar .search-button {
+    background: #FFE7EB;
+    border: 1px solid #ccc;
+    border-left: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 0 4px 4px 0;
+}
+
+.search-bar .search-button:hover {
+    background-color: #f0f0f0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name {
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+.bell-icon {
+    font-size: 24px;
+    cursor: pointer;
+}

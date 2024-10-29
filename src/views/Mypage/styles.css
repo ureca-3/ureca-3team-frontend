@@ -1,0 +1,90 @@
+/* 프로필 영역 */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-icon img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #d3c1c6;
+}
+
+.username {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 자녀 리스트 영역 */
+.children-container {
+    background-color: #ff8aa8;
+    width: 250px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.children-container h2 {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* 자녀 리스트 스타일 */
+.children-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.child-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.child-item:hover {
+    transform: scale(1.03);
+}
+
+.child-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.child-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 자녀 추가 버튼 */
+.add-child-btn {
+    margin-top: 15px;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #d3c1c6;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-child-btn:hover {
+    background-color: #c29ca8;
+}

@@ -36,3 +36,11 @@
     color: #777; /* Gray color for the text */
 }
 
+.navbar {
+    width: 100%; 
+    position: fixed;
+    bottom: 0;
+    text-align: right;
+    font-size: 0.9em;
+    color: #707070;
+}

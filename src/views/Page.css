@@ -8,34 +8,51 @@
 @font-face {
     font-family: 'UhBeeSe_hyun';
     src: url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.eot');
-    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/UhBeeSe_hyun.woff') format('woff');
     font-style: normal;
 }
- 
+
 body {
+    height: 100%;
     font-family: 'UhBeeSe_hyun', sans-serif;
+    
 }
 
-/* 기본 배경 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .main-container {
     text-align: center;
-    background-color: #ffe9ec; /* Light pink background */
+    background-color: #FFE7EB; /* Light pink background */
     min-height: 100vh; /* Full viewport height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+}
+
+.content-container {
+    flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+}
+
+.NavBar {
+    margin-top: auto; /* 가장 밑으로 내리기 */
 }
 
 /* Styling for the image */
 .book-image {
     width: 200px;
     margin-bottom: 20px;
+    align-content: space-evenly;
 }
 
 /* Title "MBTIny" styling */
 .mbtiny-title {
-    color: #ff6b6b; 
+    color: #ff6b6b;
     font-size: 48px;
     margin-bottom: 10px;
 }
@@ -47,7 +64,7 @@ body {
 }
 
 .kakao-button img {
-    width: 200px; 
+    width: 200px;
 }
 
 .book-imag img {

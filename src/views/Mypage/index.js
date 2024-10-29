@@ -1,15 +1,85 @@
-import NavBar from "../../components/NavBar";
-import Header from "../../components/Header";
-import '../Page.css';
+import React, { useState, useEffect } from 'react';
+import './styles.css';
+import Header from '../../components/Header';
+import { API_DOMAIN } from '../../api/domain';
+import axios from 'axios';
+import { BsPencilSquare } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
-export default function MyPage() {
+const MyPage = () => {
+    const [userName, setUserName] = useState('');
+    const [userProfile, setUserProfile] = useState('');
+    const [accessToken, setAccessToken] = useState('');
+    const [childData, setChildData] = useState([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const qureyParams = new URLSearchParams(location.search);
+        const token = qureyParams.get("token");
+
+        if (token) {
+            setAccessToken(token);
+            localStorage.setItem("jwtToken", token);
+            getData(token); getChildData(token);
+        }
+    }, [location, accessToken]);
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        })
+        setUserName(kakaoUser.data.result.oauthInfo.nickname);
+        setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
+        return kakaoUser.data.result.oauthInfo;
+    }
+
+    const getChildData = async(accessToken) => {
+        const response = await axios.get(`${API_DOMAIN}/child`, {
+            headers :
+            {
+                Authorization : `Bearer ${accessToken}`
+            }
+        })
+        setChildData(response.data.result);
+    }
+
     return (
-        <div className="main-container">
+        <div>
             <Header />
-            <div className="content-container">
-                마이페이지
+            <div className="main-container">
+
+                {/* 프로필 영역 */}
+                <div className="profile-container">
+                    <div className="profile-icon">
+                        <img src={userProfile} alt="프로필 이미지" />
+                    </div>
+                    <div className="username">{userName}</div>
+                </div>
+
+                {/* 자녀 리스트 */}
+                <div className="children-container">
+                    <h2>자녀 선택</h2>
+
+                    <ul className="children-list">
+                        {childData.map((child, index) => (
+                            <li key={index} className="child-item">
+                                <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
+                                <span className="child-name">{child.name} <BsPencilSquare /> </span>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <button className="add-child-btn" onClick={() => navigate("/register")} >자녀 추가</button>
+                </div>
             </div>
-            <NavBar />
         </div>
     );
-}
+};
+
+export default MyPage;

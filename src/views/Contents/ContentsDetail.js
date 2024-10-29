@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './styles.css';
+import '../Page.css';
 import Header from '../../components/Header';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { API_DOMAIN } from '../../api/domain';
 import { FaRegFrown, FaRegLaughSquint } from "react-icons/fa";
+import ContentsMbtiResult from './ContentsMbtiResult';
+
 const ContentsDetail = () => {
   const [bookData, setBookData] = useState('');
   const { content } = useParams();
@@ -15,14 +18,13 @@ const ContentsDetail = () => {
   const [publisher, setPublisher] = useState('');
   const [publicationYear, setPublicationYear] = useState('');
   const [poster, setPoster] = useState(''); // 기본 포스터
-  const [showModal, setShowModal] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
       setAccessToken(token);
-      console.log(accessToken)
+      // console.log(accessToken);
     }
   }, []);
 
@@ -51,7 +53,7 @@ const ContentsDetail = () => {
         const formattedDate = new Date(bookData.publicationYear).toISOString().split('T')[0];
         setPublicationYear(formattedDate);
       }
-      console.log(bookData);
+      // console.log(bookData);
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +70,8 @@ const ContentsDetail = () => {
       <div className='main-container'>
         <div className="book-detail-container">
           <div className="book-image">
+            <span className="mbti">{bookData.contentsMbtiResult}</span>
+
             <img src={poster} alt="책 이미지" />
             <div style={{ marginTop: '15px' }}>
               <FaRegLaughSquint
@@ -96,7 +100,8 @@ const ContentsDetail = () => {
               {description}
             </p>
 
-            <span className="mbti">{bookData.contentsMbtiResult}</span>
+            <div> <ContentsMbtiResult contentId={content} /> </div>
+            {/* <div> 그래프 </div> */}
           </div>
         </div>
       </div>

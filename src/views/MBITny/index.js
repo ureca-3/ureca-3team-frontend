@@ -102,5 +102,6 @@ export default function MBTInyMain() {
             </div>
             <NavBar />
         </div>
+        </div>
     );
 }

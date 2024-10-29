@@ -5,25 +5,31 @@ import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
 import { BsPencilSquare } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+
 const MyPage = () => {
     const [userName, setUserName] = useState('');
     const [userProfile, setUserProfile] = useState('');
     const [accessToken, setAccessToken] = useState('');
     const [childData, setChildData] = useState([]);
+    const location = useLocation();
     const navigate = useNavigate();
+    
     useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
-        // console.log(token);
+        const qureyParams = new URLSearchParams(location.search);
+        const token = qureyParams.get("token");
+
         if (token) {
             setAccessToken(token);
-            getData(token);
-            getChildData(token);
+            localStorage.setItem("jwtToken", token);
+            getData(token); getChildData(token);
         }
     }, [accessToken]);
 
     const changeChildProfile = (childId) => {
         navigate('/', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
     };
+    }, [location, accessToken]);
 
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
@@ -46,7 +52,6 @@ const MyPage = () => {
             }
         })
         setChildData(response.data.result);
-        console.log(response.data.result);
     }
 
     return (

@@ -5,7 +5,6 @@ import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
 import { BsPencilSquare } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
 
 const MyPage = () => {
     const [userName, setUserName] = useState('');
@@ -46,7 +45,7 @@ const MyPage = () => {
             }
         })
         setChildData(response.data.result);
-    }
+    };
 
     return (
         <div>

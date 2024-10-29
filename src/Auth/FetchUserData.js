@@ -15,8 +15,9 @@ const FetchUserData = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data.result);
-            setChildData(response.data.result);
+            // console.log(response.data);
+            setChildData(response.data);
+            console.log(childData.result)
         } catch (error) {
             console.error(error);
         }
@@ -35,10 +36,9 @@ const FetchUserData = () => {
     }, [location.search]);
 
     useEffect(() => {
-        if (childData === null) {
-            window.location.replace("http://localhost:3000/mypage");
-        } else {
-            window.location.replace("http://localhost:3000/register");
+        if (childData !== null) {
+            if (childData.result && childData.result.length > 0) window.location.href = "http://localhost:3000/mypage";
+            else window.location.href = "http://localhost:3000/register";
         }
     }, [childData]);
 

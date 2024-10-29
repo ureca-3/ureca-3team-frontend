@@ -48,6 +48,7 @@ export default function MBTInyMain() {
             localStorage.setItem("childId", childId);
             fetchAllRecommendApi(childId);
         }
+        // console.log(token);
     }, [accessToken, childId]);
 
     // 사용자 데이터 조회

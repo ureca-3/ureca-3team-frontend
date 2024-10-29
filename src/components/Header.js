@@ -23,12 +23,18 @@ const Header = ({ showLoginInfoOnly }) => {
         if (token) {
             setAccessToken(token);
             getData(token);
+            
         }
     }, [accessToken]);
 
     const goToMyPage = async () => {
         window.location.href = `http://localhost:3000/mypage/${userId}`;
     }
+
+    const GoHistory = () => {
+        const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+        navigate('/mbtiHistory', { state: { childId: childId } }); // childId를 state로 전달
+    };
 
     const logout = async () => {
         console.log("로그아웃");
@@ -94,8 +100,7 @@ const Header = ({ showLoginInfoOnly }) => {
     };
 
     return (
-        <header className="header-container">
-            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
+        <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
             {showLoginInfoOnly ? (
                 <div className="user-info">
                 <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
@@ -120,9 +125,9 @@ const Header = ({ showLoginInfoOnly }) => {
                 {menuOpen && userRole === 'USER' && (
                     <div className="dropdown-menu">
                         <ul>
-                            <li>Home</li>
+                            <li onClick={() => navigate('/')}>Home</li>
                             <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
-                            <li onClick={() => navigate('/history')}>HISTORY</li>
+                            <li onClick={GoHistory}>HISTORY</li>
                         </ul>
                     </div>
                 )}
@@ -145,7 +150,7 @@ const Header = ({ showLoginInfoOnly }) => {
                 <form onSubmit={handleSearchSubmit} className="search-form">
                     <input
                         type="text"
-                        placeholder="콘텐츠 입력"
+                        placeholder="콘텐츠를 입력하세요."
                         value={searchQuery}
                         onChange={handleSearch}
                     />

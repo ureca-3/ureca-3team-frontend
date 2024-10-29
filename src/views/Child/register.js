@@ -22,7 +22,7 @@ export default function ChildRegister() {
 
     // validation check
     const validation = () => {
-        if(name.length < 2){
+        if (name.length < 2) {
             setConfirmMsg("이름은 최소 2자 이상 입력해야 합니다.");
             setShowConfirm(true);
             return false;
@@ -47,8 +47,8 @@ export default function ChildRegister() {
 
     const goAssessment = async (event) => {
         event.preventDefault(); // 폼 기본 동작 방지
-        if(validation()){
-    
+        if (validation()) {
+
             // 데이터 객체 생성
             const formData = {
                 name: name,
@@ -57,8 +57,8 @@ export default function ChildRegister() {
                 profileUrl: profileUrl,
                 age: parseInt(age, 10) // 숫자 형태로 변환
             };
-    
-    
+
+
             // const token = localStorage.getItem('token');
             const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
             // 토큰이 null인지 확인하여 오류 방지
@@ -67,9 +67,9 @@ export default function ChildRegister() {
                 setShowConfirm(true);
                 return;
             }
-            
+
             // axios를 사용한 POST 요청
-            axios.post('http://localhost:8080/api/v1/child', formData, {        
+            axios.post('http://localhost:8080/api/v1/child', formData, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function ChildRegister() {
                 .then(response => {
                     console.log('Success:', response.data);
                     const child_id = response.data.result;
-    
+
                     navigate(`/mbtiStart`, {
                         state: {
                             child_id: child_id
@@ -91,85 +91,87 @@ export default function ChildRegister() {
                     setConfirmMsg('서버에 오류가 발생했습니다.\n다시 시도해 주세요.');
                     setShowConfirm(true);
                 });
-    
+
         };
     }
     return (
-        <div className="register-main-container">
-            <Header />
-            <div className="register-content-container">
-                <h1 className="title">우리 아이 등록해요</h1>
-                <div className="profile-icon"></div>
-                <form className="register-form" onSubmit={goAssessment}>
-                    <label>
-                        이름
-                        <input
-                            type="text"
-                            placeholder="ex) 홍길동"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        생년월일
-                        <DatePicker
-                            selected={birthday}
-                            onChange={(date) => setBirthday(date)}
-                            dateFormat="yyyy-MM-dd" // 날짜 형식
-                            placeholderText="생년월일을 선택하세요."
-                            className="custom-datepicker-input"
-                            showPopperArrow={false}
-                        />
-                    </label>
-                    <label>
-                        나이
-                        <input
-                            type="text"
-                            placeholder="ex) 7"
-                            value={age}
-                            onChange={(e) => setAge(e.target.value)}
-                        />
-                    </label>
-                    <div className="gender-container">
-                        <span className="gender-label">성별</span>
-                        <div className="gender-options">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="male"
-                                    checked={gender === 'MALE'}
-                                    onChange={() => setGender('MALE')}
-                                />
-                                남자
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="female"
-                                    checked={gender === 'FEMALE'}
-                                    onChange={() => setGender('FEMALE')}
-                                />
-                                여자
-                            </label>
+        <div>
+            <Header showLoginInfoOnly={true} />
+            <div className="register-main-container">
+                <div className="register-content-container">
+                    <h1 className="title">우리 아이 등록해요</h1>
+                    <div className="profile-icon"></div>
+                    <form className="register-form" onSubmit={goAssessment}>
+                        <label>
+                            이름
+                            <input
+                                type="text"
+                                placeholder="ex) 홍길동"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            생년월일
+                            <DatePicker
+                                selected={birthday}
+                                onChange={(date) => setBirthday(date)}
+                                dateFormat="yyyy-MM-dd" // 날짜 형식
+                                placeholderText="생년월일을 선택하세요."
+                                className="custom-datepicker-input"
+                                showPopperArrow={false}
+                            />
+                        </label>
+                        <label>
+                            나이
+                            <input
+                                type="text"
+                                placeholder="ex) 7"
+                                value={age}
+                                onChange={(e) => setAge(e.target.value)}
+                            />
+                        </label>
+                        <div className="gender-container">
+                            <span className="gender-label">성별</span>
+                            <div className="gender-options">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="male"
+                                        checked={gender === 'MALE'}
+                                        onChange={() => setGender('MALE')}
+                                    />
+                                    남자
+                                </label>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="female"
+                                        checked={gender === 'FEMALE'}
+                                        onChange={() => setGender('FEMALE')}
+                                    />
+                                    여자
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" className="submit-button">등록하기</button>
+                    </form>
+                </div>
+
+                {/* 커스텀 컨펌 창 */}
+                {showConfirm && (
+                    <div className="confirm-overlay">
+                        <div className="confirm-container">
+                            <p style={{ whiteSpace: 'pre-line' }}>{confirmMsg}</p>
+                            <button onClick={() => setShowConfirm(false)} className="confirm-button">확인</button>
                         </div>
                     </div>
-                    <button type="submit" className="submit-button">등록하기</button>
-                </form>
+                )}
+
             </div>
             <NavBar />
-
-            {/* 커스텀 컨펌 창 */}
-            {showConfirm && (
-                <div className="confirm-overlay">
-                    <div className="confirm-container">
-                    <p style={{ whiteSpace: 'pre-line' }}>{confirmMsg}</p>
-                        <button onClick={() => setShowConfirm(false)} className="confirm-button">확인</button>
-                    </div>
-                </div>
-            )}
-
         </div>
     );
 }

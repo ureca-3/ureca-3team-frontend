@@ -4,6 +4,9 @@ import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import './style/history.css';
 import { Line } from 'react-chartjs-2';
+import { API_DOMAIN } from '../../api/domain';
+import { useLocation } from 'react-router-dom';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -29,22 +32,53 @@ export default function History() {
     const [type, setType] = useState('daily');
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [accessToken, setAccessToken] = useState('');
+    const location = useLocation();
+    const { childId } = location.state || {}; // location.state가 null일 수 있으므로 기본값 설정
+    const [childInfo, setChildInfo] = useState('null');
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        // console.log(token);
+        if (token) {
+            setAccessToken(token);
+            getChildData(childId, token); // token을 함께 전달
+        }
+    }, [childId]);
+
+    const getChildData = (childId, token) => {
+        // API 호출 시 childId를 포함하여 데이터 요청
+        axios.get(`${API_DOMAIN}/child/${childId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        .then(response => {
+            console.log(response);
+            const childInfo = response.data.result;
+            setChildInfo(childInfo);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+    };
+
+    useEffect(() => {
+        // childInfo가 로드된 후에만 fetchData 호출
+        if (childInfo && accessToken) {
+            fetchData(type);
+        }
+    }, [type, childInfo, accessToken]);
+
 
     // 데이터 요청 함수 (백엔드에서 데이터 받아오기)
     const fetchData = (type) => {
         setLoading(true);
-        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
-
-        if (!token) {
-            console.error('No token found');
-            setLoading(false);  // 토큰이 없으면 로딩 해제
-            return;
-        }
-
-        axios.get(`http://localhost:8080/api/v1/history/1?type=${type}`, {
+        axios.get(`${API_DOMAIN}/history/${childId}?type=${type}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${accessToken}`,
             }
         })
             .then(response => {
@@ -115,7 +149,7 @@ export default function History() {
             title: {
                 position: 'bottom',
                 display: true,
-                text: '홍혜현님의 히스토리',
+                text: `${childInfo?.name || '자녀'}님의 히스토리`,
                 font: {
                     family: 'UhBeeSe_hyun',
                     weight: 'bold',
@@ -124,7 +158,7 @@ export default function History() {
             },
             tooltip: {
                 callbacks: {
-                    label: function(tooltipItem) {
+                    label: function (tooltipItem) {
                         return `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`;
                     },
                 },
@@ -135,7 +169,7 @@ export default function History() {
                 min: 0,
                 max: 100,
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return `${value}%`;
                     },
                 },
@@ -144,58 +178,59 @@ export default function History() {
     };
 
     return (
-        <div className="main-container">
+        <div>
             <Header />
-            <div className="chart-container">
-                <h2 className="chart-title">MBTI 히스토리 차트</h2>
-                
-                {/* 차트 영역 */}
-                <div className="chart-wrapper">
-                    {loading ? (
-                        <div>Loading...</div>
-                    ) : chartData ? (
-                        <>
-                            <div className="period-selector">
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="daily"
-                                        checked={type === 'daily'}
-                                        onChange={() => setType('daily')}
-                                    />
-                                    일별
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="weekly"
-                                        checked={type === 'weekly'}
-                                        onChange={() => setType('weekly')}
-                                    />
-                                    주별
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="monthly"
-                                        checked={type === 'monthly'}
-                                        onChange={() => setType('monthly')}
-                                    />
-                                    월별
-                                </label>
-                            </div>
-                            <Line data={chartData} options={options} />
-                        </>
-                    ) : (
-                        <div>데이터가 없습니다.</div>
-                    )}
-                    <div className="chart_info_text">
-                        * 그래프 수치가 50% 이상일수록 외향적(E), 현실적(S), 논리적(T), 계획적(J) 성향이 높습니다.
+            <div className="main-container">
+                <div className="chart-container">
+                    <h2 className="chart-title">MBTI 히스토리 차트</h2>
+
+                    {/* 차트 영역 */}
+                    <div className="chart-wrapper">
+                        {loading ? (
+                            <div>Loading...</div>
+                        ) : chartData ? (
+                            <>
+                                <div className="period-selector">
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="daily"
+                                            checked={type === 'daily'}
+                                            onChange={() => setType('daily')}
+                                        />
+                                        일별
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="weekly"
+                                            checked={type === 'weekly'}
+                                            onChange={() => setType('weekly')}
+                                        />
+                                        주별
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="monthly"
+                                            checked={type === 'monthly'}
+                                            onChange={() => setType('monthly')}
+                                        />
+                                        월별
+                                    </label>
+                                </div>
+                                <Line data={chartData} options={options} />
+                            </>
+                        ) : (
+                            <div>데이터가 없습니다.</div>
+                        )}
+                        <div className="chart_info_text">
+                            * 그래프 수치가 50% 이상일수록 외향적(E), 현실적(S), 논리적(T), 계획적(J) 성향이 높습니다.
+                        </div>
                     </div>
                 </div>
             </div>
             <NavBar />
         </div>
     );
-    
 }

@@ -55,14 +55,11 @@
     display: flex;
     align-items: center;
     font-size: 16px;
-    gap: 10px;
+    gap: 34px;
 }
 
 .gender-label {
     flex-direction: row;
-
-
-    /* margin-right: auto; Pushes "성별" label to the far left */
 }
 
 .gender-options {
@@ -139,8 +136,14 @@
     padding: 20px;
     border-radius: 8px;
     width: 300px;
+    height: auto;
     text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-container p {
+    font-size: 13px;
+    margin-bottom: 30px;
 }
 
 .confirm-button {
@@ -151,6 +154,8 @@
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 13px;
+    font-family: 'UhBeeSe_hyun';
 }
 
 .confirm-button:hover {

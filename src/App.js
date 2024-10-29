@@ -19,17 +19,28 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/** 메인페이지 */}
         <Route path="/" element={<MBTInyMain />} />
+        
         {/** 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/:child" element={<ChildDetails />} />
 
+        {/** 자녀 등록 */}
         <Route path="/register" element={<Child />} />
-        <Route path="/mbtiHistory" element={<History />} />
+
+        {/** 진단 */}
         <Route path="/mbtiStart" element={<Assessment />} /> 
         <Route path="/mbtiQuestion" element={<MbtiQuestion />} />
         <Route path="/mbtiResult" element={<MbtiResult />} />
+
+        {/** 히스토리 */}
+        <Route path="/mbtiHistory" element={<History />} />
+
+        {/** 로그인 */}
         <Route path='/sign' element={<SignIn />}></Route>
+
+        {/** 콘텐츠 상세 */} 
         <Route path='/:content' element={<ContentsDetail />} />
 
         {/** 관리자 페이지 */}

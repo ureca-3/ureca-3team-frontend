@@ -24,6 +24,11 @@ const MyPage = () => {
             localStorage.setItem("jwtToken", token);
             getData(token); getChildData(token);
         }
+    }, [accessToken]);
+
+    const changeChildProfile = (childId) => {
+        navigate('/', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
+    };
     }, [location, accessToken]);
 
     const getData = async (accessToken) => {
@@ -68,7 +73,8 @@ const MyPage = () => {
 
                     <ul className="children-list">
                         {childData.map((child, index) => (
-                            <li key={index} className="child-item">
+                            <li key={index} className="child-item"
+                            onClick={() => changeChildProfile(child.childId)}>
                                 <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
                                 <span className="child-name">{child.name} <BsPencilSquare /> </span>
                             </li>

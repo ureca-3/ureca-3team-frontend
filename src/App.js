@@ -21,8 +21,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MBTInyMain />} />
         {/** 마이페이지 */}
-        <Route path="/mypage/:user" element={<MyPage />} />
-        <Route path="/mypage/:user/:child" element={<ChildDetails />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/:child" element={<ChildDetails />} />
 
         <Route path="/register" element={<Child />} />
         <Route path="/mbtiHistory" element={<History />} />

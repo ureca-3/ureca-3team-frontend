@@ -41,7 +41,7 @@ export default function MbtiResult() {
 
 
     const goHome = () => {   
-        navigate('/');  
+        navigate('/home');  
     };
 
 

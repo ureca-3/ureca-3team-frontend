@@ -1,13 +1,15 @@
-import Header from "../../components/Header";
 import React, { useEffect, useState } from 'react';
+import Header from '../../components/Header';
 import axios from 'axios';
-import { API_DOMAIN } from "../../api/domain";
+import { API_DOMAIN } from '../../api/domain';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './AdminMain.css';
+import './searchStyle.css';
 
-const AdminMain = () => {
+const ContentsSearch = () => {
     const [accessToken, setAccessToken] = useState('');
-    const [contentsData, setContentsData] = useState([]);
+    const [searchData, setSearchData] = useState([]);
+    const { keyword } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,13 +18,13 @@ const AdminMain = () => {
     }, [])
 
     useEffect(() => {
-        if (accessToken) {
-            getData(accessToken);
+        if (accessToken && keyword) {
+            getSearchData(accessToken);
         }
-    }, [accessToken]);
+    }, [accessToken, keyword]);
 
-    const getData = async (accessToken) => {
-        const response = await axios.get(`${API_DOMAIN}/contents/all`,
+    const getSearchData = async (accessToken) => {
+        const response = await axios.get(`${API_DOMAIN}/contents/search/${keyword}`,
             {
                 headers:
                 {
@@ -31,16 +33,16 @@ const AdminMain = () => {
             }
         )
 
-        setContentsData(response.data.result);
+        setSearchData(response.data.result);
         // console.log(response.data.result);
     };
-    
+
     return (
         <div>
             <Header />
-            <div className='main-container' >
-                {contentsData.map((content, index) => (
-                    <div key={index} className="content-item" onClick={() => navigate(`/adminContents/${content.id}`)}>
+            <div className='main-container'>
+                {searchData.map((content, index) => (
+                    <div key={index} className="content-item" onClick={() => navigate(`/${content.id}`)}>
                         <img src={content.posterUrl} alt={content.title} className="content-poster" />
                         <div className="content-details">
                             <span className="content-title">{content.title}</span>
@@ -52,4 +54,4 @@ const AdminMain = () => {
     )
 }
 
-export default AdminMain;
+export default ContentsSearch;

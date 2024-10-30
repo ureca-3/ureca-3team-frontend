@@ -11,6 +11,7 @@ export default function SignIn() {
 
     return (
         <div className="main-container">
+                <div style={{flexDirection : 'column'}}>
                 <h1 className="mbtiny-title">MBTIny</h1>
                 <img src="/img/book.png" className="book-img" alt="mainBook" />
                 <p className="mbtiny-subtitle">
@@ -20,6 +21,7 @@ export default function SignIn() {
                     <img src="/img/kakao_login_medium_narrow.png" alt="Login with Kakao" />
                 </a>
             <NavBar />
+            </div>
         </div>
     );
 }

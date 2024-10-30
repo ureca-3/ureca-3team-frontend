@@ -16,6 +16,7 @@ import AdminUpload from './views/Admin/AdminUpload';
 import AdminEdit from './views/Admin/AdminEdit';
 import ContentsDetail from './views/Contents/ContentsDetail';
 import FetchUserData from './Auth/FetchUserData';
+import ContentsSearch from './views/Contents/ContentsSearch';
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         
         {/** 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/:child" element={<ChildDetails />} />
+        <Route path="/childpage" element={<ChildDetails />} />
 
         {/** 자녀 등록 */}
         <Route path="/register" element={<Child />} />
@@ -51,6 +52,9 @@ function App() {
 
         {/** 콘텐츠 상세 */} 
         <Route path='/:content' element={<ContentsDetail />} />
+
+        {/** 콘텐츠 검색 */}
+        <Route path='/search/:keyword' element={<ContentsSearch />} />
 
         {/** 관리자 페이지 */}
         <Route path='/admin' element={<AdminMain />} />

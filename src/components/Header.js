@@ -16,34 +16,88 @@ const Header = ({ showLoginInfoOnly }) => {
     const [accessToken, setAccessToken] = useState('');
     const [userId, setUserId] = useState('');
     const [userRole, setUserRole] = useState('');
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false); // 새 알림 여부 표시
+
+    useEffect(() => {
+        // localStorage에서 기존 알림을 불러와서 초기화
+        const savedNotifications = JSON.parse(localStorage.getItem("notifications") || "[]");
+        setNotifications(savedNotifications);
+
+        // 저장된 알림이 있으면 빨간 점 표시
+        if (savedNotifications.length > 0) {
+            setHasUnreadNotifications(true);
+        }
+    }, []);
+
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
         setAccessToken(token);
         getData(token);
-    }, [accessToken]);
+        // fetchNotifications(token);
+
+        
+
+        // SSE 연결 설정
+    if (token) {
+        const eventSource = new EventSource(`${API_DOMAIN}/notifications/newbook?token=${token}`);
+
+        eventSource.onmessage = (event) => {
+            const newNotification = JSON.parse(event.data);
+            setNotifications((prev) => {
+                const updatedNotifications = [newNotification, ...prev];
+                localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+                return updatedNotifications;
+            });
+            setHasUnreadNotifications(true);
+        };
+
+        eventSource.onerror = () => {
+            console.error("SSE 연결이 끊어졌습니다.");
+            eventSource.close();
+        };
+
+        return () => {
+            eventSource.close();
+        };
+    } else {
+        console.error("토큰이 유효하지 않습니다. SSE 연결이 설정되지 않았습니다.");
+    }
+}, [accessToken]);
+
+// 알림 클릭 시 삭제
+const handleNotificationClick = (notification, index) => {
+    if(notification.contentId) {
+        window.location.href = `http://localhost:3000/${notification.contentId}`;
+    }
+    setNotifications((prev) => {
+        // window.location.href = `http://localhost:3000/`
+        const updatedNotifications = prev.filter((_, i) => i !== index);
+        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+        return updatedNotifications;
+    });
+};
 
     const goToMyPage = async () => {
         window.location.href = `http://localhost:3000/mypage`;
     }
 
     const GoHistory = () => {
-        const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
-        navigate('/mbtiHistory', { state: { childId: childId } }); // childId를 state로 전달
+        const childId = localStorage.getItem("childId");
+        navigate('/mbtiHistory', { state: { childId: childId } });
     };
 
     const logout = async () => {
         console.log("로그아웃");
         try {
-            await axios.post(`${API_DOMAIN}/auth/logout`,
-                {},
-                {
-                    headers:
-                    {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+            await axios.post(`${API_DOMAIN}/auth/logout`, {}, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
             localStorage.removeItem("jwtToken");
             setAccessToken("");
             window.location.href = "http://localhost:3000/sign";
@@ -52,17 +106,13 @@ const Header = ({ showLoginInfoOnly }) => {
         }
     }
 
-
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
-            headers:
-            {
+            headers: {
                 Authorization: `Bearer ${accessToken}`
-
             }
         });
 
-        // console.log(kakaoUser.data.result.id);
         setUserRole(kakaoUser.data.result.role);
         setUserId(kakaoUser.data.result.id);
         setUserName(kakaoUser.data.result.oauthInfo.nickname);
@@ -70,33 +120,44 @@ const Header = ({ showLoginInfoOnly }) => {
         return kakaoUser.data.result.oauthInfo;
     }
 
-    const handleNotice = () => {
-        console.log("공지사항");
-    }
+    const fetchNotifications = async (token) => {
+        try {
+            const response = await axios.get(`${API_DOMAIN}/notifications/newbook`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setNotifications(response.data.notifications || []);
+        } catch (error) {
+            console.error("알림을 가져오는 중 오류:", error);
+        }
+    };
 
+    const handleNotice = () => {
+        setShowNotifications(!showNotifications);
+            // 알림 창을 열고 닫을 때도 읽지 않은 알림이 남아 있으면 빨간 점을 유지
+    if (showNotifications && notifications.length === 0) {
+        setHasUnreadNotifications(false);
+    }
+};
 
     const toggleUserMenu = () => {
         setUserMenu(!userMenu);
     }
 
-    // 메뉴 버튼 클릭 시 토글 함수
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
-    // 검색 입력 핸들러
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
     };
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        // 검색 동작 처리
         console.log("Search query:", searchQuery);
     };
 
     return (
-        <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}
+        <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>
             {showLoginInfoOnly ? (
                 <div className="user-info">
                     <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
@@ -109,15 +170,15 @@ const Header = ({ showLoginInfoOnly }) => {
                         </div>
                     )}
                     <span className="user-name">{userName}님</span>
-                    <TiBell className="bell-icon" onClick={handleNotice} />
+                    <div className="notification-icon">
+                        <TiBell className="bell-icon" onClick={handleNotice} />
+                        {hasUnreadNotifications && <span className="notification-dot"></span>} {/* 빨간 점 표시 */}
+                    </div>
                 </div>
             ) : (
                 <>
-                    {/* 왼쪽 메뉴 버튼 */}
                     <div className="menu-button">
                         <TiThMenu onClick={toggleMenu} className="menu-icon" />
-                        {/* 메뉴 토글 */}
-                        {/* 사용자 */}
                         {menuOpen && userRole === 'USER' && (
                             <div className="dropdown-menu">
                                 <ul>
@@ -127,9 +188,6 @@ const Header = ({ showLoginInfoOnly }) => {
                                 </ul>
                             </div>
                         )}
-
-
-                        {/* 관리자 */}
                         {menuOpen && userRole === 'ADMIN' && (
                             <div className="dropdown-menu">
                                 <ul>
@@ -141,7 +199,6 @@ const Header = ({ showLoginInfoOnly }) => {
                         )}
                     </div>
 
-                    {/* 가운데 검색창 */}
                     <div className="search-bar">
                         <form onSubmit={handleSearchSubmit} className="search-form">
                             <input
@@ -156,7 +213,6 @@ const Header = ({ showLoginInfoOnly }) => {
                         </form>
                     </div>
 
-                    {/* 오른쪽 프로필, 닉네임, 공지 아이콘 */}
                     <div className="user-info">
                         <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
                         {userMenu && (
@@ -168,11 +224,34 @@ const Header = ({ showLoginInfoOnly }) => {
                             </div>
                         )}
                         <span className="user-name">{userName}님</span>
-                        <TiBell className="bell-icon" onClick={handleNotice} />
+                        <div className="notification-icon">
+                            <TiBell className="bell-icon" onClick={handleNotice} />
+                            {hasUnreadNotifications && <span className="notification-dot"></span>} {/* 빨간 점 표시 */}
+                        </div>
                     </div>
                 </>
+            )}
+
+{showNotifications && (
+                <div className="notification-slide">
+                    <h2>알림</h2>
+                    <button className="close-button" onClick={handleNotice}>닫기</button>
+                    <div className="notification-content">
+                        {notifications.length > 0 ? (
+                            notifications.map((notification, index) => (
+                                <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification, index)}>
+                                    <span>⭐ {notification.title}</span>
+                                    <p>{notification.message}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="no-notifications">읽지 않은 알림이 없습니다.</div>
+                        )}
+                    </div>
+                </div>
             )}
         </header>
     );
 };
+
 export default Header;

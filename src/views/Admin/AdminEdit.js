@@ -5,6 +5,7 @@ import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
 import { API_DOMAIN } from '../../api/domain';
 import { useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 
 const AdminEdit = () => {
     const [accessToken, setAccessToken] = useState('');
@@ -77,7 +78,7 @@ const AdminEdit = () => {
         if (Object.keys(changes).length > 0) {
             try {
                 const response = await axios.patch(
-                    `${API_DOMAIN}/contents/update/${content}`,
+                    `${API_DOMAIN}/contents/admin/update/${content}`,
                     changes,
                     {
                         headers: {
@@ -98,7 +99,7 @@ const AdminEdit = () => {
             <Header />
             <div className='main-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', marginLeft:'20%' }}>
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>수정</button>
@@ -182,11 +183,12 @@ const AdminEdit = () => {
 
                         <div className='input-fields'>
                             <h3 className='input-title'>출판년월일</h3>
-                            <input
-                                type="date"
-                                placeholder="출판년월일"
-                                value={publicationYear}
-                                onChange={(e) => setPublicationYear(e.target.value)}
+                            <DatePicker
+                                selected={publicationYear}
+                                onChange={(date) => setPublicationYear(date)}
+                                dateFormat="yyyy-MM-dd"
+                                className="custom-datepicker-input"
+                                showPopperArrow={false}
                             />
                         </div>
                     </div>

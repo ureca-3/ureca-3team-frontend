@@ -1,6 +1,6 @@
 import './Header.css';
 import { TiThMenu, TiBell } from "react-icons/ti";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";
 import { API_DOMAIN } from '../api/domain';
@@ -31,16 +31,39 @@ const Header = ({ showLoginInfoOnly }) => {
         }
     }, []);
 
+    const [childData, setChildData] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        setAccessToken(token);
-        getData(token);
-        // fetchNotifications(token);
+        const childId = localStorage.getItem("childId");
+        // console.log(childId);
 
-        
+        if (childId) {
+            axios.get(`${API_DOMAIN}/child/${childId}`,
+                {
+                    headers:
+                    {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            ).then((response) => {
+                setChildData(response.data.result);
+                // console.log(childData);
+            })
+        }
 
-        // SSE 연결 설정
+        if (token) {
+            setAccessToken(token);
+            getData(token);
+        }
+
+   
+    
+    // fetchNotifications(token);
+
+
+
+    // SSE 연결 설정
     if (token) {
         const eventSource = new EventSource(`${API_DOMAIN}/notifications/newbook?token=${token}`);
 
@@ -69,7 +92,7 @@ const Header = ({ showLoginInfoOnly }) => {
 
 // 알림 클릭 시 삭제
 const handleNotificationClick = (notification, index) => {
-    if(notification.contentId) {
+    if (notification.contentId) {
         window.location.href = `http://localhost:3000/${notification.contentId}`;
     }
     setNotifications((prev) => {
@@ -80,85 +103,163 @@ const handleNotificationClick = (notification, index) => {
     });
 };
 
-    const goToMyPage = async () => {
-        window.location.href = `http://localhost:3000/mypage`;
-    }
+const goToMyPage = async () => {
+    window.location.href = `http://localhost:3000/mypage`;
+}
 
-    const GoHistory = () => {
-        const childId = localStorage.getItem("childId");
-        navigate('/mbtiHistory', { state: { childId: childId } });
-    };
+const goChildDetail = () => {
+    const childId = localStorage.getItem("childId");
+    navigate('/childpage', { state: { childId: childId } });
+}
 
-    const logout = async () => {
-        console.log("로그아웃");
-        try {
-            await axios.post(`${API_DOMAIN}/auth/logout`, {}, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            localStorage.removeItem("jwtToken");
-            setAccessToken("");
-            window.location.href = "http://localhost:3000/sign";
-        } catch (error) {
-            console.error("로그아웃 오류")
-        }
-    }
+const GoHistory = () => {
+    const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+    navigate('/mbtiHistory', { state: { childId: childId } }); // childId를 state로 전달
+};
 
-    const getData = async (accessToken) => {
-        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+const MbtiData = () => {
+    const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+    navigate('/mbtiData', { state: { childId: childId } }); // childId를 state로 전달
+};
+
+const GoMbtiStart = () => {
+    const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
+    navigate('/mbtiStart', { state: { childId: childId } }); // childId를 state로 전달
+}
+
+const logout = async () => {
+    console.log("로그아웃");
+    try {
+        await axios.post(`${API_DOMAIN}/auth/logout`, {}, {
             headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
         });
-
-        setUserRole(kakaoUser.data.result.role);
-        setUserId(kakaoUser.data.result.id);
-        setUserName(kakaoUser.data.result.oauthInfo.nickname);
-        setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
-        return kakaoUser.data.result.oauthInfo;
+        localStorage.removeItem("jwtToken");
+        setAccessToken("");
+        window.location.href = "http://localhost:3000/sign";
+    } catch (error) {
+        console.error("로그아웃 오류")
     }
+}
 
-    const fetchNotifications = async (token) => {
-        try {
-            const response = await axios.get(`${API_DOMAIN}/notifications/newbook`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setNotifications(response.data.notifications || []);
-        } catch (error) {
-            console.error("알림을 가져오는 중 오류:", error);
+const getData = async (accessToken) => {
+    const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
         }
-    };
+    });
 
-    const handleNotice = () => {
-        setShowNotifications(!showNotifications);
-            // 알림 창을 열고 닫을 때도 읽지 않은 알림이 남아 있으면 빨간 점을 유지
+    setUserRole(kakaoUser.data.result.role);
+    setUserId(kakaoUser.data.result.id);
+    setUserName(kakaoUser.data.result.oauthInfo.nickname);
+    setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
+    return kakaoUser.data.result.oauthInfo;
+}
+
+const fetchNotifications = async (token) => {
+    try {
+        const response = await axios.get(`${API_DOMAIN}/notifications/newbook`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        setNotifications(response.data.notifications || []);
+    } catch (error) {
+        console.error("알림을 가져오는 중 오류:", error);
+    }
+};
+
+const handleNotice = () => {
+    setShowNotifications(!showNotifications);
+    // 알림 창을 열고 닫을 때도 읽지 않은 알림이 남아 있으면 빨간 점을 유지
     if (showNotifications && notifications.length === 0) {
         setHasUnreadNotifications(false);
     }
 };
 
-    const toggleUserMenu = () => {
-        setUserMenu(!userMenu);
-    }
+const toggleUserMenu = () => {
+    setUserMenu(!userMenu);
+}
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
+const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+};
 
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value);
-    };
+const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+};
 
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        console.log("Search query:", searchQuery);
-    };
+const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search/${searchQuery}`);
+};
 
-    return (
-        <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>
-            {showLoginInfoOnly ? (
+return (
+    <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>
+        {showLoginInfoOnly ? (
+            <div className="user-info">
+                <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
+                {userMenu && (
+                    <div className="dropdown-user-menu">
+                        <ul>
+                            <li onClick={goToMyPage}>마이페이지</li>
+                            <li onClick={logout}>로그아웃</li>
+                        </ul>
+                    </div>
+                )}
+                <span className="user-name">{userName}님</span>
+                <div className="notification-icon">
+                    <TiBell className="bell-icon" onClick={handleNotice} />
+                    {hasUnreadNotifications && <span className="notification-dot"></span>} {/* 빨간 점 표시 */}
+                </div>
+            </div>
+        ) : (
+            <>
+                <div className="menu-button">
+                    <TiThMenu onClick={toggleMenu} className="menu-icon" />
+                    {menuOpen && userRole === 'USER' && (
+                        <div className="dropdown-menu">
+                            <ul>
+                                {childData ? (
+                                    <>
+                                        <li onClick={goChildDetail} style={{ border: '1px dotted gray' }}><img src={childData.profileUrl} style={{ width: '60px', height: '60px', borderRadius: '50%' }}></img>{childData.name} </li>
+                                        <li onClick={() => navigate('/home')}>Home</li>
+                                        <li onClick={GoMbtiStart}>MBTI</li>
+                                        <li onClick={GoHistory}>HISTORY</li>
+                                        <li onClick={MbtiData}>Data</li>
+                                    </>)
+                                    :
+                                    <li onClick={goToMyPage}>자녀 선택</li>
+                                }
+
+                            </ul>
+                        </div>
+                    )}
+                    {menuOpen && userRole === 'GUEST' && (
+                        <div className="dropdown-menu">
+                            <ul>
+                                <li onClick={() => navigate("/admin")}>Home</li>
+                                <li onClick={() => navigate("/adminUpload")}>CONTENTS 업로드</li>
+                                {/*<li>USER 관리</li> */}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+
+                <div className="search-bar">
+                    <form onSubmit={handleSearchSubmit} className="search-form">
+                        <input
+                            type="text"
+                            placeholder="콘텐츠를 입력하세요."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+                        <button type="submit" className="search-button">
+                            <FcSearch />
+                        </button>
+                    </form>
+                </div>
+
                 <div className="user-info">
                     <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
                     {userMenu && (
@@ -175,83 +276,29 @@ const handleNotificationClick = (notification, index) => {
                         {hasUnreadNotifications && <span className="notification-dot"></span>} {/* 빨간 점 표시 */}
                     </div>
                 </div>
-            ) : (
-                <>
-                    <div className="menu-button">
-                        <TiThMenu onClick={toggleMenu} className="menu-icon" />
-                        {menuOpen && userRole === 'USER' && (
-                            <div className="dropdown-menu">
-                                <ul>
-                                    <li onClick={() => navigate('/')}>Home</li>
-                                    <li onClick={() => navigate('/mbtiStart')}>MBTI</li>
-                                    <li onClick={GoHistory}>HISTORY</li>
-                                </ul>
-                            </div>
-                        )}
-                        {menuOpen && userRole === 'ADMIN' && (
-                            <div className="dropdown-menu">
-                                <ul>
-                                    <li>Home</li>
-                                    <li>CONTENTS 관리</li>
-                                    <li>USER 관리</li>
-                                </ul>
-                            </div>
-                        )}
-                    </div>
+            </>
+        )}
 
-                    <div className="search-bar">
-                        <form onSubmit={handleSearchSubmit} className="search-form">
-                            <input
-                                type="text"
-                                placeholder="콘텐츠를 입력하세요."
-                                value={searchQuery}
-                                onChange={handleSearch}
-                            />
-                            <button type="submit" className="search-button">
-                                <FcSearch />
-                            </button>
-                        </form>
-                    </div>
-
-                    <div className="user-info">
-                        <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
-                        {userMenu && (
-                            <div className="dropdown-user-menu">
-                                <ul>
-                                    <li onClick={goToMyPage}>마이페이지</li>
-                                    <li onClick={logout}>로그아웃</li>
-                                </ul>
+        {showNotifications && (
+            <div className="notification-slide">
+                <h2>알림</h2>
+                <button className="close-button" onClick={handleNotice}>닫기</button>
+                <div className="notification-content">
+                    {notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                            <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification, index)}>
+                                <span>⭐ {notification.title}</span>
+                                <p>{notification.message}</p>
                             </div>
-                        )}
-                        <span className="user-name">{userName}님</span>
-                        <div className="notification-icon">
-                            <TiBell className="bell-icon" onClick={handleNotice} />
-                            {hasUnreadNotifications && <span className="notification-dot"></span>} {/* 빨간 점 표시 */}
-                        </div>
-                    </div>
-                </>
-            )}
-
-{showNotifications && (
-                <div className="notification-slide">
-                    <h2>알림</h2>
-                    <button className="close-button" onClick={handleNotice}>닫기</button>
-                    <div className="notification-content">
-                        {notifications.length > 0 ? (
-                            notifications.map((notification, index) => (
-                                <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification, index)}>
-                                    <span>⭐ {notification.title}</span>
-                                    <p>{notification.message}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="no-notifications">읽지 않은 알림이 없습니다.</div>
-                        )}
-                    </div>
+                        ))
+                    ) : (
+                        <div className="no-notifications">읽지 않은 알림이 없습니다.</div>
+                    )}
                 </div>
-            )}
-        </header>
-    );
+            </div>
+        )}
+    </header>
+);
 };
 
 export default Header;

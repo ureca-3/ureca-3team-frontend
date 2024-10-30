@@ -10,6 +10,8 @@ import '../Page.css';
 
 
 export default function ChildRegister() {
+    localStorage.removeItem("childId");
+
     const navigate = useNavigate();
 
     const [name, setName] = useState('');

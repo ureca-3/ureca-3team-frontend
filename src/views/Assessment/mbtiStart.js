@@ -7,8 +7,9 @@ import './style/start.css';
 
 export default function Assessment() {
     const location = useLocation();
-    const { child_id } = location.state;
     const navigate = useNavigate(); 
+    // location.state에 child_id가 없으면 로컬 스토리지에서 가져오기
+    const child_id = location.state?.child_id || localStorage.getItem("childId");
 
     const goQuestion = () => {
         navigate('/mbtiQuestion',{
@@ -20,7 +21,7 @@ export default function Assessment() {
 
     return (
         <div>
-            <Header showLoginInfoOnly={true}/>
+            {/* <Header showLoginInfoOnly={true}/> */}
                 <div className="start-main-container">
                     <div className="start-content-container">
                         <h1>MBTI로 보는</h1>

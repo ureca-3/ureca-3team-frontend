@@ -5,7 +5,8 @@ import './style/main.css';
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { API_DOMAIN } from '../../api/domain';
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 /** 메인 페이지 로그인 시 토큰 받아오기 */
 export default function MBTInyMain() {
@@ -13,7 +14,7 @@ export default function MBTInyMain() {
     const [userName, setUserName] = useState('');
     const [friendRecommd, setFriendRecommdData] = useState([]); // 추천 도서 목록을 위한 상태 배열로 초기화
     const location = useLocation();
-    const { childId } = location.state || {}; // location.state가 null일 수 있으므로 기본값 설정
+    const childId = location.state?.child_id || localStorage.getItem("childId");
 
     const scrollRef = useRef(null);
     useEffect(() => {
@@ -23,12 +24,12 @@ export default function MBTInyMain() {
                 scrollRef.current.scrollBy({ left: event.deltaY * 1.5, behavior: "smooth" });
             }
         };
-    
+
         const refCurrent = scrollRef.current;
         if (refCurrent) {
             refCurrent.addEventListener("wheel", handleScroll);
         }
-    
+
         // Cleanup event listener on component unmount
         return () => {
             if (refCurrent) {
@@ -36,21 +37,20 @@ export default function MBTInyMain() {
             }
         };
     }, []);
-    
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const token = queryParams.get("token");
 
+    useEffect(() => {
+
+        const token = localStorage.getItem("jwtToken");
         if (token) {
             setAccessToken(token);
-            localStorage.setItem("jwtToken", token);
             getData(token);
         }
         if (childId) {
             localStorage.setItem("childId", childId);
             fetchAllRecommendApi(childId);
         }
-    }, [location, accessToken, childId]);
+        // console.log(token);
+    }, [accessToken, childId]);
 
     // 사용자 데이터 조회
     const getData = async (accessToken) => {
@@ -101,7 +101,6 @@ export default function MBTInyMain() {
                 </div>
             </div>
             <NavBar />
-        </div>
         </div>
     );
 }

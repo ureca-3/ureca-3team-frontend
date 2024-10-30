@@ -3,7 +3,7 @@ import { TiThMenu, TiBell } from "react-icons/ti";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FcSearch } from "react-icons/fc";
-import { API_DOMAIN } from '../api/domain';
+import { API_DOMAIN, CLIENT_DOMAIN } from '../api/domain';
 import axios from 'axios';
 
 const Header = ({ showLoginInfoOnly }) => {
@@ -93,7 +93,7 @@ const Header = ({ showLoginInfoOnly }) => {
 // 알림 클릭 시 삭제
 const handleNotificationClick = (notification, index) => {
     if (notification.contentId) {
-        window.location.href = `http://localhost:3000/${notification.contentId}`;
+        window.location.href = `${CLIENT_DOMAIN}/${notification.contentId}`;
     }
     setNotifications((prev) => {
         // window.location.href = `http://localhost:3000/`
@@ -104,7 +104,7 @@ const handleNotificationClick = (notification, index) => {
 };
 
 const goToMyPage = async () => {
-    window.location.href = `http://localhost:3000/mypage`;
+    window.location.href = `${CLIENT_DOMAIN}/mypage`;
 }
 
 const goChildDetail = () => {
@@ -138,7 +138,7 @@ const logout = async () => {
         });
         localStorage.removeItem("jwtToken");
         setAccessToken("");
-        window.location.href = "http://localhost:3000/sign";
+        window.location.href = `${CLIENT_DOMAIN}/sign`;
     } catch (error) {
         console.error("로그아웃 오류")
     }

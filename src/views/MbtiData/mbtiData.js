@@ -81,8 +81,13 @@ export default function ChildMbtiData() {
             }
         })
         .then(() => {
-            setConfirmMsg('삭제되었습니다.\n진단 페이지로 이동합니다.');
-            setDeleteCompleted(true);
+            if(status === 'ACTIVE'){
+                setConfirmMsg('삭제되었습니다.\n진단 페이지로 이동합니다.');
+                setDeleteCompleted(true);
+            } else {
+                setConfirmMsg('삭제되었습니다.');
+                setDeleteCompleted(true);
+            }
         })
         .catch(error => {
             console.error("Error deleting MBTI data:", error);

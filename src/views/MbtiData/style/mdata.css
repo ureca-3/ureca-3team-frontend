@@ -167,3 +167,12 @@
 .confirm-button:hover {
     background-color: #ff4c61;
 }
+
+.cancel-button {
+    font-family: 'UhBeeSe_hyun';
+    border-radius: 5px;
+
+}
+.cancel-button:hover {
+    background-color: #585757;
+}

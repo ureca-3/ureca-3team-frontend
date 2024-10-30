@@ -83,6 +83,7 @@ h3 {
     border-radius: 0 10px 10px 0;
 }
 .goHome {
+    font-family: 'UhBeeSe_hyun';
     padding: 10px 20px;
     background-color: #ff6b6b; /* 메인 색상 */
     color: #ffffff;

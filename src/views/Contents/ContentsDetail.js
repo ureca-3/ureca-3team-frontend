@@ -69,7 +69,7 @@ const ContentsDetail = () => {
       <Header></Header>
       <div className='main-container'>
         <div className="book-detail-container">
-          <div className="book-image">
+          <div className="book-image" style={{marginLeft:'20px'}}>
             <span className="mbti">{bookData.contentsMbtiResult}</span>
 
             <img src={poster} alt="책 이미지" />
@@ -100,9 +100,10 @@ const ContentsDetail = () => {
               {description}
             </p>
 
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
               <ContentsMbtiResult contentId={content} />
-            </div>          </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -54,6 +54,7 @@ const MyPage = () => {
             <div className="main-container">
 
                 {/* 프로필 영역 */}
+                <div style={{flexDirection:'column'}}>
                 <div className="profile-container">
                     <div className="profile-icon">
                         <img src={userProfile} alt="프로필 이미지" />
@@ -88,6 +89,7 @@ const MyPage = () => {
                     <button className="add-child-btn" onClick={() => navigate("/register")} >자녀 추가</button>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

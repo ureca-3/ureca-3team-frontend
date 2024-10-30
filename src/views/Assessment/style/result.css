@@ -18,6 +18,7 @@
     min-height: 800px;
     /* 최소 높이를 지정 */
     margin: 0 auto;
+    margin-top: -50px;
     /* 가로 중앙에 배치 */
 }
 
@@ -47,6 +48,7 @@ h3 {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    width: 500px;
     justify-content: space-between;
 }
 

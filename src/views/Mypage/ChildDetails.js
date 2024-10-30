@@ -147,7 +147,7 @@ const ChildDetails = () => {
               <span className="value">{mbti}</span>
             </div>
           </div>
-          <div className="mbti-chart">
+          <div className="mbti-chart"  style={{marginLeft:'15%'}}>
 
             {/* I vs E */}
             <div className="chart-item">

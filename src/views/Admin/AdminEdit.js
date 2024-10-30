@@ -99,7 +99,7 @@ const AdminEdit = () => {
             <Header />
             <div className='main-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', marginLeft:'20%' }}>
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>수정</button>

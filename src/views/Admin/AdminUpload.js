@@ -86,7 +86,7 @@ const AdminUpload = () => {
                         </div>
                     </div>
                 )}
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', marginLeft:'20%' }}>
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>저장</button>

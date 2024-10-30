@@ -33,7 +33,7 @@ const Header = ({ showLoginInfoOnly }) => {
                 }
             ).then((response) => {
                 setChildData(response.data.result);
-                console.log(childData);
+                // console.log(childData);
             })
         }
 
@@ -128,8 +128,7 @@ const Header = ({ showLoginInfoOnly }) => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        // 검색 동작 처리
-        console.log("Search query:", searchQuery);
+        navigate(`/search/${searchQuery}`);
     };
 
     return (

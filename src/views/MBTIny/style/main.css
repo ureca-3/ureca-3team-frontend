@@ -9,7 +9,6 @@
     flex-direction: column;
     align-items: flex-start;
     background-color: #FFE7EB;
-    height: 100vh;
     padding: 20px;
 }
 
@@ -100,4 +99,9 @@
 
 .scroll-button:hover {
     background-color: rgba(0, 0, 0, 0.7);
+}
+
+.recommd-container {
+    background-color: #FFE7EB;
+    height: 100vh;
 }

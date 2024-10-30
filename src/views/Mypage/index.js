@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './styles.css';
+import './MyPageStyles.css';
 import Header from '../../components/Header';
 import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
@@ -15,11 +15,11 @@ const MyPage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        setAccessToken(token);
+        setAccessToken(token); console.log(token);
         getData(token);
         getChildData(token);
     }, []);
-    
+
     const changeChildProfile = (childId) => {
         localStorage.setItem("childId", childId);
         navigate('/home', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
@@ -69,8 +69,18 @@ const MyPage = () => {
                         {childData.map((child, index) => (
                             <li key={index} className="child-item"
                                 onClick={() => changeChildProfile(child.childId)}>
-                                <img src={child.profileImageUrl || "../img/avatar.png"} alt={child.name} className="child-image" />
-                                <span className="child-name">{child.name} <BsPencilSquare /> </span>
+                                <img src={child.profileUrl || "../img/avatar.png"} alt={child.name} className="child-image" style={{ marginTop: '15px' }} />
+                                <span className="child-name" style={{ marginLeft: '20px' }}>{child.name} </span>
+                                <button
+                                    style={{ textAlign: 'right' }}
+                                    className="edit-child-btn"
+                                    onClick={(e) => {
+                                        localStorage.setItem("childId", child.childId);
+                                        e.stopPropagation(); // 부모 요소로의 클릭 이벤트 전파 막기
+                                        navigate("/childpage");
+                                    }}>
+                                    <BsPencilSquare />
+                                </button>
                             </li>
                         ))}
                     </ul>

@@ -5,6 +5,7 @@ import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
 import { API_DOMAIN } from '../../api/domain';
 import { useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 
 const AdminEdit = () => {
     const [accessToken, setAccessToken] = useState('');
@@ -182,11 +183,12 @@ const AdminEdit = () => {
 
                         <div className='input-fields'>
                             <h3 className='input-title'>출판년월일</h3>
-                            <input
-                                type="date"
-                                placeholder="출판년월일"
-                                value={publicationYear}
-                                onChange={(e) => setPublicationYear(e.target.value)}
+                            <DatePicker
+                                selected={publicationYear}
+                                onChange={(date) => setPublicationYear(date)}
+                                dateFormat="yyyy-MM-dd"
+                                className="custom-datepicker-input"
+                                showPopperArrow={false}
                             />
                         </div>
                     </div>

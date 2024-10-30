@@ -30,7 +30,7 @@ function App() {
         
         {/** 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/:child" element={<ChildDetails />} />
+        <Route path="/childpage" element={<ChildDetails />} />
 
         {/** 자녀 등록 */}
         <Route path="/register" element={<Child />} />

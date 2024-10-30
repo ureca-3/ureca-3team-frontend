@@ -100,9 +100,9 @@ const ContentsDetail = () => {
               {description}
             </p>
 
-            <div> <ContentsMbtiResult contentId={content} /> </div>
-            {/* <div> 그래프 </div> */}
-          </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <ContentsMbtiResult contentId={content} />
+            </div>          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,311 @@
+/* 프로필 영역 */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-icon img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #d3c1c6;
+}
+
+.username {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* 자녀 리스트 영역 */
+.children-container {
+  background-color: #ff8aa8;
+  width: 250px;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.children-container h2 {
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* 자녀 리스트 스타일 */
+.children-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.child-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.edit-child-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-child-btn:hover {
+  transform: scale(1.6);
+}
+
+.child-item:hover {
+  transform: scale(1.03);
+}
+
+.child-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.child-image img {
+  display: flex;
+  align-items: center;
+}
+
+.child-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* 자녀 추가 버튼 */
+.add-child-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #d3c1c6;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-child-btn:hover {
+  background-color: #c29ca8;
+}
+
+/*자녀 상세*/
+.profile-containers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 1000px;
+  max-width: 90%;
+}
+
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9e8e8;
+  position: relative;
+}
+
+.child-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.child-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 30px; 
+}
+
+.name {
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+.details {
+  margin-top: 15px;
+}
+
+.detail-item {
+  padding: 10px 0;
+}
+
+.label {
+  font-weight: bold;
+  color: #777;
+  display: block;
+  margin-bottom: 5px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 5px 0;
+}
+
+.value {
+  font-size: 1rem;
+  color: #333;
+}
+
+.chart-bar-containers {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  position: relative;
+  padding: 0 10px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.chart-bars {
+  width: 80%;
+  height: 100%;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ddd;
+}
+
+.fill-lefts {
+  background-color: #f77e8c;
+  height: 100%;
+  float: left;
+  border-radius: 10px 0 0 10px;
+}
+
+.fill-rights {
+  background-color: #f77e8c;
+  height: 100%;
+  float: right;
+  border-radius: 0 10px 10px 0;
+}
+
+.chart-items {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.chart-bar-inner {
+  background-color: #ff6b6b;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.mbti-chart {
+  width: 50%;
+  margin: 20px 0;
+}
+
+.buttons {
+  display: flex;
+}
+
+.edit-buttons,
+.confirm-buttons {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.button:hover {
+  background-color: #ffffff;
+}
+
+select::-ms-expand { 
+	display: none;
+}
+.select {
+  width: 150px;
+  height: 35px;
+  background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+  background-size: 20px;
+  padding: 5px 30px 5px 10px;
+  border-radius: 4px;
+  outline: 0 none;
+}
+
+.select option {
+  background: black;
+  color: #fff;
+  padding: 3px 0;
+}
+
+.custom-input {
+  width: 20%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #555;
+  background-color: #f9f9f9;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin-top: 20px;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: #ff8aa8;
+  box-shadow: 0 0 8px rgba(255, 138, 168, 0.3);
+}
+
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #555;
+  background-color: #f9f9f9;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #ff8aa8;
+  box-shadow: 0 0 8px rgba(255, 138, 168, 0.3);
+}

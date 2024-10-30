@@ -100,7 +100,7 @@ const ContentsDetail = () => {
               {description}
             </p>
 
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '40%', marginLeft:'-50px' }}>
               <ContentsMbtiResult contentId={content} />
             </div>
           </div>

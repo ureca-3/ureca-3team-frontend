@@ -34,7 +34,7 @@ const AdminUpload = () => {
         setIsLoading(true); // 로딩 시작
         try {
             const response = await axios.post(
-                `${API_DOMAIN}/contents/save`,
+                `${API_DOMAIN}/contents/admin/save`,
                 JSON.stringify({
                     title: title,
                     posterUrl: poster,

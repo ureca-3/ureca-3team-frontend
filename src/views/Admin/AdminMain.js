@@ -40,7 +40,7 @@ const AdminMain = () => {
             <Header />
             <div className='main-container' >
                 {contentsData.map((content, index) => (
-                    <div key={index} className="content-item" onClick={() => navigate(`/${content.id}`)}>
+                    <div key={index} className="content-item" onClick={() => navigate(`/adminContents/${content.id}`)}>
                         <img src={content.posterUrl} alt={content.title} className="content-poster" />
                         <div className="content-details">
                             <span className="content-title">{content.title}</span>

@@ -78,7 +78,7 @@ const AdminEdit = () => {
         if (Object.keys(changes).length > 0) {
             try {
                 const response = await axios.patch(
-                    `${API_DOMAIN}/contents/update/${content}`,
+                    `${API_DOMAIN}/contents/admin/update/${content}`,
                     changes,
                     {
                         headers: {

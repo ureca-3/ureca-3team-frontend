@@ -6,7 +6,22 @@ import axios from "axios";
 const FetchUserData = () => {
     const [accessToken, setAccessToken] = useState('');
     const [childData, setChildData] = useState(null);
+    const [userRole, setUserRole] = useState('');
     const location = useLocation();
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        });
+
+        // console.log(kakaoUser.data.result.id);
+        setUserRole(kakaoUser.data.result.role);
+        return kakaoUser.data.result.oauthInfo;
+    }
 
     const getChildData = async (token) => {
         try {
@@ -30,10 +45,15 @@ const FetchUserData = () => {
         if (token) {
             setAccessToken(token);
             localStorage.setItem("jwtToken", token);
-            getChildData(token);
+            getData(token); 
         }
 
     }, [location.search]);
+
+    useEffect(() => {
+        if (userRole && userRole === "USER") getChildData(accessToken);
+        if (userRole && userRole === "GUEST") window.location.href = "http://localhost:3000/admin";
+    }, [userRole, accessToken]);
 
     useEffect(() => {
         if (childData !== null) {

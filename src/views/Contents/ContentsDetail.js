@@ -19,17 +19,35 @@ const ContentsDetail = () => {
   const [publicationYear, setPublicationYear] = useState('');
   const [poster, setPoster] = useState(''); // 기본 포스터
   const [activeIcon, setActiveIcon] = useState(null);
-
+  const [childId, setChildId] = useState('');
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
       setAccessToken(token);
       // console.log(accessToken);
     }
+
+    const childId = localStorage.getItem("childId");
+    if (childId) {
+      setChildId(childId);
+    }
   }, []);
 
   const toggleLaughColor = () => {
     setActiveIcon(activeIcon === 'laugh' ? null : 'laugh');
+    axios.post(`${API_DOMAIN}/contents/${content}/like`, 
+      JSON.stringify({
+        childId : childId
+      }),
+      {
+        headers : {
+          Authorization : `Bearer ${accessToken}`,
+          "Content-Type"  : "application/json"
+        },
+      }
+    );
+
+
   };
 
   const toggleFrownColor = () => {
@@ -74,6 +92,7 @@ const ContentsDetail = () => {
 
             <img src={poster} alt="책 이미지" />
             <div style={{ marginTop: '15px' }}>
+              {/** 좋아요 버튼 */}
               <FaRegLaughSquint
                 style={{
                   marginRight: '50px',

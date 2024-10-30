@@ -49,7 +49,7 @@ const AdminContents = () => {
 
   const deleteContent = async () => {
     try {
-      const response = await axios.patch(`${API_DOMAIN}/contents/delete/${content}`,
+      const response = await axios.patch(`${API_DOMAIN}/contents/admin/delete/${content}`,
         {},
         {
           headers: {
@@ -57,7 +57,7 @@ const AdminContents = () => {
           }
         }
       );
-      window.location.href = `http://localhost:3000/adminUpload`;
+      window.location.href = `http://localhost:3000/admin`;
     } catch (error) {
       console.error(error);
     }

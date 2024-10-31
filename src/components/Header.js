@@ -191,7 +191,8 @@ const handleSearch = (e) => {
 
 const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search/${searchQuery}`);
+    localStorage.setItem("keyword", searchQuery);
+    navigate(`/search`);
 };
 
 return (
@@ -235,7 +236,7 @@ return (
                             </ul>
                         </div>
                     )}
-                    {menuOpen && userRole === 'GUEST' && (
+                    {menuOpen && userRole === 'ADMIN' && (
                         <div className="dropdown-menu">
                             <ul>
                                 <li onClick={() => navigate("/admin")}>Home</li>

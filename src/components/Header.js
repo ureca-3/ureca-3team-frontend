@@ -136,7 +136,7 @@ const logout = async () => {
                 'Content-Type': 'application/json',
             },
         });
-        localStorage.removeItem("jwtToken");
+        localStorage.clear(); 
         setAccessToken("");
         window.location.href = `${CLIENT_DOMAIN}/sign`;
     } catch (error) {

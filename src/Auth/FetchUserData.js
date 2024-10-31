@@ -55,7 +55,7 @@ const FetchUserData = () => {
 
     useEffect(() => {
         if (userRole && userRole === "USER") getChildData(accessToken);
-        if (userRole && userRole === "GUEST") window.location.href = `${CLIENT_DOMAIN}/admin`;
+        if (userRole && userRole === "ADMIN") window.location.href = `${CLIENT_DOMAIN}/admin`;
     }, [userRole, accessToken]);
 
     useEffect(() => {

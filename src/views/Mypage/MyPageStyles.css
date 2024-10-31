@@ -241,17 +241,6 @@ hr {
   display: flex;
 }
 
-.edit-buttons,
-.confirm-buttons {
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  padding: 5px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-}
-
 .button:hover {
   background-color: #ffffff;
 }
@@ -311,4 +300,25 @@ select::-ms-expand {
   outline: none;
   border-color: #ff8aa8;
   box-shadow: 0 0 8px rgba(255, 138, 168, 0.3);
+}
+
+.buttons {
+  gap: 10px;
+}
+.child-edit-buttons {
+  font-family: 'UhBeeSe_hyun';
+  background-color: #e0e0e0;
+  color: #f77e8c;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.child-confirm-buttons {
+  font-family: 'UhBeeSe_hyun';
+  background-color: #f77e8c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
 }

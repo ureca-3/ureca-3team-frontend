@@ -11,6 +11,7 @@ const ContentsSearch = () => {
     const [searchData, setSearchData] = useState([]);
     const [keyword, setKeyword] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [userRole, setUserRole] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,9 +35,21 @@ const ContentsSearch = () => {
     useEffect(() => {
         if (accessToken && keyword) {
             getSearchData(accessToken, keyword);
+            getData(accessToken);
         }
     }, [accessToken, keyword]);
 
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+    
+        setUserRole(kakaoUser.data.result.role);
+    }
+    
     const getSearchData = async (accessToken, keyword) => {
         try {
             const response = await axios.get(`${API_DOMAIN}/contents/search`, {
@@ -57,6 +70,11 @@ const ContentsSearch = () => {
         }
     };
 
+    const goDetail = (contentId) => {
+        if (userRole === 'ADMIN') navigate(`/adminContents/${contentId}`);
+        if (userRole === 'USER') navigate(`/${contentId}`);
+    }
+
     return (
         <div className='search-container'>
             <Header />
@@ -69,7 +87,7 @@ const ContentsSearch = () => {
                 ) : searchData? (
                     <>
                             {searchData.map((content, index) => (
-                                <div key={index} className="content-item" onClick={() => navigate(`/${content.id}`)}>
+                                <div key={index} className="content-item" onClick={() => goDetail(content.id)}>
                                     <img src={content.posterUrl} alt={content.title} className="content-poster" />
                                     <div className="content-details">
                                         <span className="content-title">{content.title}</span>

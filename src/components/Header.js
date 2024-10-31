@@ -126,10 +126,11 @@ const Header = ({ showLoginInfoOnly }) => {
         setSearchQuery(e.target.value);
     };
 
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        navigate(`/search/${searchQuery}`);
-    };
+const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem("keyword", searchQuery);
+    navigate(`/search`, { state: { keyword: searchQuery } });
+};
 
     return (
         <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>            {/* showLoginInfoOnly가 true일 때는 로그인 정보만 표시 */}

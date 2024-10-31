@@ -54,7 +54,7 @@ function App() {
         <Route path='/:content' element={<ContentsDetail />} />
 
         {/** 콘텐츠 검색 */}
-        <Route path='/search/:keyword' element={<ContentsSearch />} />
+        <Route path='/search' element={<ContentsSearch />} />
 
         {/** 관리자 페이지 */}
         <Route path='/admin' element={<AdminMain />} />

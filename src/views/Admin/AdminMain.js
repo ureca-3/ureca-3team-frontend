@@ -34,19 +34,20 @@ const AdminMain = () => {
         setContentsData(response.data.result);
         // console.log(response.data.result);
     };
-    
+
     return (
         <div>
             <Header />
             <div className='main-container' >
-                {contentsData.map((content, index) => (
-                    <div key={index} className="content-item" onClick={() => navigate(`/adminContents/${content.id}`)}>
-                        <img src={content.posterUrl} alt={content.title} className="content-poster" />
-                        <div className="content-details">
-                            <span className="content-title">{content.title}</span>
-                        </div>
-                    </div>
-                ))}
+                {contentsData ?
+                    contentsData.map((content, index) => (
+                        <div key={index} className="content-item" onClick={() => navigate(`/adminContents/${content.id}`)}>
+                            <img src={content.posterUrl} alt={content.title} className="content-poster" />
+                            <div className="content-details">
+                                <span className="content-title">{content.title}</span>
+                            </div>
+                        </div> ))
+                    : <>데이터가 없습니다.</>}
             </div>
         </div>
     )

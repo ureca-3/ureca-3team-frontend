@@ -39,7 +39,7 @@ const MyPage = () => {
             // mbti 결과값 유무
             if (activeData) {
                 // 있으면 메인 페이지로 이동
-                navigate('/home', { state: { childId: childId } });
+                navigate('/main', { state: { childId: childId } });
             } else {
                 // 없으면 진단하기 페이지로 이동
                 navigate('/mbtiStart', { state: { childId: childId } });

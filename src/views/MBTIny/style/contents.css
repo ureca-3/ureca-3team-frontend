@@ -1,0 +1,9 @@
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    flex-direction: row;
+    padding: 20px;
+    gap: 15px;
+    overflow-y: auto;
+}

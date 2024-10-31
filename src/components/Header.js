@@ -225,8 +225,8 @@ return (
                             <ul>
                                 {childData ? (
                                     <>
-                                        <li onClick={goChildDetail} style={{ border: '1px dotted gray' }}><img src={childData.profileUrl} style={{ width: '60px', height: '60px', borderRadius: '50%' }}></img>{childData.name} </li>
-                                        <li onClick={() => navigate('/home')}>Home</li>
+                                        <li onClick={goChildDetail} style={{ border: '1px solid gray', borderRadius: '10px'  }}>우리 아이 : <img src={childData.profileUrl} style={{ width: '60px', marginRight: '15px', borderRadius: '50%' }}></img>{childData.name} </li>
+                                        <li onClick={() => navigate('/main')}>Home</li>
                                         <li onClick={GoMbtiStart}>MBTI</li>
                                         <li onClick={GoHistory}>HISTORY</li>
                                         <li onClick={MbtiData}>Data</li>
@@ -249,21 +249,21 @@ return (
                     )}
                 </div>
 
-                <div className="search-bar">
-                    <form onSubmit={handleSearchSubmit} className="search-form">
-                        <input
-                            type="text"
-                            placeholder="콘텐츠를 입력하세요."
-                            value={searchQuery}
-                            onChange={handleSearch}
-                        />
-                        <button type="submit" className="search-button">
-                            <FcSearch />
-                        </button>
-                    </form>
-                </div>
 
                 <div className="user-info">
+                    <div className="search-bar">
+                        <form onSubmit={handleSearchSubmit} className="search-form">
+                            <input
+                                type="text"
+                                placeholder="콘텐츠를 입력하세요."
+                                value={searchQuery}
+                                onChange={handleSearch}
+                            />
+                            <button type="submit" className="search-button">
+                                <FcSearch />
+                            </button>
+                        </form>
+                    </div>
                     <img src={userProfile} alt="Profile" className="profile-image" onClick={toggleUserMenu} />
                     {userMenu && (
                         <div className="dropdown-user-menu">
@@ -285,7 +285,7 @@ return (
         {showNotifications && (
             <div className="notification-slide">
                 <h2>알림</h2>
-                <button className="close-button" onClick={handleNotice}>닫기</button>
+                <button className="close-button" onClick={handleNotice}>🆇</button>
                 <div className="notification-content">
                     {notifications.length > 0 ? (
                         notifications.map((notification, index) => (

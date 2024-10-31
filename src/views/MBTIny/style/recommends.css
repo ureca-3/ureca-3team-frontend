@@ -1,0 +1,129 @@
+/* Main container styling */
+.recommd-main-container {
+    width: 100%; 
+    overflow-x: hidden;
+    height: 400px;
+}
+
+.recommd-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #FFE7EB;
+    padding: 20px;
+}
+
+.recommended-books {
+    padding: 60px;
+}
+
+.recommended-books h3{
+    margin-bottom: 5px;
+}
+.recommended-books.latest h3::before {
+    content: "👍🏼"; /* 사용할 이모티콘 */
+    margin-right: 10px;
+    font-size: 1.5em; /* 이모티콘만 크게 설정 */
+    display: inline-block;
+    line-height: 1; /* 이모티콘의 세로 위치를 텍스트와 맞춤 */
+}
+.recommended-books.similar h3::before {
+    content: "📕"; /* 사용할 이모티콘 */
+    margin-right: 10px;
+    font-size: 1.5em; /* 이모티콘만 크게 설정 */
+    display: inline-block;
+    line-height: 1; /* 이모티콘의 세로 위치를 텍스트와 맞춤 */
+}
+.recommended-books.friends h3::before {
+    content: "🙋🏻‍♀️"; /* 사용할 이모티콘 */
+    margin-right: 10px;
+    font-size: 1.5em; /* 이모티콘만 크게 설정 */
+    display: inline-block;
+    line-height: 1; /* 이모티콘의 세로 위치를 텍스트와 맞춤 */
+}
+.recommended-books p{
+    padding-left: 20px; /* 원하는 만큼의 들여쓰기 설정 */
+    font-size: 12px; /* 적절한 크기로 폰트 조절 */
+    color:rgb(242, 58, 128);
+}
+
+.book-container {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scroll-behavior: smooth;
+    padding: 20px 20px 0;
+    width: 1550px;
+}
+
+.book-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.book-item {
+    min-width: 180px;
+    max-width: 180px;
+    text-align: center;
+    flex-shrink: 0;
+    
+}
+
+.book-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.book-cover:hover {
+    transform: scale(1.05);
+}
+
+.book-item p {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #333;
+    font-weight: 100;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Scroll button styling */
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.scroll-button.left {
+    left: 0;
+}
+
+.scroll-button.right {
+    right: 0;
+}
+
+.scroll-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.recommd-container {
+    background-color: #FFE7EB;
+    height: var(—vh, 100vh);
+
+}

@@ -132,8 +132,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9e8e8;
+  background-color: #FFE7EB;
   position: relative;
+  height: 100vh;
 }
 
 .child-image {

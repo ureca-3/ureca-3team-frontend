@@ -213,9 +213,9 @@ const ChildDetails = () => {
             </div>
           </div>
           <div className="buttons">
-            <button className="edit-buttons" onClick={handleEdit}>수정</button>
+            <button className="child-edit-buttons" onClick={handleEdit}>수정</button>
             {isEditing && (
-              <button className="confirm-buttons" onClick={handleConfirm}>확인</button>
+              <button className="child-confirm-buttons" onClick={handleConfirm}>확인</button>
             )}
           </div>
 

@@ -70,7 +70,7 @@ export default function ChildRegister() {
             }
 
             // axios를 사용한 POST 요청
-            axios.post('http://localhost:8080/api/v1/child', formData, {
+            axios.post(`${API_DOMAIN}/child`, formData, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

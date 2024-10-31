@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import { useNavigate } from 'react-router-dom';
+import { API_DOMAIN } from '../../api/domain';
 import './style/register.css';
 import '../Page.css';
 

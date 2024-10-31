@@ -192,8 +192,10 @@ const handleSearch = (e) => {
 const handleSearchSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("keyword", searchQuery);
-    navigate(`/search`);
+    navigate(`/search`, { state: { keyword: searchQuery } });
 };
+
+
 
 return (
     <header className={`header-container ${showLoginInfoOnly ? 'row-reverse' : ''}`}>

@@ -3,7 +3,7 @@ import './styles.css';
 import Header from '../../components/Header';
 import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
-import { API_DOMAIN } from '../../api/domain';
+import { API_DOMAIN, CLIENT_DOMAIN } from '../../api/domain';
 import noImage from './no-image.png';
 import DatePicker from 'react-datepicker';
 
@@ -52,7 +52,7 @@ const AdminUpload = () => {
             );
 
             const contentId = response.data.result;
-            window.location.href = `http://localhost:3000/adminContents/${contentId}`;
+            window.location.href = `${CLIENT_DOMAIN}/adminContents/${contentId}`;
         } catch (error) {
             console.error('Error saving content:', error);
         } finally {

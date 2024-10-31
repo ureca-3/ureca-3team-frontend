@@ -3,7 +3,7 @@ import './styles.css';
 import Header from '../../components/Header';
 import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
-import { API_DOMAIN } from '../../api/domain';
+import { API_DOMAIN, CLIENT_DOMAIN } from '../../api/domain';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 
@@ -91,7 +91,7 @@ const AdminEdit = () => {
                 console.error(error);
             }
         }
-        window.location.href = `http://localhost:3000/adminContents/${content}`;
+        window.location.href = `${CLIENT_DOMAIN}/adminContents/${content}`;
 
     };
     return (

@@ -6,6 +6,7 @@ import '../Page.css';
 import './style/question.css';
 import questions from './data/questions';
 import axios from 'axios';
+import { API_DOMAIN } from '../../api/domain';
 
 export default function MbtiQuestion() {
     const location = useLocation();
@@ -75,8 +76,7 @@ export default function MbtiQuestion() {
 
     // 결과를 백엔드로 전송하는 함수 (예: POST 요청)
     const sendResultsToBackend = (averages) => {
-        // const token = localStorage.getItem('token');
-        const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
+        const token = localStorage.getItem('jwtToken');
     
          // 토큰이 null인지 확인하여 오류 방지
         if (!token) {
@@ -85,7 +85,7 @@ export default function MbtiQuestion() {
         }
 
         // axios를 사용한 POST 요청
-        axios.post(`http://localhost:8080/api/v1/assessment/${child_id}`, averages, {
+        axios.post(`${API_DOMAIN}/assessment/${child_id}`, averages, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,

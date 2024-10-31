@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { API_DOMAIN } from "../api/domain";
+import { API_DOMAIN, CLIENT_DOMAIN } from "../api/domain";
 import axios from "axios";
 
 const FetchUserData = () => {
@@ -46,19 +46,22 @@ const FetchUserData = () => {
             setAccessToken(token);
             localStorage.setItem("jwtToken", token);
             getData(token); 
+        } 
+        else {
+            window.location.href = `${CLIENT_DOMAIN}/sign`;
         }
 
     }, [location.search]);
 
     useEffect(() => {
         if (userRole && userRole === "USER") getChildData(accessToken);
-        if (userRole && userRole === "GUEST") window.location.href = "http://localhost:3000/admin";
+        if (userRole && userRole === "ADMIN") window.location.href = `${CLIENT_DOMAIN}/admin`;
     }, [userRole, accessToken]);
 
     useEffect(() => {
         if (childData !== null) {
-            if (childData.result && childData.result.length > 0) window.location.href = "http://localhost:3000/mypage";
-            else window.location.href = "http://localhost:3000/register";
+            if (childData.result && childData.result.length > 0) window.location.href = `${CLIENT_DOMAIN}/mypage`;
+            else window.location.href = `${CLIENT_DOMAIN}/register`;
         }
     }, [childData]);
 

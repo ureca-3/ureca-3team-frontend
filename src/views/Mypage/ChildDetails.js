@@ -10,6 +10,7 @@ const ChildDetails = () => {
   const [childId, setChildId] = useState('');
   const [childData, setChildData] = useState('');
   const [activeData, setActiveData] = useState([]);
+  const [resultYn, setResultYn] = useState([]);
   const [eiScore, setEiScore] = useState('');
   const [snScore, setSnScore] = useState('');
   const [tfScore, setTfScore] = useState('');
@@ -52,7 +53,7 @@ const ChildDetails = () => {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        const mbtiData = response.data.result;
+        const mbtiData = response.data?.result || [];
         const activeData = mbtiData.find(item => item.status === "ACTIVE");
         if (activeData) {
           setActiveData(activeData);
@@ -61,6 +62,9 @@ const ChildDetails = () => {
           setJpScore(activeData.jpScore);
           setSnScore(activeData.snScore);
           setTfScore(activeData.tfScore);
+          setResultYn(true);
+        } else {
+          setResultYn(false);
         }
       })
       .catch(error => {
@@ -149,73 +153,80 @@ const ChildDetails = () => {
           </div>
           <div className="mbti-chart" >
 
-            {/* I vs E */}
-            <div className="chart-item">
-              <span className="label">I ({100 - eiScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
-                  {mbti.includes('I') ? (
-                    <div className="fill-left" style={{ width: `${100 - eiScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${eiScore}%` }}></div>
-                  )}
+            {resultYn ? (
+              <>
+                {/* I vs E */}
+                <div className="chart-item">
+                  <span className="label">I ({100 - eiScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
+                      {mbti.includes('I') ? (
+                        <div className="fill-left" style={{ width: `${100 - eiScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${eiScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">E ({eiScore}%)</span>
                 </div>
-              </div>
-              <span className="label">E ({eiScore}%)</span>
-            </div>
 
-            {/* N vs S */}
-            <div className="chart-item">
-              <span className="label">N ({100 - snScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* N vs S */}
+                <div className="chart-item">
+                  <span className="label">N ({100 - snScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('N') ? (
-                    <div className="fill-left" style={{ width: `${100 - snScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${snScore}%` }}></div>
-                  )}
+                      {mbti.includes('N') ? (
+                        <div className="fill-left" style={{ width: `${100 - snScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${snScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">S ({snScore}%)</span>
                 </div>
-              </div>
-              <span className="label">S ({snScore}%)</span>
-            </div>
 
-            {/* F vs T */}
-            <div className="chart-item">
-              <span className="label">F ({100 - tfScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* F vs T */}
+                <div className="chart-item">
+                  <span className="label">F ({100 - tfScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('F') ? (
-                    <div className="fill-left" style={{ width: `${100 - tfScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${tfScore}%` }}></div>
-                  )}
+                      {mbti.includes('F') ? (
+                        <div className="fill-left" style={{ width: `${100 - tfScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${tfScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">T ({tfScore}%)</span>
                 </div>
-              </div>
-              <span className="label">T ({tfScore}%)</span>
-            </div>
 
-            {/* P vs J */}
-            <div className="chart-item">
-              <span className="label">P ({100 - jpScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* P vs J */}
+                <div className="chart-item">
+                  <span className="label">P ({100 - jpScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('P') ? (
-                    <div className="fill-left" style={{ width: `${100 - jpScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${jpScore}%` }}></div>
-                  )}
+                      {mbti.includes('P') ? (
+                        <div className="fill-left" style={{ width: `${100 - jpScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${jpScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">J ({jpScore}%)</span>
                 </div>
-              </div>
-              <span className="label">J ({jpScore}%)</span>
-            </div>
+
+              </>
+            ) : (
+              <p className="no-result-message">진단 결과가 없습니다.</p>
+            )}
           </div>
           <div className="buttons">
-            <button className="edit-buttons" onClick={handleEdit}>수정</button>
+            <button className="child-edit-buttons" onClick={handleEdit}>수정</button>
             {isEditing && (
-              <button className="confirm-buttons" onClick={handleConfirm}>확인</button>
+              <button className="child-confirm-buttons" onClick={handleConfirm}>확인</button>
             )}
           </div>
 

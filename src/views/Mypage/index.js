@@ -10,6 +10,7 @@ const MyPage = () => {
     const [userName, setUserName] = useState('');
     const [userProfile, setUserProfile] = useState('');
     const [accessToken, setAccessToken] = useState('');
+    const [activeData, setActiveData] = useState([]);
     const [childData, setChildData] = useState([]);
     const [userRole, setUserRole] = useState('');
     const navigate = useNavigate();
@@ -23,9 +24,28 @@ const MyPage = () => {
 
     const changeChildProfile = (childId) => {
         localStorage.setItem("childId", childId);
-        navigate('/home', { state: { childId: childId } }); // 메인 페이지로 이동하면서 childId 값 전달
+        // 자녀 id를 가지고 mbti 결과값 유무 확인 
+        checkChildMbtiYn(childId);
     };
 
+    const checkChildMbtiYn = async (childId) => {
+        await axios.get(`${API_DOMAIN}/assessment/${childId}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(response => {
+            const mbtiData = response.data?.result || [];
+            const activeData = mbtiData.find(item => item.status === "ACTIVE");
+            // mbti 결과값 유무
+            if (activeData) {
+                // 있으면 메인 페이지로 이동
+                navigate('/home', { state: { childId: childId } });
+            } else {
+                // 없으면 진단하기 페이지로 이동
+                navigate('/mbtiStart', { state: { childId: childId } });
+            }
+        });
+    }
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
             headers:

@@ -3,7 +3,7 @@ import './styles.css';
 import Header from '../../components/Header';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { API_DOMAIN } from '../../api/domain';
+import { API_DOMAIN, CLIENT_DOMAIN } from '../../api/domain';
 
 const AdminContents = () => {
 
@@ -44,7 +44,7 @@ const AdminContents = () => {
 
   const editContent = () => {
     // console.log("수정 버튼");
-    window.location.href = `http://localhost:3000/adminEdit/${content}`;
+    window.location.href = `${CLIENT_DOMAIN}/adminEdit/${content}`;
   }
 
   const deleteContent = async () => {
@@ -57,7 +57,7 @@ const AdminContents = () => {
           }
         }
       );
-      window.location.href = `http://localhost:3000/admin`;
+      window.location.href = `${CLIENT_DOMAIN}/admin`;
     } catch (error) {
       console.error(error);
     }

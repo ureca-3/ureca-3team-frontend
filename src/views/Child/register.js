@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
 import { useNavigate } from 'react-router-dom';
+import { API_DOMAIN } from '../../api/domain';
 import './style/register.css';
 import '../Page.css';
 
@@ -61,8 +62,7 @@ export default function ChildRegister() {
             };
 
 
-            // const token = localStorage.getItem('token');
-            const token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTczMDYwOTM0MSwiaWF0IjoxNzMwMDkwOTQxLCJpZCI6MSwicm9sZXMiOiJST0xFX1VTRVIifQ.Bj9Oy2TdrgJs6nvmP0JybSjfLzgCIWTirXQS5KXy4Zsi5ynKXFp2FC1OQvTeZ-3Wx44T-vjoGWlJYQhN5T0sYg';
+            const token = localStorage.getItem('jwtToken');
             // 토큰이 null인지 확인하여 오류 방지
             if (!token) {
                 setConfirmMsg('인증 토큰이 없습니다.');
@@ -71,7 +71,7 @@ export default function ChildRegister() {
             }
 
             // axios를 사용한 POST 요청
-            axios.post('http://localhost:8080/api/v1/child', formData, {
+            axios.post(`${API_DOMAIN}/child`, formData, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { API_DOMAIN, CLIENT_DOMAIN } from '../../api/domain';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
+import imageCompression from 'browser-image-compression';
 
 const AdminEdit = () => {
     const [accessToken, setAccessToken] = useState('');
@@ -19,6 +20,7 @@ const AdminEdit = () => {
     const [author, setAuthor] = useState('');
     const [publisher, setPublisher] = useState('');
     const [publicationYear, setPublicationYear] = useState('');
+    const [imgSrc, setImgSrc] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
@@ -51,12 +53,23 @@ const AdminEdit = () => {
     }, [content, accessToken]);
 
 
-    const handleImageUpload = (event) => {
+    const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const fileUrl = URL.createObjectURL(file);
-            setFileName(file.name);
-            setPoster(fileUrl);
+            const options = {
+                maxSizeMB: 1,
+                maxWithOrHeight: 1000,
+            }
+
+            const compressedFile = await imageCompression(file, options);
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                setImgSrc(reader.result);
+                setPoster(compressedFile);
+                setFileName(compressedFile.name);
+            }
+            reader.readAsDataURL(compressedFile);
         }
     }
 
@@ -68,18 +81,24 @@ const AdminEdit = () => {
         // 변경된 데이터만 추출
         const changes = {};
         if (title !== bookData.title) changes.title = title;
-        if (poster !== bookData.posterUrl) changes.posterUrl = poster;
         if (description !== bookData.description) changes.description = description;
         if (author !== bookData.author) changes.author = author;
         if (publisher !== bookData.publisher) changes.publisher = publisher;
         if (publicationYear !== bookData.publicationYear) changes.publicationYear = publicationYear;
 
         // 서버에 전송할 데이터가 존재할 때만 요청 실행
-        if (Object.keys(changes).length > 0) {
+        if (Object.keys(changes).length > 0 || poster) {
             try {
+
+                const formData = new FormData();
+                formData.append("request",
+                    new Blob([JSON.stringify(changes)], { type: 'application/json' }));
+
+                if (poster !== bookData.poster ) formData.append("newImage", poster);
+
                 const response = await axios.patch(
                     `${API_DOMAIN}/contents/admin/update/${content}`,
-                    changes,
+                    formData,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`
@@ -99,11 +118,11 @@ const AdminEdit = () => {
             <Header />
             <div className='main-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 
-                <div style={{ display: 'flex', marginLeft:'20%' }}>
+                <div style={{ display: 'flex', marginLeft: '20%' }}>
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>수정</button>
-                        <img src={poster}></img>
+                        <img src={imgSrc || poster}></img>
                         <div>
                             <input
                                 type="text"

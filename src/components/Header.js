@@ -93,7 +93,7 @@ const Header = ({ showLoginInfoOnly }) => {
 // 알림 클릭 시 삭제
 const handleNotificationClick = (notification, index) => {
     if (notification.contentId) {
-        window.location.href = `${CLIENT_DOMAIN}/${notification.contentId}`;
+        window.location.href = `${CLIENT_DOMAIN}/contentsDetail/${notification.contentId}`;
     }
     setNotifications((prev) => {
         // window.location.href = `http://localhost:3000/`

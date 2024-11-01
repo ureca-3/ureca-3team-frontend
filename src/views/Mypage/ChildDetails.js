@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './MyPageStyles.css';
 import Header from '../../components/Header';
 import axios from 'axios';
 import { API_DOMAIN } from '../../api/domain';
 import DatePicker from 'react-datepicker';
+import imageCompression from 'browser-image-compression';
 
 const ChildDetails = () => {
   const [accessToken, setAccessToken] = useState('');
@@ -20,7 +21,10 @@ const ChildDetails = () => {
   const [editedName, setEditedName] = useState('');
   const [editedGender, setEditedGender] = useState('');
   const [editedBirthday, setEditedBirthday] = useState('');
-
+  const [editedProfile, setEditedProfile] = useState('');
+  const [imgSrc, setImgSrc] = useState('');
+  const [profileUrl, setProfileUrl] = useState('');
+  const fileInputRef = useRef();
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -45,6 +49,7 @@ const ChildDetails = () => {
         setEditedName(response.data.result.name);
         setEditedGender(response.data.result.gender);
         setEditedBirthday(response.data.result.birthday);
+        setEditedProfile(response.data.result.profileUrl);
       });
   };
 
@@ -76,24 +81,78 @@ const ChildDetails = () => {
     setIsEditing(true);
   };
 
-  const handleConfirm = () => {
-    const updatedData = {
-      name: editedName,
-      gender: editedGender,
-      birthday: editedBirthday,
-    };
-
-    axios.patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    })
-      .then(() => {
-        setIsEditing(false);
-        fetchChildData(childId, accessToken);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
   };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1000
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setImgSrc(reader.result);
+        setProfileUrl(compressedFile);
+      };
+
+      reader.readAsDataURL(compressedFile);
+    }
+  };
+  const handleConfirm = () => {
+    if (
+      childData.name !== editedName ||
+      childData.gender !== editedGender ||
+      childData.birthday !== editedBirthday
+    ) {
+      const updatedData = {
+        name: editedName,
+        gender: editedGender,
+        birthday: editedBirthday,
+      };
+
+      axios
+        .patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then(() => {
+          setIsEditing(false);
+          fetchChildData(childId, accessToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    // 프로필 사진 변경
+    if (profileUrl && profileUrl !== childData.profileUrl) {
+      const formData = new FormData();
+      formData.append("profileUrl", profileUrl);
+
+      axios
+        .patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(() => {
+          setIsEditing(false);
+          fetchChildData(childId, accessToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    window.location.reload();
+
+  };
+
 
   return (
     <div>
@@ -101,7 +160,19 @@ const ChildDetails = () => {
       <div className="profile-page">
         <div className="profile-containers">
           <div className="child-image" >
-            <img src={childData.profileUrl} alt="Profile" />
+            {isEditing ? (
+              <div>
+                <img src={imgSrc || childData.profileUrl} alt="Profile" onClick={handleUploadClick} />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+              </div>
+            ) : (
+              < img src={childData.profileUrl} alt="Profile" />
+            )}
           </div>
           {isEditing ? (
             <input

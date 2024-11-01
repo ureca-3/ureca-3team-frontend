@@ -72,7 +72,7 @@ const ContentsSearch = () => {
 
     const goDetail = (contentId) => {
         if (userRole === 'ADMIN') navigate(`/adminContents/${contentId}`);
-        if (userRole === 'USER') navigate(`/${contentId}`);
+        if (userRole === 'USER') navigate(`/contentsDetail/${contentId}`);
     }
 
     return (

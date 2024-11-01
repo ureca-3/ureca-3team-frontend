@@ -123,6 +123,6 @@
 
 .recommd-container {
     background-color: #FFE7EB;
-    height: var(—vh, 100vh);
+    height: 100vh; /* 필요에 따라 높이 조정 */
 
 }

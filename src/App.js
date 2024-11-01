@@ -59,7 +59,7 @@ function App() {
         <Route path='/sign' element={<SignIn />}></Route>
 
         {/** 콘텐츠 상세 */} 
-        <Route path='/:content' element={<ContentsDetail />} />
+        <Route path='/contentsDetail/:content' element={<ContentsDetail />} />
 
         {/** 콘텐츠 검색 */}
         <Route path='/search' element={<ContentsSearch />} />

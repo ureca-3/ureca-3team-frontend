@@ -5,25 +5,19 @@ import './style/main.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_DOMAIN } from "../../api/domain";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ContentsTab from './contentsTab';
 import RecommendsTab from './recommendsTab';
 
 export default function MainContents() {
+    const location = useLocation();
     const [accessToken, setAccessToken] = useState('');
     const [userName, setUserName] = useState('');
     const [firstRecommd, setFirstRecommdData] = useState([]); // 최근 좋아요 한 도서 목록
     const [secondRecommd, setSecondRecommdData] = useState([]); // 우리 아이가 좋아한 도서와 유사한 도서
     const [thirdRecommd, setThirdRecommdData] = useState([]); // 우리 아이와 비슷한 성향의 친구들이 추천한 도서
-    const [activeTab, setActiveTab] = useState("contents");
-    const location = useLocation();
+    const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'contents');
     const childId = location.state?.child_id || localStorage.getItem("childId");
-    const navigate = useNavigate();
-
-    // const goContentDetail = (contentId) => {
-    //     console.log(`Navigating to content ID: ${contentId}`); // 로그 추가
-    //     navigate(`/${contentId}`);
-    // };
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
@@ -75,7 +69,11 @@ export default function MainContents() {
             console.error("Error fetching child data:", error);
         }
     };
-
+    useEffect(() => {
+        if (location.state?.activeTab) {
+            setActiveTab(location.state.activeTab);
+        }
+    }, [location.state]);
 
     return (
         <div>
@@ -92,7 +90,7 @@ export default function MainContents() {
                         firstRecommd={firstRecommd}
                         secondRecommd={secondRecommd}
                         thirdRecommd={thirdRecommd}
-                        // goContentDetail={goContentDetail}
+                    // goContentDetail={goContentDetail}
                     />
                 )}
             </div>

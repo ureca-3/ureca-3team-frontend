@@ -41,7 +41,7 @@ export default function MbtiResult() {
 
 
     const goHome = () => {   
-        navigate('/mypage');  
+        navigate('/main');  
     };
 
 
@@ -126,7 +126,7 @@ export default function MbtiResult() {
                                 </div>
                             </div>
                             <div>
-                                <button className='goHome' onClick={goHome}>마이페이지 가기</button>
+                                <button className='goHome' onClick={goHome}>Home</button>
                             </div>
                         </div>
                     </div>

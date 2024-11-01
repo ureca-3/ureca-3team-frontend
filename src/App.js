@@ -1,6 +1,8 @@
 import './App.css';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import MBTInyMain from './views/MBTIny';
+import RecommendsTab from './views/MBTIny/recommendsTab';
+import Main from './views/MBTIny/main';
+import ContentsTab from './views/MBTIny/contentsTab';
 import MyPage from './views/Mypage';
 import History from './views/History/history';
 import Mdata from './views/MbtiData/mbtiData';
@@ -24,7 +26,13 @@ function App() {
       <Routes>
 
         {/** 메인페이지 */}
-        <Route path="/home" element={<MBTInyMain />} />
+        <Route path="/main" element={<Main />} />
+        
+        {/** 메인(추천)페이지 */}
+        <Route path="/recommendsTab" element={<RecommendsTab />} />
+
+        {/** 메인(콘텐츠)페이지 */}
+        <Route path="/contentsTab" element={<ContentsTab />} />
 
         {/** 로그인 */}
         <Route path="/" element={<FetchUserData />} />
@@ -51,7 +59,7 @@ function App() {
         <Route path='/sign' element={<SignIn />}></Route>
 
         {/** 콘텐츠 상세 */} 
-        <Route path='/:content' element={<ContentsDetail />} />
+        <Route path='/contentsDetail/:content' element={<ContentsDetail />} />
 
         {/** 콘텐츠 검색 */}
         <Route path='/search' element={<ContentsSearch />} />

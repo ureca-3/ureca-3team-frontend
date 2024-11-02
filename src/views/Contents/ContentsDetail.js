@@ -41,8 +41,8 @@ const ContentsDetail = () => {
 
   const handleFeedbackError = (action) => {
     const message = action === "like"
-      ? '이미 "싫어요"의 피드백을 주셨어요! "싫어요"를 취소하고 다시 피드백을 주세요!'
-      : '이미 "좋아요"의 피드백을 주셨어요! "좋아요"를 취소하고 다시 피드백을 주세요!'
+      ? '이미 "싫어요"의 피드백을 주셨어요! \n "싫어요"를 취소하고 다시 피드백을 주세요!'
+      : '이미 "좋아요"의 피드백을 주셨어요! \n "좋아요"를 취소하고 다시 피드백을 주세요!'
     setConfirmMsg(message);
     setShowConfirm(true);
   };
@@ -168,7 +168,7 @@ const ContentsDetail = () => {
 
             <div className="book-info">
               <h2 className="book-title">{title}</h2>
-              <p className="book-author">{publisher}<br />{author}</p>
+              <p className="book-author">출판사 : {publisher} | 저자 : {author}</p>
               <p className="book-description">
                 {description}
               </p>

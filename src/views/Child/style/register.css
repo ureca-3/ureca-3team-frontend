@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffecec;
-    height: var(—vh, 100vh);
-
+    background-color: #ffe7eb;
+    /* height: var(—vh, 100vh); */
+    height: 100vh;
 }
 
 .register-content-container {

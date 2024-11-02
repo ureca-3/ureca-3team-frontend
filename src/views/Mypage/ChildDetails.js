@@ -143,8 +143,11 @@ const ChildDetails = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        .then(() => {
-          fetchChildData(childId, accessToken);
+        .then((response) => {
+          setChildData((prevData) => ({
+            ...prevData,
+            profileUrl: response.data.result.profileUrl,
+          }));
         })
         .catch((error) => {
           console.error(error);
@@ -160,7 +163,7 @@ const ChildDetails = () => {
     <div>
       <Header />
       <div className="profile-page">
-        <div className="profile-containers">
+        <div className="profile-containers" >
           <div className="child-image" >
             {isEditing ? (
               <div>

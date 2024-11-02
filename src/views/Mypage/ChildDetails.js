@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './MyPageStyles.css';
 import Header from '../../components/Header';
 import axios from 'axios';
 import { API_DOMAIN } from '../../api/domain';
 import DatePicker from 'react-datepicker';
+import imageCompression from 'browser-image-compression';
 
 const ChildDetails = () => {
   const [accessToken, setAccessToken] = useState('');
   const [childId, setChildId] = useState('');
   const [childData, setChildData] = useState('');
   const [activeData, setActiveData] = useState([]);
+  const [resultYn, setResultYn] = useState([]);
   const [eiScore, setEiScore] = useState('');
   const [snScore, setSnScore] = useState('');
   const [tfScore, setTfScore] = useState('');
@@ -19,7 +21,10 @@ const ChildDetails = () => {
   const [editedName, setEditedName] = useState('');
   const [editedGender, setEditedGender] = useState('');
   const [editedBirthday, setEditedBirthday] = useState('');
-
+  const [editedProfile, setEditedProfile] = useState('');
+  const [imgSrc, setImgSrc] = useState('');
+  const [profileUrl, setProfileUrl] = useState('');
+  const fileInputRef = useRef();
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -44,6 +49,7 @@ const ChildDetails = () => {
         setEditedName(response.data.result.name);
         setEditedGender(response.data.result.gender);
         setEditedBirthday(response.data.result.birthday);
+        setEditedProfile(response.data.result.profileUrl);
       });
   };
 
@@ -52,7 +58,7 @@ const ChildDetails = () => {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        const mbtiData = response.data.result;
+        const mbtiData = response.data?.result || [];
         const activeData = mbtiData.find(item => item.status === "ACTIVE");
         if (activeData) {
           setActiveData(activeData);
@@ -61,6 +67,9 @@ const ChildDetails = () => {
           setJpScore(activeData.jpScore);
           setSnScore(activeData.snScore);
           setTfScore(activeData.tfScore);
+          setResultYn(true);
+        } else {
+          setResultYn(false);
         }
       })
       .catch(error => {
@@ -72,24 +81,78 @@ const ChildDetails = () => {
     setIsEditing(true);
   };
 
-  const handleConfirm = () => {
-    const updatedData = {
-      name: editedName,
-      gender: editedGender,
-      birthday: editedBirthday,
-    };
-
-    axios.patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    })
-      .then(() => {
-        setIsEditing(false);
-        fetchChildData(childId, accessToken);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
   };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1000
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setImgSrc(reader.result);
+        setProfileUrl(compressedFile);
+      };
+
+      reader.readAsDataURL(compressedFile);
+    }
+  };
+  const handleConfirm = () => {
+    if (
+      childData.name !== editedName ||
+      childData.gender !== editedGender ||
+      childData.birthday !== editedBirthday
+    ) {
+      const updatedData = {
+        name: editedName,
+        gender: editedGender,
+        birthday: editedBirthday,
+      };
+
+      axios
+        .patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then(() => {
+          setIsEditing(false);
+          fetchChildData(childId, accessToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    // 프로필 사진 변경
+    if (profileUrl && profileUrl !== childData.profileUrl) {
+      const formData = new FormData();
+      formData.append("profileUrl", profileUrl);
+
+      axios
+        .patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(() => {
+          setIsEditing(false);
+          fetchChildData(childId, accessToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    window.location.reload();
+
+  };
+
 
   return (
     <div>
@@ -97,7 +160,19 @@ const ChildDetails = () => {
       <div className="profile-page">
         <div className="profile-containers">
           <div className="child-image" >
-            <img src={childData.profileUrl} alt="Profile" />
+            {isEditing ? (
+              <div>
+                <img src={imgSrc || childData.profileUrl} alt="Profile" onClick={handleUploadClick} />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+              </div>
+            ) : (
+              < img src={childData.profileUrl} alt="Profile" />
+            )}
           </div>
           {isEditing ? (
             <input
@@ -149,68 +224,75 @@ const ChildDetails = () => {
           </div>
           <div className="mbti-chart" >
 
-            {/* I vs E */}
-            <div className="chart-item">
-              <span className="label">I ({100 - eiScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
-                  {mbti.includes('I') ? (
-                    <div className="fill-left" style={{ width: `${100 - eiScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${eiScore}%` }}></div>
-                  )}
+            {resultYn ? (
+              <>
+                {/* I vs E */}
+                <div className="chart-item">
+                  <span className="label">I ({100 - eiScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
+                      {mbti.includes('I') ? (
+                        <div className="fill-left" style={{ width: `${100 - eiScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${eiScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">E ({eiScore}%)</span>
                 </div>
-              </div>
-              <span className="label">E ({eiScore}%)</span>
-            </div>
 
-            {/* N vs S */}
-            <div className="chart-item">
-              <span className="label">N ({100 - snScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* N vs S */}
+                <div className="chart-item">
+                  <span className="label">N ({100 - snScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('N') ? (
-                    <div className="fill-left" style={{ width: `${100 - snScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${snScore}%` }}></div>
-                  )}
+                      {mbti.includes('N') ? (
+                        <div className="fill-left" style={{ width: `${100 - snScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${snScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">S ({snScore}%)</span>
                 </div>
-              </div>
-              <span className="label">S ({snScore}%)</span>
-            </div>
 
-            {/* F vs T */}
-            <div className="chart-item">
-              <span className="label">F ({100 - tfScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* F vs T */}
+                <div className="chart-item">
+                  <span className="label">F ({100 - tfScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('F') ? (
-                    <div className="fill-left" style={{ width: `${100 - tfScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${tfScore}%` }}></div>
-                  )}
+                      {mbti.includes('F') ? (
+                        <div className="fill-left" style={{ width: `${100 - tfScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${tfScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">T ({tfScore}%)</span>
                 </div>
-              </div>
-              <span className="label">T ({tfScore}%)</span>
-            </div>
 
-            {/* P vs J */}
-            <div className="chart-item">
-              <span className="label">P ({100 - jpScore}%)</span>
-              <div className="chart-bar-container">
-                <div className="chart-bar">
+                {/* P vs J */}
+                <div className="chart-item">
+                  <span className="label">P ({100 - jpScore}%)</span>
+                  <div className="chart-bar-container">
+                    <div className="chart-bar">
 
-                  {mbti.includes('P') ? (
-                    <div className="fill-left" style={{ width: `${100 - jpScore}%` }}></div>
-                  ) : (
-                    <div className="fill-right" style={{ width: `${jpScore}%` }}></div>
-                  )}
+                      {mbti.includes('P') ? (
+                        <div className="fill-left" style={{ width: `${100 - jpScore}%` }}></div>
+                      ) : (
+                        <div className="fill-right" style={{ width: `${jpScore}%` }}></div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="label">J ({jpScore}%)</span>
                 </div>
-              </div>
-              <span className="label">J ({jpScore}%)</span>
-            </div>
+
+              </>
+            ) : (
+              <p className="no-result-message">진단 결과가 없습니다.</p>
+            )}
           </div>
           <div className="buttons">
             <button className="child-edit-buttons" onClick={handleEdit}>수정</button>

@@ -6,11 +6,13 @@ import axios from 'axios';
 import { API_DOMAIN, CLIENT_DOMAIN } from '../../api/domain';
 import noImage from './no-image.png';
 import DatePicker from 'react-datepicker';
+import imageCompression from 'browser-image-compression';
 
 const AdminUpload = () => {
     const [accessToken, setAccessToken] = useState('');
     const [fileName, setFileName] = useState('');
     const [poster, setPoster] = useState(noImage); // 기본 포스터
+    const [imgSrc, setImgSrc] = useState('');
     const fileInputRef = useRef(null);
 
     const [title, setTitle] = useState('');
@@ -30,23 +32,55 @@ const AdminUpload = () => {
         }
     }, []);
 
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const options = { 
+                maxSizeMB : 1,
+                maxWidthOrHeight : 1000,
+            }
+
+            const compressedFile = await imageCompression(file, options);
+            const reader = new FileReader();
+
+            reader.onload=() => {
+                setImgSrc(reader.result);
+                setPoster(compressedFile);
+                setFileName(compressedFile.name);
+            };  
+  
+            reader.readAsDataURL(compressedFile);
+        }
+    }
+
+    const handleIconClick = () => {
+        fileInputRef.current.click();
+    }
+
+
     const saveContent = async () => {
         setIsLoading(true); // 로딩 시작
         try {
-            const response = await axios.post(
-                `${API_DOMAIN}/contents/admin/save`,
-                JSON.stringify({
+
+            const formData = new FormData();
+
+            formData.append("request",
+                new Blob([JSON.stringify({
                     title: title,
-                    posterUrl: poster,
                     description: description,
                     author: author,
                     publisher: publisher,
                     publicationYear: publicationYear
-                }),
+                })], {type : 'application/json'}));
+
+            formData.append("imageFile", poster);
+
+            const response = await axios.post(
+                `${API_DOMAIN}/contents/admin/save`,
+                formData,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
-                        "Content-Type": 'application/json'
                     },
                 }
             );
@@ -60,18 +94,6 @@ const AdminUpload = () => {
         }
     };
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const fileUrl = URL.createObjectURL(file);
-            setFileName(file.name);
-            setPoster(fileUrl);
-        }
-    }
-
-    const handleIconClick = () => {
-        fileInputRef.current.click();
-    }
 
     return (
         <div>
@@ -90,7 +112,7 @@ const AdminUpload = () => {
                     {/* 포스터 업로드 */}
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>저장</button>
-                        <img src={poster}></img>
+                        <img src={imgSrc||poster}></img>
                         <div>
                             <input
                                 type="text"

@@ -5,7 +5,7 @@
     padding: 10px 20px;
     background-color: #FFE7EB;
     border-bottom: 1.5px solid #ddd;
-    position: relative;
+    /* position: relative; */
 }
 
 .menu-button {
@@ -17,51 +17,38 @@
     cursor: pointer;
 }
 
+/* Updated Dropdown Menu Styling */
 .dropdown-menu {
     position: absolute;
     top: 40px;
     left: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     padding: 10px;
     z-index: 1000;
-    width: 160px;
+    width: 200px;
+    transition: all 0.3s ease;
 }
 
 .dropdown-user-menu {
-    margin-right: 15px;
     margin-top: 10px;
     position: absolute;
     top: 40px;
     right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 5px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    padding: 10px;
     z-index: 1000;
+    width: 200px;
+    transition: all 0.3s ease;
 }
 
-.dropdown-user-menu li {
-    padding: 5px;
-    cursor: pointer;
-    border-right: 1px solid #ddd;
-}
-
-.dropdown-user-menu li:last-child {
-    border-right: none;
-}
-
+.dropdown-menu ul,
 .dropdown-user-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-}
-
-.dropdown-menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -69,22 +56,58 @@
 
 .dropdown-menu li,
 .dropdown-user-menu li {
-    padding: 10px;
+    padding: 12px 15px;
     cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu li:last-child,
+.dropdown-user-menu li:last-child {
+    border-bottom: none;
 }
 
 .dropdown-menu li:hover,
 .dropdown-user-menu li:hover {
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
+    color: #ff85a1;
+    border-radius: 5px;
 }
 
+/* Optional: Rounded profile image for dropdown */
+.profile-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for dropdown */
+.dropdown-menu,
+.dropdown-user-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: dropdownFade 0.9s forwards;
+}
+
+@keyframes dropdownFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 .search-bar {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    max-width: 500px;
-    min-width: 300px;
+    position: static;
+    right: 50%;
+    width: 300px;
+    max-width: 300px;
+    margin-right: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -126,6 +149,7 @@
 .user-info {
     display: flex;
     align-items: center;
+
 }
 
 .profile-image {

@@ -1,11 +1,13 @@
+import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
+import '../Page.css';
+import './style/contents.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_DOMAIN } from "../../api/domain";
 import { useNavigate } from 'react-router-dom';
-import './AdminMain.css';
 
-const AdminMain = () => {
+export default function ContentsTab() {
     const [accessToken, setAccessToken] = useState('');
     const [contentsData, setContentsData] = useState([]);
 
@@ -54,11 +56,10 @@ const AdminMain = () => {
 
     return (
         <div>
-            <Header />
             <div className='main-container' >
                 {contentsData ?
                     contentsData.map((content, index) => (
-                        <div key={index} className="content-item" onClick={() => navigate(`/adminContents/${content.id}`)}>
+                        <div key={index} className="content-item" onClick={() => navigate(`/contentsDetail/${content.id}`, { state: { originTab: 'contents' } })}>
                             <img src={content.posterUrl} alt={content.title} className="content-poster" />
                             <div className="content-details">
                                 <span className="content-title">{content.title}</span>
@@ -75,5 +76,3 @@ const AdminMain = () => {
         </div>
     )
 }
-
-export default AdminMain;

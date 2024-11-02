@@ -62,11 +62,7 @@ export default function RecommendsTab({ firstRecommd, secondRecommd, thirdRecomm
                         <p>- 좋아요를 가장 많이 받은 도서 목록입니다. 정각에 업데이트 됩니다.</p>
                         <div className="book-container" ref={firstScrollRef}>
                             {firstRecommd.map((book, index) => (
-                                <div
-                                    className="book-item"
-                                    key={index}
-                                    onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}
-                                >
+                                <div className="book-item" key={index} onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}>
                                     <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
                                     <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
                                 </div>
@@ -83,7 +79,7 @@ export default function RecommendsTab({ firstRecommd, secondRecommd, thirdRecomm
                         <p>- 자녀의 연령, 성별, MBTI 정보를 바탕으로 맞춤형 도서를 추천합니다.</p>
                         <div className="book-container" ref={thirdScrollRef}>
                             {thirdRecommd.map((book, index) => (
-                                <div className="book-item" key={index} oonClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}>
+                                <div className="book-item" key={index} onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}>
                                     <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
                                     <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
                                 </div>
@@ -101,11 +97,7 @@ export default function RecommendsTab({ firstRecommd, secondRecommd, thirdRecomm
                             <p>- 연령, 성별, 성향을 기반하여 맞춤형 도서를 추천합니다.</p>
                             <div className="book-container" ref={secondScrollRef}>
                                 {secondRecommd.map((book, index) => (
-                                    <div
-                                        className="book-item"
-                                        key={index}
-                                        onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}
-                                    >
+                                    <div className="book-item" key={index} onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}>
                                         <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
                                         <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
                                     </div>

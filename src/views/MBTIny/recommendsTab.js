@@ -55,28 +55,26 @@ export default function RecommendsTab({ firstRecommd, secondRecommd, thirdRecomm
 
     return (
         <div className="recommd-container">
-            {firstRecommd.length > 0 && (
-                <div className="recommd-main-container">
-                    <div className="recommd-content-container">
-                        <div className="recommended-books latest">
-                            <h3>오늘의 인기 도서</h3>
-                            <p>- 좋아요를 가장 많이 받은 도서 목록입니다.</p>
-                            <div className="book-container" ref={firstScrollRef}>
-                                {firstRecommd.map((book, index) => (
-                                    <div
-                                        className="book-item"
-                                        key={index}
-                                        onClick={() => navigate(`/contentsDetail/${book.contentId}`, { state: { originTab: 'recommends' } })}
-                                    >
-                                        <img src={book.posterUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
-                                        <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
-                                    </div>
-                                ))}
-                            </div>
+            <div className="recommd-main-container">
+                <div className="recommd-content-container">
+                    <div className="recommended-books latest">
+                        <h3>실시간 인기 도서</h3>
+                        <p>- 좋아요를 가장 많이 받은 도서 목록입니다. 정각에 업데이트 됩니다.</p>
+                        <div className="book-container" ref={firstScrollRef}>
+                            {firstRecommd.map((book, index) => (
+                                <div
+                                    className="book-item"
+                                    key={index}
+                                    onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}
+                                >
+                                    <img src={book.profileUrl || "../img/avatar.png"} alt={book.title} className="book-cover" />
+                                    <p className="book-title" title={book.title}>{book.title || "제목 없음"}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             <div className="recommd-main-container">
                 <div className="recommd-content-container">

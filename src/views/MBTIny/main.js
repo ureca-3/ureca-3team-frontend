@@ -50,7 +50,7 @@ export default function MainContents() {
         const token = accessToken || localStorage.getItem("jwtToken");
 
         try {
-            const firstRecommdDataResponse = await axios.get(`${API_DOMAIN}/viewing/${childId}/recent-liked`, {
+            const firstRecommdDataResponse = await axios.get(`${API_DOMAIN}/contents/most-liked-today`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setFirstRecommdData(firstRecommdDataResponse.data.result || []);
@@ -58,7 +58,6 @@ export default function MainContents() {
             const secondRecommdDataResponse = await axios.get(`${API_DOMAIN}/contents/child/${childId}/recommendations`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            console.log(secondRecommdDataResponse.data.result)
             setSecondRecommdData(secondRecommdDataResponse.data.result || []);
 
             const thirdRecommdDataResponse = await axios.get(`${API_DOMAIN}/child/${childId}/embedding`, {

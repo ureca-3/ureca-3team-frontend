@@ -59,7 +59,7 @@ export default function RecommendsTab({ firstRecommd, secondRecommd, thirdRecomm
                 <div className="recommd-content-container">
                     <div className="recommended-books latest">
                         <h3>실시간 인기 도서</h3>
-                        <p>- 좋아요를 가장 많이 받은 도서 목록입니다. 정각에 업데이트 됩니다.</p>
+                        <p>- 가장 많은 좋아요를 받은 인기 도서 목록입니다. 매 정각에 갱신됩니다.</p>
                         <div className="book-container" ref={firstScrollRef}>
                             {firstRecommd.map((book, index) => (
                                 <div className="book-item" key={index} onClick={() => navigate(`/contentsDetail/${book.bookId}`, { state: { originTab: 'recommends' } })}>

@@ -1,5 +1,3 @@
-import NavBar from "../../components/NavBar";
-import Header from "../../components/Header";
 import '../Page.css';
 import './style/contents.css';
 import React, { useEffect, useState } from 'react';
@@ -31,7 +29,7 @@ export default function ContentsTab() {
         try {
             const response = await axios.get(`${API_DOMAIN}/contents/all`,
                 {
-                    params: { page, size: 5 },
+                    params: { page, size: 15 },
                     headers:
                     {
                         Authorization: `Bearer ${accessToken}`
@@ -55,24 +53,42 @@ export default function ContentsTab() {
     };
 
     return (
-        <div>
-            <div className='main-container' >
-                {contentsData ?
-                    contentsData.map((content, index) => (
-                        <div key={index} className="content-item" onClick={() => navigate(`/contentsDetail/${content.id}`, { state: { originTab: 'contents' } })}>
-                            <img src={content.posterUrl} alt={content.title} className="content-poster" />
-                            <div className="content-details">
-                                <span className="content-title">{content.title}</span>
-                            </div>
-                        </div>))
-                    : <>데이터가 없습니다.</>}
+        <div className="contentTab-recommd-main-container">
+            <div className="contentTab-recommd-content-container">
+                <div className="contentTab-recommended-books">
+                    <div className="contentTab-book-container">
+                        {contentsData ?
+                            contentsData.map((content, index) => (
+                                <div
+                                    className="book-item"
+                                    key={index}
+                                    onClick={() => navigate(`/contentsDetail/${content.id}`, { state: { originTab: 'contents' } })}
+                                >
+                                    <img src={content.posterUrl || "../img/avatar.png"} alt={content.title} className="book-cover" />
+                                    <p className="book-title" title={content.title}>{content.title || "제목 없음"}</p>
+                                </div>
+                            ))
+                            : <>데이터가 없습니다.</>}
+                    </div>
+                </div>
             </div>
 
-            <div className="pagination" >
-                <button onClick={goToPreviousPage} disabled={currentPage === 0}>Previous</button>
-                <span>Page {currentPage + 1} of {totalPages}</span>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages - 1}>Next</button>
-            </div>
+            {/* <div className="pagination">
+                <span className="pagination-arrow" onClick={goToPreviousPage} disabled={currentPage === 0}>◀</span>
+                {[...Array(totalPages)].map((_, index) => (
+                    <span
+                        key={index}
+                        className={`pagination-page-number ${currentPage === index ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(index)}
+                    >
+                        {index + 1}
+                    </span>
+                ))}
+                <span className="pagination-arrow" onClick={goToNextPage} disabled={currentPage === totalPages - 1}>▶</span>
+            </div> */}
+
+
+
         </div>
     )
 }

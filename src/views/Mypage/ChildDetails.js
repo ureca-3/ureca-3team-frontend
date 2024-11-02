@@ -104,24 +104,28 @@ const ChildDetails = () => {
       reader.readAsDataURL(compressedFile);
     }
   };
+
   const handleConfirm = () => {
+    const updatedData = {};
+    let hasChanges = false;
+
     if (
       childData.name !== editedName ||
       childData.gender !== editedGender ||
       childData.birthday !== editedBirthday
     ) {
-      const updatedData = {
-        name: editedName,
-        gender: editedGender,
-        birthday: editedBirthday,
-      };
+      updatedData.name = editedName;
+      updatedData.gender = editedGender;
+      updatedData.birthday = editedBirthday;
+      hasChanges = true;
+    }
 
+    if (hasChanges) {
       axios
         .patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then(() => {
-          setIsEditing(false);
           fetchChildData(childId, accessToken);
         })
         .catch((error) => {
@@ -129,7 +133,6 @@ const ChildDetails = () => {
         });
     }
 
-    // 프로필 사진 변경
     if (profileUrl && profileUrl !== childData.profileUrl) {
       const formData = new FormData();
       formData.append("profileUrl", profileUrl);
@@ -141,7 +144,6 @@ const ChildDetails = () => {
           },
         })
         .then(() => {
-          setIsEditing(false);
           fetchChildData(childId, accessToken);
         })
         .catch((error) => {
@@ -150,7 +152,7 @@ const ChildDetails = () => {
     }
 
     window.location.reload();
-
+    setIsEditing(false);
   };
 
 

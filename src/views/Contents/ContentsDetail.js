@@ -108,7 +108,7 @@ const ContentsDetail = () => {
       );
       const result = response.data.result;
       setBookData(result);
-      setPoster(result.posterUrl);
+      setPoster(`${result.posterUrl}?t=${new Date().getTime()}`);
       setTitle(result.title);
       setDescription(result.description);
       setAuthor(result.author);

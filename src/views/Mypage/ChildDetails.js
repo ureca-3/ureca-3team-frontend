@@ -171,7 +171,7 @@ const ChildDetails = () => {
                 />
               </div>
             ) : (
-              < img src={childData.profileUrl} alt="Profile" />
+              <img src={editedProfile || childData.profileUrl} alt="Profile" />
             )}
           </div>
           {isEditing ? (

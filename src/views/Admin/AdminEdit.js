@@ -106,6 +106,10 @@ const AdminEdit = () => {
                     }
                 );
 
+                if (response.data.result.posterUrl) {
+                    setImgSrc(response.data.result.posterUrl); 
+                }
+
             } catch (error) {
                 console.error(error);
             }

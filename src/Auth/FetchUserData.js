@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { API_DOMAIN } from "../api/domain";
+import { API_DOMAIN, CLIENT_DOMAIN } from "../api/domain";
 import axios from "axios";
 
 const FetchUserData = () => {
     const [accessToken, setAccessToken] = useState('');
     const [childData, setChildData] = useState(null);
+    const [userRole, setUserRole] = useState('');
     const location = useLocation();
+
+    const getData = async (accessToken) => {
+        const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
+            headers:
+            {
+                Authorization: `Bearer ${accessToken}`
+
+            }
+        });
+
+        // console.log(kakaoUser.data.result.id);
+        setUserRole(kakaoUser.data.result.role);
+        return kakaoUser.data.result.oauthInfo;
+    }
 
     const getChildData = async (token) => {
         try {
@@ -30,15 +45,23 @@ const FetchUserData = () => {
         if (token) {
             setAccessToken(token);
             localStorage.setItem("jwtToken", token);
-            getChildData(token);
+            getData(token); 
+        } 
+        else {
+            window.location.href = `${CLIENT_DOMAIN}/sign`;
         }
 
     }, [location.search]);
 
     useEffect(() => {
+        if (userRole && userRole === "USER") getChildData(accessToken);
+        if (userRole && userRole === "ADMIN") window.location.href = `${CLIENT_DOMAIN}/admin`;
+    }, [userRole, accessToken]);
+
+    useEffect(() => {
         if (childData !== null) {
-            if (childData.result && childData.result.length > 0) window.location.href = "http://localhost:3000/mypage";
-            else window.location.href = "http://localhost:3000/register";
+            if (childData.result && childData.result.length > 0) window.location.href = `${CLIENT_DOMAIN}/mypage`;
+            else window.location.href = `${CLIENT_DOMAIN}/register`;
         }
     }, [childData]);
 

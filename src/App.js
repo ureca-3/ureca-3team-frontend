@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import MBTInyMain from './views/MBTIny';
 import MyPage from './views/Mypage';
 import History from './views/History/history';
+import Mdata from './views/MbtiData/mbtiData';
 import Child from './views/Child/register';
 import Assessment from './views/Assessment/mbtiStart';
 import MbtiQuestion from './views/Assessment/mbtiQuestion';
@@ -15,19 +16,22 @@ import AdminUpload from './views/Admin/AdminUpload';
 import AdminEdit from './views/Admin/AdminEdit';
 import ContentsDetail from './views/Contents/ContentsDetail';
 import FetchUserData from './Auth/FetchUserData';
+import ContentsSearch from './views/Contents/ContentsSearch';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/** 메인페이지 */}
+        <Route path="/home" element={<MBTInyMain />} />
+
         {/** 로그인 */}
         <Route path="/" element={<FetchUserData />} />
-
-        <Route path='/home' element={<MBTInyMain />} />
         
         {/** 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/:child" element={<ChildDetails />} />
+        <Route path="/childpage" element={<ChildDetails />} />
 
         {/** 자녀 등록 */}
         <Route path="/register" element={<Child />} />
@@ -40,11 +44,17 @@ function App() {
         {/** 히스토리 */}
         <Route path="/mbtiHistory" element={<History />} />
 
+        {/** 진단데이터 내역 */}
+        <Route path="/mbtiData" element={<Mdata />} />
+
         {/** 로그인 */}
         <Route path='/sign' element={<SignIn />}></Route>
 
         {/** 콘텐츠 상세 */} 
         <Route path='/:content' element={<ContentsDetail />} />
+
+        {/** 콘텐츠 검색 */}
+        <Route path='/search/:keyword' element={<ContentsSearch />} />
 
         {/** 관리자 페이지 */}
         <Route path='/admin' element={<AdminMain />} />

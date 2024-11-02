@@ -2,6 +2,7 @@ import { API_DOMAIN } from "../../api/domain";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import '../Page.css';
+import './styles.css';
 
 export default function ContentsMbtiResult({ contentId }) {
     const [accessToken, setAccessToken] = useState('');

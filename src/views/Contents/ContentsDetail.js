@@ -19,17 +19,35 @@ const ContentsDetail = () => {
   const [publicationYear, setPublicationYear] = useState('');
   const [poster, setPoster] = useState(''); // 기본 포스터
   const [activeIcon, setActiveIcon] = useState(null);
-
+  const [childId, setChildId] = useState('');
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
       setAccessToken(token);
       // console.log(accessToken);
     }
+
+    const childId = localStorage.getItem("childId");
+    if (childId) {
+      setChildId(childId);
+    }
   }, []);
 
   const toggleLaughColor = () => {
     setActiveIcon(activeIcon === 'laugh' ? null : 'laugh');
+    axios.post(`${API_DOMAIN}/contents/${content}/like`, 
+      JSON.stringify({
+        childId : childId
+      }),
+      {
+        headers : {
+          Authorization : `Bearer ${accessToken}`,
+          "Content-Type"  : "application/json"
+        },
+      }
+    );
+
+
   };
 
   const toggleFrownColor = () => {
@@ -69,11 +87,12 @@ const ContentsDetail = () => {
       <Header></Header>
       <div className='main-container'>
         <div className="book-detail-container">
-          <div className="book-image">
+          <div className="book-image" style={{marginLeft:'20px'}}>
             <span className="mbti">{bookData.contentsMbtiResult}</span>
 
             <img src={poster} alt="책 이미지" />
             <div style={{ marginTop: '15px' }}>
+              {/** 좋아요 버튼 */}
               <FaRegLaughSquint
                 style={{
                   marginRight: '50px',
@@ -100,8 +119,9 @@ const ContentsDetail = () => {
               {description}
             </p>
 
-            <div> <ContentsMbtiResult contentId={content} /> </div>
-            {/* <div> 그래프 </div> */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '40%', marginLeft:'-50px' }}>
+              <ContentsMbtiResult contentId={content} />
+            </div>
           </div>
         </div>
       </div>

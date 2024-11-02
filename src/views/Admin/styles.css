@@ -218,6 +218,19 @@
   animation: spin 1s linear infinite;
 }
 
+.custom-datepicker-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.8rem;;
+  font-family: 'UhBeeSe_hyun';
+  font-weight: 5; /* 글씨를 연하게 설정 */
+  color: #666; /* 연한 회색 글씨 색상 */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

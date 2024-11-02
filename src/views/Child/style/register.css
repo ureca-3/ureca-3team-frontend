@@ -3,7 +3,8 @@
     flex-direction: column;
     align-items: center;
     background-color: #ffecec;
-    height: 100vh;
+    height: var(—vh, 100vh);
+
 }
 
 .register-content-container {

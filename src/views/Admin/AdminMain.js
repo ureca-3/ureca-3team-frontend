@@ -27,7 +27,7 @@ const AdminMain = () => {
 
     const getData = async (accessToken) => {
         try {
-            const response = await axios.get(`${API_DOMAIN}/contents/all`,
+            const response = await axios.get(`${API_DOMAIN}/contents/adminAll`,
                 {
                     headers:
                     {
@@ -57,7 +57,7 @@ const AdminMain = () => {
                 {contentsData ?
                     contentsData.map((content, index) => (
                         <div key={index} className="content-items" onClick={() => navigate(`/adminContents/${content.id}`)}>
-                            <img src={content.profileUrl} alt={content.title} className="contents-poster" />
+                            <img src={content.posterUrl} alt={content.title} className="contents-poster" />
                             <div className="content-details">
                                 <span className="content-title">{content.title}</span>
                             </div>

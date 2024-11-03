@@ -24,7 +24,7 @@
 }
 
 .content-title {
-    margin-top: 10px;
+    margin-top:-10px;
     font-size: 14px;
     color: #333;
     text-align: center;
@@ -34,7 +34,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     background-color: #ffe7eb;
-    gap: 16px;
+    gap: 30px;
     justify-items: center;
     padding: 20px 0;
     /* width: 100%;

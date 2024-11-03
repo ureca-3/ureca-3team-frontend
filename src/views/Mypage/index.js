@@ -5,6 +5,7 @@ import { API_DOMAIN } from '../../api/domain';
 import axios from 'axios';
 import { BsPencilSquare } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
+import imageCompression from 'browser-image-compression';
 
 const MyPage = () => {
     const [userName, setUserName] = useState('');
@@ -17,7 +18,7 @@ const MyPage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
-        setAccessToken(token); console.log(token);
+        setAccessToken(token);
         getData(token);
         getChildData(token);
     }, []);
@@ -30,9 +31,7 @@ const MyPage = () => {
 
     const checkChildMbtiYn = async (childId) => {
         await axios.get(`${API_DOMAIN}/assessment/${childId}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
+            headers: { Authorization: `Bearer ${accessToken}` }
         }).then(response => {
             const mbtiData = response.data?.result || [];
             const activeData = mbtiData.find(item => item.status === "ACTIVE");
@@ -45,29 +44,48 @@ const MyPage = () => {
                 navigate('/mbtiStart', { state: { childId: childId } });
             }
         });
-    }
+    };
+
     const getData = async (accessToken) => {
         const kakaoUser = await axios.get(`${API_DOMAIN}/auth/user`, {
-            headers:
-            {
-                Authorization: `Bearer ${accessToken}`
-
-            }
-        })
+            headers: { Authorization: `Bearer ${accessToken}` }
+        });
         setUserName(kakaoUser.data.result.oauthInfo.nickname);
         setUserProfile(kakaoUser.data.result.oauthInfo.profileUrl);
         setUserRole(kakaoUser.data.result.role);
         return kakaoUser.data.result.oauthInfo;
-    }
+    };
 
     const getChildData = async (accessToken) => {
         const response = await axios.get(`${API_DOMAIN}/child`, {
-            headers:
-            {
-                Authorization: `Bearer ${accessToken}`
-            }
-        })
+            headers: { Authorization: `Bearer ${accessToken}` }
+        });
         setChildData(response.data.result);
+    };
+
+    const handleProfileChange = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            try {
+                // 이미지 압축 설정
+                const options = { maxSizeMB: 1, maxWidthOrHeight: 500, useWebWorker: true };
+                const compressedFile = await imageCompression(file, options);
+                
+                const formData = new FormData();
+                formData.append("profileUrl", compressedFile);
+
+                const response = await axios.patch(`${API_DOMAIN}/auth/user/picture`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                setUserProfile(`${response.data.profileUrl}?t=${new Date().getTime()}`);
+                window.location.reload();
+            } catch (error) {
+                console.error("프로필 사진 변경 실패:", error);
+            }
+        }
     };
 
     return (
@@ -78,41 +96,39 @@ const MyPage = () => {
                 {/* 프로필 영역 */}
                 <div style={{ flexDirection: 'column' }}>
                     <div className="profile-container">
-                        <div className="profile-icon">
+                        <label htmlFor="profile-upload" className="profile-icon">
                             <img src={userProfile} alt="프로필 이미지" />
-                        </div>
+                        </label>
+                        <input 
+                            id="profile-upload" 
+                            type="file" 
+                            style={{ display: 'none' }} 
+                            onChange={handleProfileChange} 
+                        />
                         <div className="username">{userName}</div>
                     </div>
-
                     {/* 자녀 리스트 */}
                     <div className="children-container">
                         <h2>자녀 선택</h2>
-
                         <ul className="children-list">
-                            {childData ?
-                                childData.map((child, index) => (
-                                    <li key={index} className="child-item"
-                                        onClick={() => changeChildProfile(child.childId)}>
-                                        <img src={child.profileUrl || "../img/avatar.png"} alt={child.name} className="child-image" style={{ marginTop: '15px' }} />
-                                        <span className="child-name" style={{ marginLeft: '20px' }}>{child.name} </span>
-                                        <button
-                                            style={{ textAlign: 'right' }}
-                                            className="edit-child-btn"
-                                            onClick={(e) => {
-                                                localStorage.setItem("childId", child.childId);
-                                                e.stopPropagation(); // 부모 요소로의 클릭 이벤트 전파 막기
-                                                navigate("/childpage");
-                                            }}>
-                                            <BsPencilSquare />
-                                        </button>
-                                    </li>
-                                )) : (<ul> 자녀가 없습니다. </ul>)}
+                            {childData ? childData.map((child, index) => (
+                                <li key={index} className="child-item" onClick={() => changeChildProfile(child.childId)}>
+                                    <img src={child.profileUrl || "../img/avatar.png"} alt={child.name} className="child-image" style={{ marginTop: '15px' }} />
+                                    <span className="child-name" style={{ marginLeft: '20px' }}>{child.name}</span>
+                                    <button
+                                        style={{ textAlign: 'right' }}
+                                        className="edit-child-btn"
+                                        onClick={(e) => {
+                                            localStorage.setItem("childId", child.childId);
+                                            e.stopPropagation(); // 부모 요소로의 클릭 이벤트 전파 막기
+                                            navigate("/childpage");
+                                        }}>
+                                        <BsPencilSquare />
+                                    </button>
+                                </li>
+                            )) : (<ul> 자녀가 없습니다. </ul>)}
                         </ul>
-
-                        {userRole === 'USER' ?
-                            (<button className="add-child-btn" onClick={() => navigate("/register")} >자녀 추가</button>)
-                            :
-                            <></>}
+                        {userRole === 'USER' ? (<button className="add-child-btn" onClick={() => navigate("/register")} >자녀 추가</button>) : <></>}
                     </div>
                 </div>
             </div>

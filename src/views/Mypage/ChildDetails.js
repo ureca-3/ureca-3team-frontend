@@ -90,7 +90,7 @@ const ChildDetails = () => {
     if (file) {
       const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1000
+        maxWidthOrHeight: 1000,
       };
 
       const compressedFile = await imageCompression(file, options);
@@ -99,58 +99,69 @@ const ChildDetails = () => {
       reader.onload = () => {
         setImgSrc(reader.result);
         setProfileUrl(compressedFile);
+        setEditedProfile(reader.result); 
       };
 
       reader.readAsDataURL(compressedFile);
     }
   };
-  const handleConfirm = () => {
+
+  const handleConfirm = async () => {
+    const updatedData = {};
+    let hasChanges = false;
+
     if (
       childData.name !== editedName ||
       childData.gender !== editedGender ||
       childData.birthday !== editedBirthday
     ) {
-      const updatedData = {
-        name: editedName,
-        gender: editedGender,
-        birthday: editedBirthday,
-      };
-
-      axios
-        .patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        .then(() => {
-          setIsEditing(false);
-          fetchChildData(childId, accessToken);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      updatedData.name = editedName;
+      updatedData.gender = editedGender;
+      updatedData.birthday = editedBirthday;
+      hasChanges = true;
     }
 
-    // 프로필 사진 변경
-    if (profileUrl && profileUrl !== childData.profileUrl) {
+    if (hasChanges) {
+      try {
+        await axios.patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        fetchChildData(childId, accessToken);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // 프로필 사진 업로드 처리
+    if (profileUrl) {
       const formData = new FormData();
       formData.append("profileUrl", profileUrl);
 
-      axios
-        .patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
+      try {
+        const response = await axios.patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        })
-        .then(() => {
-          setIsEditing(false);
-          fetchChildData(childId, accessToken);
-        })
-        .catch((error) => {
-          console.error(error);
         });
+
+        setChildData((prevData) => ({
+          ...prevData,
+          profileUrl: response.data.result.profileUrl,
+        }));
+
+        setImgSrc('');
+
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    window.location.reload();
+    setIsEditing(false);
 
+    // .5초 후 새로고침
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
 
@@ -158,7 +169,7 @@ const ChildDetails = () => {
     <div>
       <Header />
       <div className="profile-page">
-        <div className="profile-containers">
+        <div className="profile-containers" >
           <div className="child-image" >
             {isEditing ? (
               <div>
@@ -171,7 +182,7 @@ const ChildDetails = () => {
                 />
               </div>
             ) : (
-              < img src={childData.profileUrl} alt="Profile" />
+              <img src={editedProfile || childData.profileUrl} alt="Profile" />
             )}
           </div>
           {isEditing ? (

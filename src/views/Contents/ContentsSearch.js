@@ -46,10 +46,10 @@ const ContentsSearch = () => {
                 Authorization: `Bearer ${accessToken}`
             }
         });
-    
+
         setUserRole(kakaoUser.data.result.role);
     }
-    
+
     const getSearchData = async (accessToken, keyword) => {
         try {
             const response = await axios.get(`${API_DOMAIN}/contents/search`, {
@@ -76,31 +76,31 @@ const ContentsSearch = () => {
     }
 
     return (
-        <div className='search-container'>
+        <div style={{ backgroundColor: '#ffe7eb', minHeight: '100vh' }}>
             <Header />
-            <div style={{backgroundColor : '#FFE7EB'}}>
-            <h3 className="search-header" style={{textAlign:'flex-start' }}>{keyword} 검색 결과 :</h3>
-            </div>
-            <div className='main-container'>
-                {isLoading ? (
-                    <p className='loading'>Loading...</p>
-                ) : searchData? (
-                    <>
+            <div className='search-containers'>
+                <h3 className="search-header" style={{ textAlign: 'center' }}>{keyword} 검색 결과</h3>
+                <div className='search-book-container'>
+                    {isLoading ? (
+                        <p className='loading'>Loading...</p>
+                    ) : searchData ? (
+                        <>
                             {searchData.map((content, index) => (
-                                <div key={index} className="content-item" onClick={() => goDetail(content.id)}>
-                                    <img src={content.posterUrl} alt={content.title} className="content-poster" />
+                                <div key={index} className="content-items" onClick={() => goDetail(content.id)}>
+                                    <img src={content.posterUrl} alt={content.title} className="contents-poster" />
                                     <div className="content-details">
-                                        <span className="content-title">{content.title}</span>
+                                        <p className="content-title" title={content.title}>{content.title || "제목 없음"}</p>
                                     </div>
                                 </div>
                             ))}
-                    </>
-                ) : (
-                    <h2 className="no-results">{decodeURIComponent(keyword)}에 대한 결과가 없습니다.</h2>
-                )}
+                        </>
+                    ) : (
+                        <div style={{ textAlign: 'center', width: '100%' }}>
+                            <p className="no-results">{decodeURIComponent(keyword)}에 대한 결과가 없습니다.</p>
+                        </div>)}
+                </div>
             </div>
         </div>
     );
-};
-
+}
 export default ContentsSearch;

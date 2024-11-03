@@ -24,6 +24,10 @@ const AdminUpload = () => {
     // 로딩 상태 추가
     const [isLoading, setIsLoading] = useState(false);
 
+    // 입력값 확인 모달 
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
         // console.log(token);
@@ -51,14 +55,30 @@ const AdminUpload = () => {
   
             reader.readAsDataURL(compressedFile);
         }
-    }
+    };
 
     const handleIconClick = () => {
         fileInputRef.current.click();
-    }
+    };
 
+    const validateFields = () => {
+        if (!poster || poster === noImage) return '포스터를 업로드해 주세요.';
+        if (!title) return '제목을 입력해 주세요.';
+        if (!description) return '줄거리를 입력해 주세요.';
+        if (!author) return '지은이를 입력해 주세요.';
+        if (!publisher) return '출판사를 입력해 주세요.';
+        if (!publicationYear) return '출판년월일을 선택해 주세요.';
+        return '';
+    };
 
     const saveContent = async () => {
+        const errorMessage = validateFields();
+        if (errorMessage) {
+            setModalMessage(errorMessage);
+            setShowModal(true);
+            return;
+        }
+
         setIsLoading(true); // 로딩 시작
         try {
 
@@ -108,11 +128,18 @@ const AdminUpload = () => {
                         </div>
                     </div>
                 )}
-                <div style={{ display: 'flex', marginLeft:'20%' }}>
-                    {/* 포스터 업로드 */}
+                {showModal && (
+                    <div className="confirm-overlay">
+                        <div className="confirm-container">
+                            <p>{modalMessage}</p>
+                            <button onClick={() => setShowModal(false)} className='confirm-button'>확인</button>
+                        </div>
+                    </div>
+                )}
+                <div style={{ display: 'flex', marginLeft: '20%' }}>
                     <div className='upload-image'>
                         <button className='save-button' onClick={saveContent}>저장</button>
-                        <img src={imgSrc||poster}></img>
+                        <img src={imgSrc || poster} />
                         <div>
                             <input
                                 type="text"

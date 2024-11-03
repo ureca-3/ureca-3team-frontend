@@ -1,8 +1,8 @@
 /* 탭 메뉴 스타일 */
 .tab-menu {
     display: flex;
-    justify-content: center; /* 왼쪽 정렬 */
-    background-color: #FFE7EB; /* 배경을 부드러운 색으로 */
+    justify-content: center; 
+    background-color: #FFE7EB; 
     padding: 10px 20px;
 }
 
@@ -10,7 +10,7 @@
     padding: 10px 20px;
     margin-right: 10px;
     border-radius: 20px;
-    background-color: #FFDDE2; /* 부드러운 핑크색 배경 */
+    background-color: #FFDDE2; 
     color: #666;
     font-weight: 500;
     cursor: pointer;
@@ -18,17 +18,23 @@
     border: none;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'UhBeeSe_hyun';
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .tab-menu button.active-tab {
-    color: #fff; /* 선택된 탭 글씨 색을 흰색으로 */
-    background-color: #ff85a1; /* 선택된 탭 배경을 좀 더 진한 색으로 */
+    color: #fff; 
+    background-color: #ff85a1; 
     font-weight: bold;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 선택된 탭에 더 깊은 그림자 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .tab-menu button:hover {
-    background-color: #FFC2CB; /* 호버 시 색상 변경 */
+    background-color: #FFC2CB; 
     color: #fff;
+}
+
+.tab-content {
+    height: 100vh;
+    background-color: #FFE7EB;
+
 }

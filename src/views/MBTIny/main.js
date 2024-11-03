@@ -50,7 +50,7 @@ export default function MainContents() {
         const token = accessToken || localStorage.getItem("jwtToken");
 
         try {
-            const firstRecommdDataResponse = await axios.get(`${API_DOMAIN}/viewing/${childId}/recent-liked`, {
+            const firstRecommdDataResponse = await axios.get(`${API_DOMAIN}/contents/most-liked-today`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setFirstRecommdData(firstRecommdDataResponse.data.result || []);

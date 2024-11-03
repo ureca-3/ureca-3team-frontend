@@ -90,7 +90,7 @@ const ChildDetails = () => {
     if (file) {
       const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1000
+        maxWidthOrHeight: 1000,
       };
 
       const compressedFile = await imageCompression(file, options);
@@ -99,13 +99,14 @@ const ChildDetails = () => {
       reader.onload = () => {
         setImgSrc(reader.result);
         setProfileUrl(compressedFile);
+        setEditedProfile(reader.result); 
       };
 
       reader.readAsDataURL(compressedFile);
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const updatedData = {};
     let hasChanges = false;
 
@@ -121,37 +122,40 @@ const ChildDetails = () => {
     }
 
     if (hasChanges) {
-      axios
-        .patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
+      try {
+        await axios.patch(`${API_DOMAIN}/child/${childId}`, updatedData, {
           headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        .then(() => {
-          fetchChildData(childId, accessToken);
-        })
-        .catch((error) => {
-          console.error(error);
         });
+        fetchChildData(childId, accessToken);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    if (profileUrl && profileUrl !== childData.profileUrl) {
+    // 프로필 사진 업로드 처리
+    if (profileUrl) {
       const formData = new FormData();
       formData.append("profileUrl", profileUrl);
 
-      axios
-        .patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
+      try {
+        const response = await axios.patch(`${API_DOMAIN}/child/picture/${childId}`, formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        })
-        .then(() => {
-          fetchChildData(childId, accessToken);
-        })
-        .catch((error) => {
-          console.error(error);
         });
+
+        setChildData((prevData) => ({
+          ...prevData,
+          profileUrl: response.data.result.profileUrl,
+        }));
+
+        setImgSrc('');
+
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    window.location.reload();
     setIsEditing(false);
   };
 
@@ -160,7 +164,7 @@ const ChildDetails = () => {
     <div>
       <Header />
       <div className="profile-page">
-        <div className="profile-containers">
+        <div className="profile-containers" >
           <div className="child-image" >
             {isEditing ? (
               <div>

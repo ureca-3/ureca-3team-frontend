@@ -27,6 +27,25 @@ const ContentsDetail = () => {
   const [confirmMsg, setConfirmMsg] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const characterImages = {
+    INTJ: '/img/INTJ.png',
+    INTP: '/img/INTP.png',
+    ENTJ: '/img/ENTJ.png',
+    ENTP: '/img/ENTP.png',
+    INFJ: '/img/INFJ.png',
+    INFP: '/img/INFP.png',
+    ENFJ: '/img/ENFJ.png',
+    ENFP: '/img/ENFP.png',
+    ISTJ: '/img/ISTJ.png',
+    ISFJ: '/img/ISFJ.png',
+    ESTJ: '/img/ESTJ.png',
+    ESFJ: '/img/ESFJ.png',
+    ISTP: '/img/ISTP.png',
+    ISFP: '/img/ISFP.png',
+    ESTP: '/img/ESTP.png',
+    ESFP: '/img/ESFP.png',
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
@@ -141,7 +160,15 @@ const ContentsDetail = () => {
   return (
     <div>
       <Header />
-      <div className='main-container'>
+      <div
+        className='main-container'
+        style={{
+          backgroundImage: `url(${characterImages[bookData.contentsMbtiResult] || ''})`,
+          backgroundSize: '350px',  // 이미지 크기를 조정합니다.
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'right 20px bottom 80px',  // 오른쪽에서 20px, 아래에서 20px 위로 띄웁니다.
+        }}
+      >
         <div className="content-wrapper">
           <div className="book-detail-container">
             <div className="book-image" style={{ marginLeft: '20px' }}>
@@ -179,7 +206,7 @@ const ContentsDetail = () => {
           </div>
 
           <div className="button-container">
-            <button class="save-button" onClick={goBack}>돌아가기</button>
+            <button className="save-button" onClick={goBack}>돌아가기</button>
           </div>
         </div>
 

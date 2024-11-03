@@ -157,6 +157,11 @@ const ChildDetails = () => {
     }
 
     setIsEditing(false);
+
+    // .5초 후 새로고침
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
 

@@ -47,17 +47,13 @@ export default function MbtiQuestion() {
                 }, 300);
             } else {
                 setLoading(true);
-
-                // 모든 질문이 끝나면 평균값을 계산하고 콘솔에 출력
                 const averages = calculateAverages(updatedScores); // 업데이트된 점수로 평균값 계산
-                // MBTIResult 페이지로 이동
-                console.log("요소별 평균값:", averages); // 요소별 평균값을 콘솔에 출력
-                
+
                 // 3초 후에 결과 전송 및 페이지 이동
                 setTimeout(() => {
                     sendResultsToBackend(averages);
-                }, 3000);            }
-                
+                }, 3000);            
+            }
             return updatedScores;
         });
         

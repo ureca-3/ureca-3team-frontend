@@ -2,6 +2,8 @@ import './App.css';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import RecommendsTab from './views/MBTIny/recommendsTab';
 import Main from './views/MBTIny/main';
+import Index from './views/MBTIny/index';
+
 import ContentsTab from './views/MBTIny/contentsTab';
 import MyPage from './views/Mypage';
 import History from './views/History/history';
@@ -19,11 +21,16 @@ import AdminEdit from './views/Admin/AdminEdit';
 import ContentsDetail from './views/Contents/ContentsDetail';
 import FetchUserData from './Auth/FetchUserData';
 import ContentsSearch from './views/Contents/ContentsSearch';
+import EventPage from './views/Event/EventPage';
+import WinnerMain from './views/Event/WinnerMain';
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/index" element={<Index />} />
+
 
         {/** 메인페이지 */}
         <Route path="/main" element={<Main />} />
@@ -69,6 +76,11 @@ function App() {
         <Route path='/adminContents/:content' element={<AdminContents />} />
         <Route path='/adminUpload' element={<AdminUpload />} />
         <Route path='/adminEdit/:content' element={<AdminEdit />} />
+
+        {/** 이벤트 페이지 */}
+        <Route path="/event/page" element={<EventPage />} />
+        <Route path="/event/winner" element={<WinnerMain />} />
+
       </Routes>
     </BrowserRouter>
   );

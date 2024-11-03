@@ -65,7 +65,7 @@ const Header = ({ showLoginInfoOnly }) => {
 
     // SSE 연결 설정
     if (token) {
-        const eventSource = new EventSource(`${API_DOMAIN}/notifications/newbook?token=${token}`);
+        const eventSource = new EventSource(`${API_DOMAIN}/notifications/all?token=${token}`);
 
         eventSource.onmessage = (event) => {
             const newNotification = JSON.parse(event.data);
@@ -94,6 +94,14 @@ const Header = ({ showLoginInfoOnly }) => {
 const handleNotificationClick = (notification, index) => {
     if (notification.contentId) {
         window.location.href = `${CLIENT_DOMAIN}/contentsDetail/${notification.contentId}`;
+    }
+    else if (notification){
+        // 이벤트 알림 클릭 시 이벤트 응모 페이지로 이동
+        window.location.href = `${CLIENT_DOMAIN}/event/page`;
+    }
+    else if (notification === "이벤트가 끝났어요. 당첨자를 확인하세요.") {
+        // 당첨자 확인 알림 클릭 시 당첨자 조회 페이지로 이동
+        window.location.href = `${CLIENT_DOMAIN}/event/winner`;
     }
     setNotifications((prev) => {
         // window.location.href = `http://localhost:3000/`
@@ -126,6 +134,10 @@ const GoMbtiStart = () => {
     const childId = localStorage.getItem("childId"); // 로컬스토리지에서 childId 가져오기
     navigate('/mbtiStart', { state: { childId: childId } }); // childId를 state로 전달
 }
+
+const goToEventPage = () => {
+    window.location.href = `${CLIENT_DOMAIN}/event/page`;
+};
 
 const logout = async () => {
     console.log("로그아웃");
@@ -160,7 +172,7 @@ const getData = async (accessToken) => {
 
 const fetchNotifications = async (token) => {
     try {
-        const response = await axios.get(`${API_DOMAIN}/notifications/newbook`, {
+        const response = await axios.get(`${API_DOMAIN}/notifications/all`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setNotifications(response.data.notifications || []);
@@ -230,6 +242,7 @@ return (
                                         <li onClick={GoMbtiStart}>MBTI</li>
                                         <li onClick={GoHistory}>HISTORY</li>
                                         <li onClick={MbtiData}>Data</li>
+                                        <li onClick={goToEventPage}>Event</li> {/* Event 메뉴 추가 */}
                                     </>)
                                     :
                                     <li onClick={goToMyPage}>자녀 선택</li>

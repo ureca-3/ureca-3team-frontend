@@ -9,7 +9,7 @@ import './style/result.css';
 export default function MbtiResult() {
     const location = useLocation();
     const navigate = useNavigate(); 
-
+    const childId = localStorage.getItem("childId");
     const queryParams = new URLSearchParams(location.search);
     const mbtiType = queryParams.get('mbti');
     const { averages } = location.state || { averages: { m: 0, b: 0, t: 0, i: 0 } }; // 기본값 추가
@@ -41,7 +41,7 @@ export default function MbtiResult() {
 
 
     const goHome = () => {   
-        navigate('/main');  
+        navigate('/main', { state : { childId : childId }});  
     };
 
 

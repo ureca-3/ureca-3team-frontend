@@ -94,9 +94,10 @@ export default function MbtiQuestion() {
         .then(response => {
             console.log('Success:', response.data);
             const mbtiResult = response.data.result.mbti;
+            localStorage.setItem("childId", child_id);
             navigate(`/mbtiResult?mbti=${mbtiResult}`,{
                 state: {
-                    averages: averages
+                    averages: averages,
                 }
             });
         })
